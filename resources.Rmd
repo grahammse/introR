@@ -27,17 +27,3 @@ require(icon)
 
 [R Bloggers](https://www.r-bloggers.com/){target="\"_blank"}
 
-# People
-
-| Website                                                  | Twitter Handle | Youtube                                                                         | Github                                                                  |
-|----------------------------------------------------------|----------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| [Julia Silge](https://juliasilge.com/){target="\_blank"} | \@juliasilge   | [Julia Silge - Youtube](https://www.youtube.com/c/JuliaSilge){target="\_blank"} | [Julia Silge - Github](https://github.com/juliasilge){target="\_blank"} |
-| Thomas Mock                                              |                |                                                                                 |                                                                         |
-| Thomas Lin Pedersen                                      |                |                                                                                 |                                                                         |
-| April Hill                                               |                |                                                                                 |                                                                         |
-| Maya Averick                                             |                |                                                                                 |                                                                         |
-| Andrew Heiss                                             |                |                                                                                 |                                                                         |
-| Frank Harrell                                            |                |                                                                                 |                                                                         |
-|                                                          |                |                                                                                 |                                                                         |
-|                                                          |                |                                                                                 |                                                                         |
-|                                                          |                |                                                                                 |                                                                         |
