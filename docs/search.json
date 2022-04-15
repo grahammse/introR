@@ -6,7 +6,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-04-15T13:41:49-07:00"
+      "last_modified": "2022-04-15T13:58:58-07:00"
     },
     {
       "path": "index.html",
@@ -14,21 +14,21 @@
       "description": "Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training.\n",
       "author": [],
       "contents": "\nThis is some test text!\n\n\n\n",
-      "last_modified": "2022-04-15T13:41:50-07:00"
+      "last_modified": "2022-04-15T13:58:58-07:00"
     },
     {
       "path": "resources.html",
       "title": "Resources",
       "author": [],
-      "contents": "\nBooks\nR for Data Science - This is by far-and-away the best guide to the tidyverse. An absolute must have!\nHands on Programming with R - Good resource for base R\nggplot2 - Great overview of ggplot2\nData Visualization: A Practical Introduction - Good resource for data visualization\nR Markdown Cookbook - Great guide to R Markdown\nBig Book of R - Repository of freely available R books. There’s a lot of them!\nWebsites\nR Studio Education\nR Bloggers\nPeople\nWebsite\nTwitter Handle\nYoutube\nGithub\nJulia Silge\n@juliasilge\nJulia Silge - Youtube\nJulia Silge - Github\nThomas Mock\n\n\n\nThomas Lin Pedersen\n\n\n\nApril Hill\n\n\n\nMaya Averick\n\n\n\nAndrew Heiss\n\n\n\nFrank Harrell\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
-      "last_modified": "2022-04-15T13:41:53-07:00"
+      "contents": "\nBooks\nR for Data Science - This is by far-and-away the best guide to the tidyverse. An absolute must have!\nHands on Programming with R - Good resource for base R\nggplot2 - Great overview of ggplot2\nData Visualization: A Practical Introduction - Good resource for data visualization\nR Markdown Cookbook - Great guide to R Markdown\nBig Book of R - Repository of freely available R books. There’s a lot of them!\nWebsites\nR Studio Education\nR Bloggers\n\n\n\n",
+      "last_modified": "2022-04-15T13:59:01-07:00"
     },
     {
       "path": "schedule.html",
       "title": "Schedule",
       "author": [],
       "contents": "\n\nd-article table td {\n  border-bottom: 1px solid rgba(4, 4, 4, 0.36);\n}\n\nd-article table tbody :first-child td {\n  padding-top: 2px;\n  border-top: 3px solid rgba(4, 4, 4, 0.7);\n}\n\nd-article table tbody :last-child td {\n  padding-top: 2px;\n  border-bottom: 2px solid rgba(4, 4, 4, 0.7);\n}\nModule\nTopic\nAdditional Reading\nAdditional Videos\n1\nOverview\nInstalling R and R Studio\nModern Dive - Chapter 1\n\n2\nBase R\nBase R Cheat Sheet\n\n3\nData Visualization - 1\nggplot2 Cheat Sheet\nThomas Lin Pedersen Talk\nData and Visualization - 1\nData and Visualization - 2\nData and Visualization - 3\n4\nWorkflows/Style Guide/Directory Structures\nStyle Guide\nProject-Oriented Workflows\nhere package\n\n5\nData Transformation\ndplyr Cheat Sheet\n\n6\nExploratory Data Analysis\n\n\n7\nTibbles/Data Frames\n\n\n8\nData Import\nData Import Cheat Sheet\n\n9\nTidy Data\ntidyr Cheat Sheet\n\n10\nRelational Data\ndplyr Cheat Sheet\n\n11\nStrings\nstringr Cheat Sheet\n\n12\nFactors\nforcats Cheat Sheet\n\n13\nDates/Times\nlubridate Cheat Sheet\n\n14\nData Visualization - 2\n\n\n15\nR Markdown\nR Markdown Cheat Sheet\n\n\n\n\n",
-      "last_modified": "2022-04-15T13:41:53-07:00"
+      "last_modified": "2022-04-15T13:59:02-07:00"
     }
   ],
   "collections": []
