@@ -5,4 +5,4 @@ description: |
 site: distill::distill_website
 ---
 
-This is some test text!
+![](images/canopy_logo.png){width=160% style="display: block; margin: 0 auto"}
