@@ -1,0 +1,8 @@
+---
+title: "Introduction to R Programming"
+description: |
+  Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training.
+site: distill::distill_website
+---
+
+This is some test text!

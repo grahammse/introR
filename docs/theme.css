@@ -1,0 +1,41 @@
+/* Alter Navigation Bar Aesthetics*/
+
+.distill-site-header {
+  --title-size: 18px;
+  --text-color: rgba(255, 255, 255, 0.8);
+  --text-size: 15px;
+  --hover-color: white;
+  --bkgd-color: #a6873b;
+}
+
+.distill-site-header {
+  font-weight: 600;
+}
+
+/* Change Body Background Color*/
+body {
+  background-color: #e3e3e2;
+  color: #6c6c6b;
+  font-weight: 600;
+}
+
+
+d-title p {
+  color: #6c6c6b;
+  font-weight: 600;
+}
+
+/* Change Hyperlink Color and Hover Behavior*/
+d-article a {
+  color: #6c6c6b;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #a6873b;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
+
