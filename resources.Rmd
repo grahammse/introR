@@ -3,27 +3,30 @@ title: "Resources"
 output: distill::distill_article
 ---
 
-```{r include = FALSE}
-require(icon)
-```
-
 # Books
 
-[R for Data Science](https://r4ds.had.co.nz/){target="_blank"} - This is by far-and-away the best guide to the tidyverse. An absolute must have!
+### R Programming
 
-[Hands on Programming with R](https://rstudio-education.github.io/hopr/){target="_blank"} - Good resource for base R
+-   [R for Data Science](https://r4ds.had.co.nz/){target="_blank"} - This is by far-and-away the best guide to the tidyverse. An absolute must have!
 
-[ggplot2](https://ggplot2-book.org/){target="_blank"} - Great overview of ggplot2
+-   [Hands on Programming with R](https://rstudio-education.github.io/hopr/){target="_blank"} - Good resource for base R
 
-[Data Visualization: A Practical Introduction](https://socviz.co/){target="_blank"} - Good resource for data visualization
+### Data Visualization
 
-[R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} - Great guide to R Markdown
+-   [ggplot2](https://ggplot2-book.org/){target="_blank"} - Great overview of ggplot2
 
-[Big Book of R](https://www.bigbookofr.com/index.html){target="_blank"} - Repository of freely available R books. There's a lot of them!
+-   [Data Visualization: A Practical Introduction](https://socviz.co/){target="_blank"} - Good resource for data visualization
+
+### R Markdown
+
+-   [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} - Great guide to R Markdown
+
+### General
+
+-   [Big Book of R](https://www.bigbookofr.com/index.html){target="_blank"} - Repository of freely available R books. There's a lot of them!
 
 # Websites
 
-[R Studio Education](https://education.rstudio.com/learn/beginner/){target="_blank"}
+-   [R Studio Education](https://education.rstudio.com/learn/beginner/){target="_blank"}
 
-[R Bloggers](https://www.r-bloggers.com/){target="\"_blank"}
-
+-   [R Bloggers](https://www.r-bloggers.com/){target="\"_blank"}

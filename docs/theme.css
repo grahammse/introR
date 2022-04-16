@@ -1,3 +1,4 @@
+
 /* Alter Navigation Bar Aesthetics*/
 
 .distill-site-header {
@@ -38,4 +39,8 @@ a:hover {
 }
 
 
-
+/* Change Size of Third Header Font and Adjust Padding*/
+d-article h3 {
+  font-size: 24px;
+  margin-top: -8px;
+}

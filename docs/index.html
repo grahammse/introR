@@ -89,27 +89,24 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Introduction to R Programming</title>
 
-  <meta property="description" itemprop="description" content="Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training."/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Introduction to R Programming"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Introduction to R Programming"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Introduction to R Programming"/>
-  <meta property="twitter:description" content="Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site"]}},"value":[{"type":"character","attributes":{},"value":["Introduction to R Programming"]},{"type":"character","attributes":{},"value":["Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training.\n"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site"]}},"value":[{"type":"character","attributes":{},"value":["Introduction to R Programming"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2114,7 +2111,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /*-- Additional custom styles --*/
   /* Add any additional CSS rules below                      */
   </style>
-  <style type="text/css">/* Alter Navigation Bar Aesthetics*/
+  <style type="text/css">
+  /* Alter Navigation Bar Aesthetics*/
 
   .distill-site-header {
     --title-size: 18px;
@@ -2154,7 +2152,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }
 
 
-  </style>
+  /* Change Size of Third Header Font and Adjust Padding*/
+  d-article h3 {
+    font-size: 24px;
+    margin-top: -8px;
+  }</style>
   <style type="text/css">
   /* base style */
 
@@ -2330,7 +2332,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Introduction to R Programming","description":"Welcome to Introduction to R programming!  This site contains all materials needed for the 2022 Canopy R programming training.","authors":[]}
+{"title":"Introduction to R Programming","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2356,12 +2358,27 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>Introduction to R Programming</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Welcome to Introduction to R programming! This site contains all materials needed for the 2022 Canopy R programming training.</p></p>
+
 </div>
 
 
 <div class="d-article">
-<p><img src="images/canopy_logo.png" style="display: block; margin: 0 auto" style="width:160.0%" /></p>
+<!-- Some trickery to get the logo to show -->
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"images/canopy_logo.png\" style=\"float: right; border: none; width: 150px;\"/>')
+   });
+</script>
+<p>Welcome to the website for Introduction to R Programming!</p>
+<p>This website contains course materials and outside resources for an introductory R programming course.</p>
+<h1 id="website-content">Website Content</h1>
+<p>The <span style="color: #a6873b;"><strong>Schedule</strong></span> section provides a schedule of topics and links to supplemental resources.</p>
+<p>The <span style="color: #a6873b;"><strong>Resources</strong></span> heading lists several helpful resources for R learners. R for Data Science will serve as the primary text for this course. It’s available for <a href="https://r4ds.had.co.nz/" target="_blank">free online</a>, but well-worth the cost for the <a href="https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?crid=UJMS0UH3O9KN&amp;keywords=r+for+data+science&amp;qid=1650063947&amp;sprefix=r+for+data+scienc%2Caps%2C201&amp;sr=8-1" target="_blank">paper copy</a>.</p>
+<p>Most of the course content is listed under the <span style="color: #a6873b;"><strong>Modules</strong></span> heading. Each module has several components (lecture slides, R code, Summary files) in a pop-out menu.</p>
+<p>The <span style="color: #a6873b;"><strong>Glossary</strong></span> heading provides a definitions of important concepts and functions in R.</p>
+<h1 id="acknowledgements">Acknowledgements</h1>
+<p>This course was developed and is maintained by <a href="https://github.com/grahammse" target="_blank">Graham Eglit</a> and was built using the <a href="https://rstudio.github.io/distill/" target="_blank">distill package</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
