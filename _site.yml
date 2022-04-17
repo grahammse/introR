@@ -6,6 +6,8 @@ description: |
 output_dir: "docs"
 creative_commons: CC BY
 navbar:
+  logo: 
+    image: images/canopy_logo_dark.jpg
   right:
     - text: "Home"
       href: index.html
