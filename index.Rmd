@@ -22,10 +22,7 @@ The <span style = 'color: #a6873b;'>**Schedule**</span> section provides a sched
 
 The <span style = 'color: #a6873b;'>**Resources**</span> heading lists several helpful resources for R learners.  R for Data Science will serve as the primary text for this course.  It's available for [free online](https://r4ds.had.co.nz/){target="_blank"}, but well-worth the cost for the [paper copy](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?crid=UJMS0UH3O9KN&keywords=r+for+data+science&qid=1650063947&sprefix=r+for+data+scienc%2Caps%2C201&sr=8-1){target="_blank"}.
 
-Most of the course content is listed under the <span style = 'color: #a6873b;'>**Modules**</span> heading.  Each module has several components (lecture slides, R code, Summary files) in a pop-out menu.  
+The <span style = 'color: #a6873b;'>**Modules**</span> heading contains most of the course content.  Each module has several components (lecture slides, R code, Summary files) in a pop-out menu.  
 
 The <span style = 'color: #a6873b;'>**Glossary**</span> heading provides a definitions of important concepts and functions in R.
 
-# Acknowledgements
-
-This course was developed and is maintained by [Graham Eglit](https://github.com/grahammse){target="_blank"} and was built using the [distill package](https://rstudio.github.io/distill/){target="_blank"}.

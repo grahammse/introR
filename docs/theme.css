@@ -44,3 +44,19 @@ d-article h3 {
   font-size: 24px;
   margin-top: -8px;
 }
+
+
+
+/* Change Footer Aesthetics */
+
+.distill-site-footer {
+  --text-color: #e3e3e2;
+  --bkgd-color: #8e8e8e;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 12px;
+}
