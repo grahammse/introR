@@ -26,3 +26,6 @@ The <span style = 'color: #a6873b;'>**Modules**</span> heading contains most of 
 
 The <span style = 'color: #a6873b;'>**Glossary**</span> heading provides a definitions of important concepts and functions in R.
 
+# Lectures
+
+Lectures will take place via Zoom every DAY at TIME PST.

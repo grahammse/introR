@@ -6,28 +6,28 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-04-17T09:19:53-07:00"
+      "last_modified": "2022-04-17T10:05:16-07:00"
     },
     {
       "path": "index.html",
       "title": "Introduction to R Programming",
       "author": [],
-      "contents": "\n\n\n   $(document).ready(function() {\n     $head = $('#header');\n     $head.prepend('<img src=\\\"images/canopy_logo.png\\\" style=\\\"float: right; border: none; width: 150px;\\\"/>')\n   });\nWelcome to the website for Introduction to R Programming!\nThis website contains course materials and outside resources for an introductory R programming course.\nWebsite Content\nThe Schedule section provides a schedule of topics and links to supplemental resources.\nThe Resources heading lists several helpful resources for R learners. R for Data Science will serve as the primary text for this course. It’s available for free online, but well-worth the cost for the paper copy.\nThe Modules heading contains most of the course content. Each module has several components (lecture slides, R code, Summary files) in a pop-out menu.\nThe Glossary heading provides a definitions of important concepts and functions in R.\n\n\n\n",
-      "last_modified": "2022-04-17T09:19:53-07:00"
+      "contents": "\n\n\n   $(document).ready(function() {\n     $head = $('#header');\n     $head.prepend('<img src=\\\"images/canopy_logo.png\\\" style=\\\"float: right; border: none; width: 150px;\\\"/>')\n   });\nWelcome to the website for Introduction to R Programming!\nThis website contains course materials and outside resources for an introductory R programming course.\nWebsite Content\nThe Schedule section provides a schedule of topics and links to supplemental resources.\nThe Resources heading lists several helpful resources for R learners. R for Data Science will serve as the primary text for this course. It’s available for free online, but well-worth the cost for the paper copy.\nThe Modules heading contains most of the course content. Each module has several components (lecture slides, R code, Summary files) in a pop-out menu.\nThe Glossary heading provides a definitions of important concepts and functions in R.\nLectures\nLectures will take place via Zoom every DAY at TIME PST.\n\n\n\n",
+      "last_modified": "2022-04-17T10:05:17-07:00"
     },
     {
       "path": "resources.html",
       "title": "Resources",
       "author": [],
       "contents": "\nBooks\nR Programming\nR for Data Science - This is by far-and-away the best guide to the tidyverse. An absolute must have!\nHands on Programming with R - Good resource for base R\nData Visualization\nggplot2 - Great overview of ggplot2\nData Visualization: A Practical Introduction - Good resource for data visualization\nR Markdown\nR Markdown Cookbook - Great guide to R Markdown\nGeneral\nBig Book of R - Repository of freely available R books. There’s a lot of them!\nWebsites\nR Studio Education\nR Bloggers\n\n\n\n",
-      "last_modified": "2022-04-17T09:19:54-07:00"
+      "last_modified": "2022-04-17T10:05:17-07:00"
     },
     {
       "path": "schedule.html",
       "title": "Schedule",
       "author": [],
       "contents": "\n\nd-article table td {\n  border-bottom: 1px solid rgba(4, 4, 4, 0.36);\n}\n\nd-article table tbody :first-child td {\n  padding-top: 2px;\n  border-top: 3px solid rgba(4, 4, 4, 0.7);\n}\n\nd-article table tbody :last-child td {\n  padding-top: 2px;\n  border-bottom: 2px solid rgba(4, 4, 4, 0.7);\n}\nModule\nTopic\nAdditional Reading\nAdditional Videos\n1\nOverview\nInstalling R and R Studio\nModern Dive - Chapter 1\n\n2\nBase R\nBase R Cheat Sheet\n\n3\nData Visualization - 1\nggplot2 Cheat Sheet\nThomas Lin Pedersen Webinar\nData and Visualization - 1\nData and Visualization - 2\nData and Visualization - 3\n4\nWorkflows/Style Guide/Directory Structures\nStyle Guide\nProject-Oriented Workflows\nhere package\n\n5\nData Transformation\ndplyr Cheat Sheet\n\n6\nExploratory Data Analysis\n\n\n7\nTibbles/Data Frames\n\n\n8\nData Import\nData Import Cheat Sheet\n\n9\nTidy Data\ntidyr Cheat Sheet\n\n10\nRelational Data\ndplyr Cheat Sheet\n\n11\nStrings\nstringr Cheat Sheet\n\n12\nFactors\nforcats Cheat Sheet\n\n13\nDates/Times\nlubridate Cheat Sheet\n\n14\nData Visualization - 2\n\n\n15\nR Markdown\nR Markdown Cheat Sheet\n\n\n\n\n",
-      "last_modified": "2022-04-17T09:19:54-07:00"
+      "last_modified": "2022-04-17T10:05:18-07:00"
     }
   ],
   "collections": []
