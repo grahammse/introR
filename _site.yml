@@ -4,6 +4,7 @@ theme: theme.css
 description: |
   My Website
 output_dir: "docs"
+creative_commons: CC BY
 navbar:
   right:
     - text: "Home"
