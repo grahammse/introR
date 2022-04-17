@@ -5,6 +5,7 @@ description: |
   My Website
 output_dir: "docs"
 creative_commons: CC BY
+favicon: images/canopy_logo.ico
 navbar:
   right:
     - text: "Home"
