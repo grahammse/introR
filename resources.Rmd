@@ -5,25 +5,29 @@ output: distill::distill_article
 
 # Books
 
+Below are listed what are in my opinion the best books on R programming.  All of these are freely available online and can be accessed by clicking on the book images below.  In addition to these books, the [Big Book of R](https://www.bigbookofr.com/index.html){target="_blank"} is a large repository of just about every book focused on R.  At the time of this writing, there are over 250 books listed in this repository, which span a wide range of topics (r programming, shiny app development, statistics, machine learning, sports analytics, etc.).
+
 ### R Programming
 
--   [R for Data Science](https://r4ds.had.co.nz/){target="_blank"} - This is by far-and-away the best guide to the tidyverse. An absolute must have!
+[![R for Data Science](images/resources/r4ds.png){width=17.5%}](https://r4ds.had.co.nz/){target="_blank"} 
+This book is widely considered essential for learning R and will serve as our primary text.
 
--   [Hands on Programming with R](https://rstudio-education.github.io/hopr/){target="_blank"} - Good resource for base R
+[![Hands on Programming with R](images/resources/hopwr.jpg){width=17.5%}](https://rstudio-education.github.io/hopr/){target="_blank"} 
+Good supplemental resource for base R
 
 ### Data Visualization
 
--   [ggplot2](https://ggplot2-book.org/){target="_blank"} - Great overview of ggplot2
+[![ggplot2](images/resources/ggplot2.jpg){width=17.5%}](https://ggplot2-book.org/){target="_blank"} 
+Great overview of the ggplot2 package
 
--   [Data Visualization: A Practical Introduction](https://socviz.co/){target="_blank"} - Good resource for data visualization
+[![Data Visualization: A Practical Introduction](images/resources/dvapi.jpg){width=17.5%}](https://socviz.co/){target="_blank"} 
+Good resource for data visualization with a focus on concrete applications
 
 ### R Markdown
 
--   [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} - Great guide to R Markdown
+[![R Markdown Cookbook](images/resources/rmc.png){width=17.5%}](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} 
+Great guide to R Markdown with specific strategies and use cases
 
-### General
-
--   [Big Book of R](https://www.bigbookofr.com/index.html){target="_blank"} - Repository of freely available R books. There's a lot of them!
 
 # Websites
 
