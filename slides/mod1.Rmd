@@ -67,7 +67,13 @@ background-position: 99% 4%
 ]
 
 ---
-# .center[Growth of R]
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+class: center
+
+# Growth of R
 
 .panelset[
 .panel[.panel-name[Jobs]
@@ -75,8 +81,8 @@ background-position: 99% 4%
 .bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
-.panel[.panel-name[2018 Articles]
-<img src="img/mod1/pop_articles.png" width="38%"/>
+.panel[.panel-name[Primary Tool]
+<img src="img/mod1/pop_use.png" width="50%"/>
 .bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
@@ -85,8 +91,17 @@ background-position: 99% 4%
 .bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
+.panel[.panel-name[2018 Articles]
+<img src="img/mod1/pop_articles.png" width="38%"/>
+.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+] <!---->
+
 ] <!--end of panelset-->
 
 
 ---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
 # .center[You Can Do All Sorts of Cool Stuff In R]
