@@ -4,13 +4,6 @@ site: distill::distill_website
 ---
 
 
-<!-- Some trickery to get the logo to show -->
-<script>
-   $(document).ready(function() {
-     $head = $('#header');
-     $head.prepend('<img src=\"images/canopy_logo.png\" style=\"float: right; border: none; width: 150px;\"/>')
-   });
-</script>
 
 Welcome to the website for Introduction to R Programming!  
 
