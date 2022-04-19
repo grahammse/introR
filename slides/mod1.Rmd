@@ -19,7 +19,12 @@ output:
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 require(xaringanthemer)
+require(xaringanExtra)
 style_duo(primary_color = "#e3e3e2", secondary_color = "#a6873b")
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
 ```
 
 class: title-slide, right, top
@@ -37,11 +42,50 @@ background-size: 50%, cover
 
 
 ---
-class: center, top
 background-image: url(img/canopy_logo.png)
 background-size: 14%, cover
 background-position: 99% 4%
 
-# Why R?
+# .center[Why R?]
+
+.pull-left[
+## R/ R Studio
+<img src="img/hex_rstudio.png" width="30%"/>
+- Free
+- Open Source
+- Large User Base/Community
+- Cutting-Edge Statistics
+- Reproducibility
+- Version Control/Collaboration
+]
+
+.pull-right[
+## R Markdown
+<img src="img/hex_rmarkdown.png" width="30%"/>
+- Reproducibility
+- Communication
+]
+
+---
+class: center
+# Growth of R
+
+.panelset[
+.panel[.panel-name[Jobs]
+<img src="img/mod1/pop_jobs.png" width="40%"/>
+] <!---->
+
+.panel[.panel-name[2018 Articles]
+<img src="img/mod1/pop_articles.png" width="38%"/>
+] <!---->
+
+.panel[.panel-name[1995 - 2016 Articles]
+<img src="img/mod1/pop_time.png" width="40%"/>
+] <!---->
+
+] <!--end of panelset-->
 
 
+
+---
+# .center[You Can Do All Sorts of Cool Stuff In R]
