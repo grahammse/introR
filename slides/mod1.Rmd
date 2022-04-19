@@ -1,0 +1,47 @@
+---
+title: "Module 1:  R, what is it good for?"
+subtitle:  "Introduction and Overview"
+author: "Graham Eglit"
+institute: "Canopy Growth Corporation"
+date: "May 20, 2022"
+output:
+  xaringan::moon_reader:
+    css: 
+      - xaringan-themer.css
+    lib_dir: libs
+    seal: false
+    self_contained: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+require(xaringanthemer)
+style_duo(primary_color = "#e3e3e2", secondary_color = "#a6873b")
+```
+
+class: title-slide, right, top
+background-image: url(img/canopy_logo.png)
+background-size: 50%, cover
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+`r rmarkdown::metadata$institute`<br>
+`r rmarkdown::metadata$date`
+]
+
+
+---
+class: center, top
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+# Why R?
+
+
