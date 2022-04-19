@@ -76,24 +76,29 @@ class: center
 # Growth of R
 
 .panelset[
-.panel[.panel-name[Jobs]
+.panel[.panel-name[Jobs - 2017 & 2019]
 <img src="img/mod1/pop_jobs.png" width="40%"/>
-.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+.bottom[Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+] <!---->
+
+.panel[.panel-name[Job Change 2017 - 2019]
+<img src="img/mod1/pop_jobchange.png" width="36%"/>
+.bottom[Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
 .panel[.panel-name[Primary Tool]
 <img src="img/mod1/pop_use.png" width="50%"/>
-.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+.bottom[Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
 .panel[.panel-name[1995 - 2016 Articles]
 <img src="img/mod1/pop_time.png" width="40%"/>
-.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+.bottom[Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
 .panel[.panel-name[2018 Articles]
 <img src="img/mod1/pop_articles.png" width="38%"/>
-.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+.bottom[Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
 ] <!--end of panelset-->
@@ -105,3 +110,26 @@ background-size: 14%, cover
 background-position: 99% 4%
 
 # .center[You Can Do All Sorts of Cool Stuff In R]
+
+---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+# .center[History of R]
+
+
+- R is a descendent of the S programming language
+- S was developed at the Bell Telephone Laboratories in 1976
+- S was designed for data analysis, but with the goal that *users* would become *developers*
+- 1988, S was rewritten in C and began to resemble the R language we use today.  
+    - This was the third version of S (S3)
+    - S4 was later released in 1998
+- Eventually S was commercially released as S-Plus
+- R was created in 1991 by Ross Ihaka and Robert Gentleman
+- R was released using a GNU General Public License in 1995, ensuring that it would remain free and open source
+- In 2001, R version 1.0.0 was released to the public
+- The most recent version of R is 4.2.0, which was released on 2022-04-22
+<br>
+.center[<img src="img/mod1/gentleman.png" width="15%"/>
+<img src="img/mod1/ihaka.jpg" width="20%"/>]
