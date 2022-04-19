@@ -23,6 +23,10 @@ require(xaringanExtra)
 style_duo(primary_color = "#e3e3e2", secondary_color = "#a6873b")
 ```
 
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
 class: title-slide, right, top
 background-image: url(img/canopy_logo.png)
 background-size: 50%, cover
@@ -63,25 +67,41 @@ background-position: 99% 4%
 ]
 
 ---
-class: center, middle
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+class: center
+
 # Growth of R
 
 .panelset[
-.panel[.panel-name[Articles]
-<img src="img/mod1/pop_articles.png" width="30%"/>
+.panel[.panel-name[Jobs]
+<img src="img/mod1/pop_jobs.png" width="40%"/>
+.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
-.panel[.panel-name[Articles]
-<img src="img/mod1/pop_articles.png" width="30%"/>
+.panel[.panel-name[Primary Tool]
+<img src="img/mod1/pop_use.png" width="50%"/>
+.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
-.panel[.panel-name[Articles]
-<img src="img/mod1/pop_articles.png" width="30%"/>
+.panel[.panel-name[1995 - 2016 Articles]
+<img src="img/mod1/pop_time.png" width="40%"/>
+.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
+] <!---->
+
+.panel[.panel-name[2018 Articles]
+<img src="img/mod1/pop_articles.png" width="38%"/>
+.bottom[Figure from[The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)]
 ] <!---->
 
 ] <!--end of panelset-->
 
 
-
 ---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
 # .center[You Can Do All Sorts of Cool Stuff In R]
