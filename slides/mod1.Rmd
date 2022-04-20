@@ -263,3 +263,4 @@ background-position: 99% 4%
 class: center, middle
 
 # Let's Tour R and R Studio!
+<img src="img/mod1/tour.jpg" width="75%"/>
