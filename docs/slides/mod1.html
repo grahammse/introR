@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Module 1: R, what is it good for?</title>
+    <title>Module 1: R, What Is It Good For?</title>
     <meta charset="utf-8" />
     <meta name="author" content="Graham Eglit" />
     <meta name="date" content="2022-05-20" />
@@ -23,7 +23,7 @@ background-image: url(img/canopy_logo.png)
 background-size: 50%, cover
 
 .right-column[
-# Module 1:  R, what is it good for?
+# Module 1:  R, What Is It Good For?
 ### Introduction and Overview
 
 **Graham Eglit**&lt;br&gt;
@@ -32,7 +32,10 @@ May 20, 2022
 ]
 
 
+---
+class: inverse, center, middle
 
+# Introduction
 
 
 
@@ -45,24 +48,18 @@ background-position: 99% 4%
 # .center[Why R?]
 
 .pull-left[
-## R/ R Studio
-&lt;img src="img/hex_rstudio.png" width="30%"/&gt;
-- Free
-- Open Source
-- Large User Base/Community
-- Cutting-Edge Statistics
-- Reproducibility
-- Version Control/Collaboration
+- Free &lt;br&gt; &lt;br&gt;
+- Open Source &lt;br&gt; &lt;br&gt;
+- Large User Base/Community &lt;br&gt; &lt;br&gt;
+- Cutting-Edge Statistics &lt;br&gt; &lt;br&gt;
+- Reproducibility &lt;br&gt; &lt;br&gt;
+- Version Control/Collaboration &lt;br&gt; &lt;br&gt;
+- Communication &lt;br&gt; &lt;br&gt;
 ]
 
 .pull-right[
-## R Markdown
-&lt;img src="img/hex_rmarkdown.png" width="30%"/&gt;
-- Reproducibility
-- Communication
+&lt;img src="img/hex_rstudio.png" width="65%"/&gt;
 ]
-
-
 
 
 
@@ -78,13 +75,13 @@ class: center
 
 .panelset[
 .panel[.panel-name[Jobs - 2017 &amp; 2019]
-&lt;img src="img/mod1/pop_jobs.png" width="40%"/&gt;
+&lt;img src="img/mod1/pop_jobs.png" width="38.5%"/&gt;
 &lt;figcaption&gt;Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)&lt;/figcaption&gt;
 ] &lt;!----&gt;
 
-.panel[.panel-name[Job Change 2017 - 2019]
-&lt;img src="img/mod1/pop_jobchange.png" width="34%"/&gt;
-&lt;figcaption&gt;Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)&lt;/figcaption&gt;
+.panel[.panel-name[User Base]
+&lt;img src="img/mod1/pop_tidy.png" width="50%"/&gt;
+&lt;figcaption&gt;Figure from [R's Demise is Highly Overblown](https://www.alfredogmarquez.com/2019/12/29/r-s-demise-higly-overblown/)&lt;/figcaption&gt;
 ] &lt;!----&gt;
 
 .panel[.panel-name[Primary Tool]
@@ -98,7 +95,7 @@ class: center
 ] &lt;!----&gt;
 
 .panel[.panel-name[2018 Articles]
-&lt;img src="img/mod1/pop_articles.png" width="34%"/&gt;
+&lt;img src="img/mod1/pop_articles.png" width="33.5%"/&gt;
 &lt;figcaption&gt;Figure from [The Popularity of Data Science Software](https://r4stats.com/articles/popularity/)&lt;/figcaption&gt;
 ] &lt;!----&gt;
 
@@ -119,22 +116,52 @@ background-position: 99% 4%
 .pull-left[
 &lt;br&gt; &lt;br&gt;
 - [Generative Art](https://www.data-imaginist.com/art) &lt;br&gt; &lt;br&gt;
-- [Websites](https://www.silviacanelon.com/about/) &lt;br&gt; &lt;br&gt;
+- [Websites](https://www.lucymcgowan.com/) &lt;br&gt; &lt;br&gt;
 - [Data Visualization](https://www.cedricscherer.com/top/dataviz/) &lt;br&gt; &lt;br&gt;
-- [Create Resumes](https://twitter.com/NicholasStrayer/status/1178754342289121280/photo/1) &lt;br&gt; &lt;br&gt;
+- [Resumes](https://twitter.com/NicholasStrayer/status/1178754342289121280/photo/1) &lt;br&gt; &lt;br&gt;
 ]
 
 .pull-right[
 &lt;br&gt; &lt;br&gt;
-- [Generative Art](https://www.data-imaginist.com/art) &lt;br&gt; &lt;br&gt;
-- [Websites](https://www.silviacanelon.com/about/) &lt;br&gt; &lt;br&gt;
-- [Data Visualization](https://www.cedricscherer.com/top/dataviz/) &lt;br&gt; &lt;br&gt;
-- [Create Resumes](https://twitter.com/NicholasStrayer/status/1178754342289121280/photo/1) &lt;br&gt; &lt;br&gt;
+- [Books](https://r4ds.had.co.nz/index.html) &lt;br&gt; &lt;br&gt;
+- [Slides](https://spcanelon.github.io/xaringan-basics-and-beyond/) &lt;br&gt; &lt;br&gt;
+- [Shiny Apps](https://shiny.rstudio.com/gallery/) &lt;br&gt; &lt;br&gt;
+- [Interactive Visualizations](https://rpsychologist.com/pvalue/) &lt;br&gt; &lt;br&gt;
 ]
 
 
 
 
+---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+# .center[Why Not R?]
+
+.left-column[
+&lt;br&gt;
+- Learning Curve &lt;br&gt; &lt;br&gt;
+- Ever-Expanding Ecosystem &lt;br&gt; &lt;br&gt;
+- Validation? &lt;br&gt; &lt;br&gt;
+- Opinionated &lt;br&gt; &lt;br&gt;
+- Specialization &lt;br&gt; &lt;br&gt;
+- Production &lt;br&gt; &lt;br&gt;
+]
+
+.right-column[
+&lt;img src="img/mod1/packages.png" width="80%"/&gt;
+.caption[
+Figure from [Gergely Daróczi](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368)
+]
+]
+
+
+
+---
+class: inverse, middle, center
+
+# Overview
 
 
 
