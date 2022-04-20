@@ -8,6 +8,7 @@ output:
   xaringan::moon_reader:
     css: 
       - xaringan-themer.css
+      - extra_theme.css
     lib_dir: libs
     seal: false
     self_contained: false
@@ -200,3 +201,65 @@ background-position: 99% 4%
 <img src="img/mod1/ihaka.jpg" width="80%"/>
 <figcaption>Ross Ihaka<figcaption>
 ]
+
+
+
+
+---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+# .center[R vs. R Studio]
+
+.pull-left[.center[
+## R 
+.bullets[
+A programming langauge <br>
+A console <br>
+Runs computations <br>
+]
+<img src="img/mod1/r_console.jpg" width="40%"/>
+<br>
+DON'T USE THIS ONE!
+]]
+
+.pull-left[.center[
+## R Studio
+An add-on that integrates with R <br>
+Creates a more user-friendly interface <br>
+An **Integrated Development Environment (IDE)**
+
+<img src="img/mod1/r_studio.png" width="32%"/>
+<br>
+USE THIS ONE!
+]]
+
+
+
+
+---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+class: center
+
+# R vs. R Studio
+
+.middle[
+<img src="img/mod1/modern_dive.png" width="75%"/>
+.caption[
+Figure from [Modern Dive](https://moderndive.com/1-getting-started.html)
+]
+]
+
+
+---
+background-image: url(img/canopy_logo.png)
+background-size: 14%, cover
+background-position: 99% 4%
+
+class: center, middle
+
+# Let's Tour R and R Studio!
