@@ -10,22 +10,27 @@ Below are listed what are in my opinion the best books on R programming.  All of
 ### R Programming
 
 [![R for Data Science](images/resources/r4ds.png){width=17.5%}](https://r4ds.had.co.nz/){target="_blank"} 
+<br>
 This book is widely considered essential for learning R and will serve as our primary text.
 
 [![Hands on Programming with R](images/resources/hopwr.jpg){width=17.5%}](https://rstudio-education.github.io/hopr/){target="_blank"} 
+<br>
 Good supplemental resource for base R
 
 ### Data Visualization
 
 [![ggplot2](images/resources/ggplot2.jpg){width=17.5%}](https://ggplot2-book.org/){target="_blank"} 
+<br>
 Great overview of the ggplot2 package
 
 [![Data Visualization: A Practical Introduction](images/resources/dvapi.jpg){width=17.5%}](https://socviz.co/){target="_blank"} 
+<br>
 Good resource for data visualization with a focus on concrete applications
 
 ### R Markdown
 
 [![R Markdown Cookbook](images/resources/rmc.png){width=17.5%}](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} 
+<br>
 Great guide to R Markdown with specific strategies and use cases
 
 
