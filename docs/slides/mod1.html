@@ -8,6 +8,8 @@
     <script src="libs/header-attrs-2.13/header-attrs.js"></script>
     <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
     <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="extra_theme.css" type="text/css" />
   </head>
@@ -22,6 +24,41 @@
 class: title-slide, right, top
 background-image: url(img/canopy_logo.png)
 background-size: 50%, cover
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 160px;
+height: 140px;
+z-index: 0;
+background-image: url(img/canopy_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:.5em;right:.5em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
 
 .right-column[
 # Module 1:  R, What Is It Good For?
@@ -42,10 +79,6 @@ class: inverse, center, middle
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[Why R?]
 
 .pull-left[
@@ -66,10 +99,6 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center
 
 # Growth of R
@@ -108,10 +137,6 @@ class: center
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[You Can Do Cool Stuff In R]
 
 .pull-left[
@@ -134,20 +159,15 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[Why Not R?]
 
 .left-column[
+&lt;br&gt;
 &lt;br&gt;
 - Learning Curve &lt;br&gt; &lt;br&gt;
 - Ever-Expanding Ecosystem &lt;br&gt; &lt;br&gt;
 - Validation? &lt;br&gt; &lt;br&gt;
 - Opinionated &lt;br&gt; &lt;br&gt;
-- Specialization &lt;br&gt; &lt;br&gt;
-- Production &lt;br&gt; &lt;br&gt;
 ]
 
 .right-column[
@@ -167,10 +187,6 @@ class: inverse, middle, center
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[History of R]
 
 .right-column[
@@ -197,10 +213,6 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[R vs. R Studio]
 
 .pull-left[.center[
@@ -230,10 +242,6 @@ USE THIS ONE!
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center
 
 # R vs. R Studio
@@ -247,14 +255,155 @@ Figure from [Modern Dive](https://moderndive.com/1-getting-started.html)
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center, middle
 
 # Let's Tour R and R Studio!
 &lt;img src="img/mod1/tour.jpg" width="75%"/&gt;
+
+
+---
+.center[
+# R Syntaxes
+]
+
+.pull-left[
+## Base R
+- The original R syntax
+- All the functionality that's pre-loaded when you open an R session
+- Core packages: `base`, `compiler`, `datasets`, `graphics`, `grDevices`, `grid`, `methods`, `parallel`, `splines`, `stats`, `stats4`, `tcltk`, `tools`, `translations`, `utils`
+.center[
+&lt;img src="img/mod1/artofr.jpg" width="25%"/&gt;
+]
+]
+
+.pull-right[
+## Tidyverse
+- Released in 2016
+- A suite of add-on packages that follow a coherent programming style
+- Core packages: `dplyr`, `ggplot2`, `tidyr`, `readr`, `purrr`, `tibble`, `stringr`, `forcats`
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+&lt;img src="img/mod1/r4ds.jpg" width="25%"/&gt;
+]
+]
+
+
+---
+
+.center[
+# Objects, Functions, and Packages
+]
+
+.pull-left[
+- **Object** - A named listing of information that you can call up
+  - can be a single number, a plot, a dataframe, a model, etc.
+  -  in R, everything is an object!
+- **Function** - an encoded set of instructions for acting upon objects
+  - e.g., `mean`, `sum`, `plot`, etc.
+  - functions are also objects!
+- **Package** - a collection of functions that are bundled together
+  - typically, functions in a pacakge accomplish a similar set of tasks
+  - e.g., `ggplot2` is a package (bundle of functions) that is focused on data visualization
+]
+
+.pull-right[
+
+```r
+x &lt;- c(3, 7, 5)
+x
+```
+
+```
+## [1] 3 7 5
+```
+
+```r
+sum(x)
+```
+
+```
+## [1] 15
+```
+
+```r
+mean(x)
+```
+
+```
+## [1] 5
+```
+
+]
+
+
+
+---
+
+.center[
+# Where Do Packages Come From?
+]
+
+.pull-left[
+- Packages are developed by R users
+- They're submitted and stored on the Comprehensive R Archive Network (CRAN) for public use
+- Other R users can then download those packages onto their own computers (using `install.packages`)
+- To use the functions within a package, the package needs to be loaded during an R session (using `require` or `library`)
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+install.packages("tidyverse")
+```
+
+&lt;br&gt;
+
+
+```r
+require(tidyverse)
+library(tidyverse)
+```
+
+]
+
+&lt;br&gt;
+
+.center[
+&lt;img src="img/mod1/cran.png" width="60%"/&gt;
+]
+
+---
+class: inverse, center, middle
+
+# Recap
+
+
+---
+.center[
+# Where have we been?
+]
+
+.pull-left[
+&lt;br&gt;
+- R is a free and **open source** statistcal software
+- **R users** are also **R developers**
+- R developers create **packages** of **functions** that are uploaded onto **CRAN**
+- We (R users) can download those packages from CRAN onto our computers
+- R studio is an **integrated development environment** that has helpful tools and features that make using R easier
+- We'll use R Studio to communicate with R and use the cool stuff that R developers have created to **create cool stuff** of our own
+]
+
+.pull-right[
+&lt;br&gt;
+.center[
+&lt;img src="img/mod1/hair.jpg" width="70%"/&gt;
+]
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

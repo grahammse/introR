@@ -26,11 +26,23 @@ style_duo(primary_color = "#e3e3e2", secondary_color = "#a6873b")
 
 ```{r xaringan-panelset, echo=FALSE}
 xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
 ```
 
 class: title-slide, right, top
 background-image: url(img/canopy_logo.png)
 background-size: 50%, cover
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "img/canopy_logo.png",
+  position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
+  height = "140px",
+  width = "160px",
+  exclude_class = c("title-slide", "inverse", "hide_logo")
+)
+```
+
 
 .right-column[
 # `r rmarkdown::metadata$title`
@@ -51,10 +63,6 @@ class: inverse, center, middle
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[Why R?]
 
 .pull-left[
@@ -75,10 +83,6 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center
 
 # Growth of R
@@ -117,10 +121,6 @@ class: center
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[You Can Do Cool Stuff In R]
 
 .pull-left[
@@ -143,20 +143,15 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[Why Not R?]
 
 .left-column[
+<br>
 <br>
 - Learning Curve <br> <br>
 - Ever-Expanding Ecosystem <br> <br>
 - Validation? <br> <br>
 - Opinionated <br> <br>
-- Specialization <br> <br>
-- Production <br> <br>
 ]
 
 .right-column[
@@ -176,10 +171,6 @@ class: inverse, middle, center
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[History of R]
 
 .right-column[
@@ -206,10 +197,6 @@ background-position: 99% 4%
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 # .center[R vs. R Studio]
 
 .pull-left[.center[
@@ -239,10 +226,6 @@ USE THIS ONE!
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center
 
 # R vs. R Studio
@@ -256,11 +239,132 @@ Figure from [Modern Dive](https://moderndive.com/1-getting-started.html)
 
 
 ---
-background-image: url(img/canopy_logo.png)
-background-size: 14%, cover
-background-position: 99% 4%
-
 class: center, middle
 
 # Let's Tour R and R Studio!
 <img src="img/mod1/tour.jpg" width="75%"/>
+
+
+---
+.center[
+# R Syntaxes
+]
+
+.pull-left[
+## Base R
+- The original R syntax
+- All the functionality that's pre-loaded when you open an R session
+- Core packages: `base`, `compiler`, `datasets`, `graphics`, `grDevices`, `grid`, `methods`, `parallel`, `splines`, `stats`, `stats4`, `tcltk`, `tools`, `translations`, `utils`
+.center[
+<img src="img/mod1/artofr.jpg" width="25%"/>
+]
+]
+
+.pull-right[
+## Tidyverse
+- Released in 2016
+- A suite of add-on packages that follow a coherent programming style
+- Core packages: `dplyr`, `ggplot2`, `tidyr`, `readr`, `purrr`, `tibble`, `stringr`, `forcats`
+<br>
+<br>
+
+.center[
+<img src="img/mod1/r4ds.jpg" width="25%"/>
+]
+]
+
+
+---
+
+.center[
+# Objects, Functions, and Packages
+]
+
+.pull-left[
+- **Object** - A named listing of information that you can call up
+  - can be a single number, a plot, a dataframe, a model, etc.
+  -  in R, everything is an object!
+- **Function** - an encoded set of instructions for acting upon objects
+  - e.g., `mean`, `sum`, `plot`, etc.
+  - functions are also objects!
+- **Package** - a collection of functions that are bundled together
+  - typically, functions in a pacakge accomplish a similar set of tasks
+  - e.g., `ggplot2` is a package (bundle of functions) that is focused on data visualization
+]
+
+.pull-right[
+```{r}
+x <- c(3, 7, 5)
+x
+sum(x)
+
+mean(x)
+```
+
+]
+
+
+
+---
+
+.center[
+# Where Do Packages Come From?
+]
+
+.pull-left[
+- Packages are developed by R users
+- They're submitted and stored on the Comprehensive R Archive Network (CRAN) for public use
+- Other R users can then download those packages onto their own computers (using `install.packages`)
+- To use the functions within a package, the package needs to be loaded during an R session (using `require` or `library`)
+]
+
+.pull-right[
+<br>
+<br>
+<br>
+```{r eval = FALSE}
+install.packages("tidyverse")
+```
+
+<br>
+
+```{r eval = FALSE}
+require(tidyverse)
+library(tidyverse)
+```
+
+]
+
+<br>
+
+.center[
+<img src="img/mod1/cran.png" width="60%"/>
+]
+
+---
+class: inverse, center, middle
+
+# Recap
+
+
+---
+.center[
+# Where have we been?
+]
+
+.pull-left[
+<br>
+- R is a free and **open source** statistcal software
+- **R users** are also **R developers**
+- R developers create **packages** of **functions** that are uploaded onto **CRAN**
+- We (R users) can download those packages from CRAN onto our computers
+- R studio is an **integrated development environment** that has helpful tools and features that make using R easier
+- We'll use R Studio to communicate with R and use the cool stuff that R developers have created to **create cool stuff** of our own
+]
+
+.pull-right[
+<br>
+.center[
+<img src="img/mod1/hair.jpg" width="70%"/>
+]
+]
