@@ -8,11 +8,12 @@ output:
   xaringan::moon_reader:
     css: 
       - xaringan-themer.css
+      - extra.css
     lib_dir: libs
     seal: false
-    self_contained: false
+    self_contained: true
     nature:
-      highlightStyle: googlecode
+      highlightStyle: github
       highlightLines: true
       ratio: 16:9
 ---
@@ -20,7 +21,14 @@ output:
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 require(xaringanthemer)
 require(xaringanExtra)
-style_duo(primary_color = "#e3e3e2", secondary_color = "#a6873b")
+style_duo(primary_color = "#e3e3e2", 
+          secondary_color = "#a6873b",
+          code_inline_color = "#746850",
+          text_font_size = "1.1rem",
+          header_font_google = google_font("Lato"),
+          text_font_google   = google_font("Lora"),
+          code_font_google   = google_font("Space Mono")
+          )
 ```
 
 ```{r xaringan-panelset, echo=FALSE}
@@ -28,7 +36,7 @@ xaringanExtra::use_panelset()
 xaringanExtra::use_tile_view()
 xaringanExtra::use_clipboard()
 xaringanExtra::use_scribble()
-xaringanExtra::use_search(show_icon = TRUE)
+xaringanExtra::use_search(show_icon = FALSE)
 xaringanExtra::use_extra_styles(
   hover_code_line = TRUE,         #<<
   mute_unhighlighted_code = TRUE  #<<
@@ -64,7 +72,7 @@ xaringanExtra::use_logo(
 class: inverse, center, middle
 
 # Introduction
-
+----
 
 
 
@@ -174,7 +182,7 @@ class: inverse, middle, center
 
 # Overview
 
-
+----
 
 ---
 # .center[History of R]
@@ -341,8 +349,6 @@ library(tidyverse)
 
 ]
 
-<br>
-
 .center[
 <img src="img/mod1/cran.png" width="60%"/>
 ]
@@ -351,7 +357,7 @@ library(tidyverse)
 class: inverse, center, middle
 
 # Concluding Remarks
-
+----
 
 ---
 .center[

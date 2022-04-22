@@ -1,0 +1,27 @@
+/*-- PARAGRAPH TEXT --*/
+.remark-slide-content {
+  line-height: 1.5em;
+}
+
+
+/*-- LINKS/ANCHORS --*/
+
+a {
+  border-bottom:      1.5px solid;
+  line-height:        2rem;
+  color: #746850;
+  font-weight: 800;
+}
+
+a:hover { 
+  border-bottom: none; 
+}
+
+/*-- HORIZONTAL BARS --*/
+hr {
+  content:            '';
+  display:            block;
+  border:             none;
+  background-color:   white;
+  height:             0.05em;
+}
