@@ -344,7 +344,7 @@ library(tidyverse)
 ---
 class: inverse, center, middle
 
-# Recap
+# Concluding Remarks
 
 
 ---
@@ -367,4 +367,20 @@ class: inverse, center, middle
 .center[
 <img src="img/mod1/hair.jpg" width="70%"/>
 ]
+]
+
+
+---
+<br>
+
+.center[
+<img src="img/mod1/next.jpg" width="55%"/>
+]
+
+.left[
+### A quick journey through Base R...
+]
+
+.right[
+### ...And then off to the Tidyverse
 ]
