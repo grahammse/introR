@@ -7,14 +7,14 @@
 /*-- LINKS/ANCHORS --*/
 
 a {
-  border-bottom:      1.5px solid;
+  border-bottom:      none;
   line-height:        2rem;
   color: #746850;
   font-weight: 800;
 }
 
 a:hover { 
-  border-bottom: none; 
+  border-bottom: 1.5px solid; 
 }
 
 /*-- HORIZONTAL BARS --*/
