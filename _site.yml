@@ -16,6 +16,8 @@ navbar:
       menu:
         - text: "Module 1: Introduction and Overview"
           href: slides/mod1.html
+        - text: "Module 2:  Base R"
+          href: slides/mod2.html
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
