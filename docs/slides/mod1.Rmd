@@ -21,6 +21,7 @@ output:
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 require(xaringanthemer)
 require(xaringanExtra)
+require(icons)
 style_duo(primary_color = "#e3e3e2", 
           secondary_color = "#a6873b",
           code_inline_color = "#746850",
@@ -71,6 +72,7 @@ xaringanExtra::use_logo(
 ---
 class: inverse, center, middle
 
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 # Introduction
 ----
 
@@ -180,6 +182,7 @@ Figure from [Gergely Daróczi](https://gist.github.com/daroczig/3cf06d6db4be2bbe
 ---
 class: inverse, middle, center
 
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 # Overview
 
 ----
@@ -355,6 +358,8 @@ library(tidyverse)
 
 ---
 class: inverse, center, middle
+
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 # Concluding Remarks
 ----
