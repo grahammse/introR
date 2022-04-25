@@ -9,8 +9,8 @@
 a {
   border-bottom:      none;
   line-height:        2rem;
-  color: #bba474;
-  font-weight: 800;
+  color:              #bba474;
+  font-weight:        800;
 }
 
 a:hover { 
@@ -24,4 +24,8 @@ hr {
   border:             none;
   background-color:   white;
   height:             0.05em;
+}
+
+h1 {
+  line-height:        2.8rem;
 }

@@ -21,6 +21,9 @@ output:
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 require(xaringanthemer)
 require(xaringanExtra)
+require(magrittr)
+require(knitr)
+require(beepr)
 style_duo(primary_color = "#e3e3e2", 
           secondary_color = "#a6873b",
           code_inline_color = "#746850",
@@ -87,6 +90,7 @@ class: inverse center middle
   - `-`
   - `*`
   - `/`
+- Exponents are also easy to implement using ` ^ ` or `sqrt()`
 - R can also perform matrix algebra and some calculus, but we won't focus on that
 ]
 
@@ -96,15 +100,15 @@ class: inverse center middle
 ```
 
 ```{r}
-2 - 2
-```
-
-```{r}
 2 * 2
 ```
 
 ```{r}
-2 / 2
+2^2
+```
+
+```{r}
+sqrt(2)
 ```
 
 ]
@@ -172,3 +176,197 @@ z
 ]
 
 ---
+
+.center[
+
+# Arithmetic with Vectors
+]
+
+.pull-left[
+- You can also perform arithmetic using vectors
+- **Element-Wise Execution**: application of an operation to each corresponding element in the set; will return an object (e.g., vector, matrix, etc.) of the same dimensions as the original objects
+  - lines up the vectors and performs a sequence of individual operations
+]
+
+.pull-right[
+```{r}
+y
+z
+y * z
+```
+]
+
+--
+
+.pull-left[
+- **Vector Recycling**: If one object is smaller than the other, it will recycle the smaller object until it is as long as the longer vector
+]
+
+.pull-right[
+```{r}
+x * z
+```
+]
+
+---
+.center[
+# Arithmetic Functions
+]
+
+.pull-left[
+```{r echo = FALSE}
+data.frame(
+  Name = c("mean", "median", "sd", "var", "max", "min", "rank", "log", "exp", "round", "cor"),
+  Operation = c("Mean", "Median", "Standard Deviation", "Variance", "Largest Element", "Smallest Element", "Rank of Elements", "Natural Log", "Exponential", "Round to n Decimal Places", "Correlation")) %>% 
+  kable(format = "html") %>% 
+  kableExtra::column_spec(1:2, background = "white")
+```
+]
+
+.pull-right[
+```{r}
+mean(y)
+```
+
+```{r}
+min(y)
+```
+
+```{r}
+var(y)
+```
+
+```{r}
+a <- var(y)
+round(a, digits = 0)
+```
+
+]
+
+---
+.center[
+# Anatomy of a Function
+]
+
+.pull-left[
+- **Functions** perform actions on objects
+- To use a function, write the name of the function and then the object you want the function to operate on in parentheses
+  - e.g., `round(y)`
+- All the stuff contained within the parentheses are the **arguments** of the function
+- Typically, the first argument of a function is the object the function should operate on (often referred to as the data)
+- But functions can have many arguments, like the `digits` argument we saw earlier
+- For arithmetic functions, missing data arguments are important! `r emo::ji("star")`
+]
+
+.pull.right[
+```{r}
+x_miss = c(1, 2, NA, 4, 5)
+x_miss
+```
+
+```{r}
+mean(x_miss)
+```
+
+```{r}
+mean(x_miss, na.rm = TRUE)
+```
+
+]
+
+---
+.center[
+# What Have We Covered So Far?
+]
+
+.pull-left[
+- R can perform basic arithmetic
+<br> <br>
+- We can create vectors of numbers
+<br> <br>
+- We can use element-wise execution to perform arithmetic on multiple vectors
+<br> <br>
+- We can use base R functions to perform computations
+<br> <br>
+- Functions have arguments that we specify
+<br> <br>
+- Be wary of missing data!
+]
+
+.pull-right[
+.center[
+<br>
+<img src="img/mod2/review.jpg" height="266px" width="399px" />
+
+<figcaption> Photo by Markus Winkler </figcaption>
+]
+]
+
+---
+.center[
+# Let's Try an Exercise!
+]
+
+.pull-left[
+1. Create a vector of values 4, 8, 2, 4, 9 and store it as an object "a"
+<br> <br>
+1. Create a second vector of values 7, 4, 5, 9, 2, and store is as object "b"
+<br> <br>
+1. Multiply a and b and store it as object "d"
+<br> <br>
+1. Find the mean of d
+<br> <br>
+1. Find the variance of d
+<br> <br>
+1. Round the variance of d to 0 decimal places
+<br> <br>
+]
+
+.pull-right[
+`r countdown::countdown(minutes = 2, seconds = 30, play_sound = TRUE, font_size = "5em", margin = "22% 9%", color_running_background = "#e3e3e2", color_running_text = "#a6873b", color_finished_background = "#a6873b", color_finished_text = "#e3e3e2")`
+]
+
+
+---
+.center[
+# Solution
+]
+
+.pull-left[
+```{r}
+a <- c(4, 8, 2, 4, 9)
+a
+```
+
+```{r}
+b <- c(7, 4, 5, 9, 2)
+b
+```
+
+```{r}
+d <- a * b
+d
+```
+
+]
+
+.pull-right[
+```{r}
+mean(d)
+```
+
+```{r}
+var(d)
+```
+
+```{r}
+round(var(d), digits = 0)
+```
+]
+
+---
+class: inverse middle center
+
+# A Brief Interruption to Our Regularly Scheduled Programming
+----
+`r icons::icon_style(icons::fontawesome("tv"), scale = 3, fill = "white")`

@@ -23,6 +23,10 @@
     <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
     <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
     <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="extra.css" type="text/css" />
   </head>
@@ -102,6 +106,7 @@ class: inverse center middle
   - `-`
   - `*`
   - `/`
+- Exponents are also easy to implement using ` ^ ` or `sqrt()`
 - R can also perform matrix algebra and some calculus, but we won't focus on that
 ]
 
@@ -117,15 +122,6 @@ class: inverse center middle
 
 
 ```r
-2 - 2
-```
-
-```
-## [1] 0
-```
-
-
-```r
 2 * 2
 ```
 
@@ -135,11 +131,20 @@ class: inverse center middle
 
 
 ```r
-2 / 2
+2^2
 ```
 
 ```
-## [1] 1
+## [1] 4
+```
+
+
+```r
+sqrt(2)
+```
+
+```
+## [1] 1.414214
 ```
 
 ]
@@ -230,6 +235,338 @@ z
 ]
 
 ---
+
+.center[
+
+# Arithmetic with Vectors
+]
+
+.pull-left[
+- You can also perform arithmetic using vectors
+- **Element-Wise Execution**: application of an operation to each corresponding element in the set; will return an object (e.g., vector, matrix, etc.) of the same dimensions as the original objects
+  - lines up the vectors and performs a sequence of individual operations
+]
+
+.pull-right[
+
+```r
+y
+```
+
+```
+## [1] 1 2 3 4 5
+```
+
+```r
+z
+```
+
+```
+## [1] 1 2 3 4 5
+```
+
+```r
+y * z
+```
+
+```
+## [1]  1  4  9 16 25
+```
+]
+
+--
+
+.pull-left[
+- **Vector Recycling**: If one object is smaller than the other, it will recycle the smaller object until it is as long as the longer vector
+]
+
+.pull-right[
+
+```r
+x * z
+```
+
+```
+## [1]  4  8 12 16 20
+```
+]
+
+---
+.center[
+# Arithmetic Functions
+]
+
+.pull-left[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Name &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Operation &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; mean &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Mean &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; median &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Median &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; sd &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Standard Deviation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; var &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Variance &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; max &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Largest Element &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; min &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Smallest Element &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; rank &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Rank of Elements &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; log &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Natural Log &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; exp &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Exponential &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; round &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Round to n Decimal Places &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; cor &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Correlation &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.pull-right[
+
+```r
+mean(y)
+```
+
+```
+## [1] 3
+```
+
+
+```r
+min(y)
+```
+
+```
+## [1] 1
+```
+
+
+```r
+var(y)
+```
+
+```
+## [1] 2.5
+```
+
+
+```r
+a &lt;- var(y)
+round(a, digits = 0)
+```
+
+```
+## [1] 2
+```
+
+]
+
+---
+.center[
+# Anatomy of a Function
+]
+
+.pull-left[
+- **Functions** perform actions on objects
+- To use a function, write the name of the function and then the object you want the function to operate on in parentheses
+  - e.g., `round(y)`
+- All the stuff contained within the parentheses are the **arguments** of the function
+- Typically, the first argument of a function is the object the function should operate on (often referred to as the data)
+- But functions can have many arguments, like the `digits` argument we saw earlier
+- For arithmetic functions, missing data arguments are important! ⭐
+]
+
+.pull.right[
+
+```r
+x_miss = c(1, 2, NA, 4, 5)
+x_miss
+```
+
+```
+## [1]  1  2 NA  4  5
+```
+
+
+```r
+mean(x_miss)
+```
+
+```
+## [1] NA
+```
+
+
+```r
+mean(x_miss, na.rm = TRUE)
+```
+
+```
+## [1] 3
+```
+
+]
+
+---
+.center[
+# What Have We Covered So Far?
+]
+
+.pull-left[
+- R can perform basic arithmetic
+&lt;br&gt; &lt;br&gt;
+- We can create vectors of numbers
+&lt;br&gt; &lt;br&gt;
+- We can use element-wise execution to perform arithmetic on multiple vectors
+&lt;br&gt; &lt;br&gt;
+- We can use base R functions to perform computations
+&lt;br&gt; &lt;br&gt;
+- Functions have arguments that we specify
+&lt;br&gt; &lt;br&gt;
+- Be wary of missing data!
+]
+
+.pull-right[
+.center[
+&lt;br&gt;
+&lt;img src="img/mod2/review.jpg" height="266px" width="399px" /&gt;
+
+&lt;figcaption&gt; Photo by Markus Winkler &lt;/figcaption&gt;
+]
+]
+
+---
+.center[
+# Let's Try an Exercise!
+]
+
+.pull-left[
+1. Create a vector of values 4, 8, 2, 4, 9 and store it as an object "a"
+&lt;br&gt; &lt;br&gt;
+1. Create a second vector of values 7, 4, 5, 9, 2, and store is as object "b"
+&lt;br&gt; &lt;br&gt;
+1. Multiply a and b and store it as object "d"
+&lt;br&gt; &lt;br&gt;
+1. Find the mean of d
+&lt;br&gt; &lt;br&gt;
+1. Find the variance of d
+&lt;br&gt; &lt;br&gt;
+1. Round the variance of d to 0 decimal places
+&lt;br&gt; &lt;br&gt;
+]
+
+.pull-right[
+<div class="countdown" id="timer_6266e921" style="right:0;bottom:0;margin:22% 9%;font-size:5em;" data-audio="true" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
+</div>
+]
+
+
+---
+.center[
+# Solution
+]
+
+.pull-left[
+
+```r
+a &lt;- c(4, 8, 2, 4, 9)
+a
+```
+
+```
+## [1] 4 8 2 4 9
+```
+
+
+```r
+b &lt;- c(7, 4, 5, 9, 2)
+b
+```
+
+```
+## [1] 7 4 5 9 2
+```
+
+
+```r
+d &lt;- a * b
+d
+```
+
+```
+## [1] 28 32 10 36 18
+```
+
+]
+
+.pull-right[
+
+```r
+mean(d)
+```
+
+```
+## [1] 24.8
+```
+
+
+```r
+var(d)
+```
+
+```
+## [1] 113.2
+```
+
+
+```r
+round(var(d), digits = 0)
+```
+
+```
+## [1] 113
+```
+]
+
+---
+class: inverse middle center
+
+# A Brief Interruption to Our Regularly Scheduled Programming
+----
+&lt;svg viewBox="0 0 640 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M592 0H48A48 48 0 0 0 0 48v320a48 48 0 0 0 48 48h240v32H112a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H352v-32h240a48 48 0 0 0 48-48V48a48 48 0 0 0-48-48zm-16 352H64V64h512z"&gt;&lt;/path&gt;&lt;/svg&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
