@@ -300,7 +300,7 @@ x * z
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Name &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Function &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; Operation &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
@@ -328,10 +328,6 @@ x * z
   &lt;tr&gt;
    &lt;td style="text-align:left;background-color: white !important;"&gt; min &lt;/td&gt;
    &lt;td style="text-align:left;background-color: white !important;"&gt; Smallest Element &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;background-color: white !important;"&gt; rank &lt;/td&gt;
-   &lt;td style="text-align:left;background-color: white !important;"&gt; Rank of Elements &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;background-color: white !important;"&gt; log &lt;/td&gt;
@@ -383,8 +379,7 @@ var(y)
 
 
 ```r
-a &lt;- var(y)
-round(a, digits = 0)
+round(var(y), digits = 0)
 ```
 
 ```
@@ -488,7 +483,7 @@ mean(x_miss, na.rm = TRUE)
 ]
 
 .pull-right[
-<div class="countdown" id="timer_6266e921" style="right:0;bottom:0;margin:22% 9%;font-size:5em;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_6267731d" style="right:0;bottom:0;margin:22% 9%;font-size:5em;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 ]
@@ -567,6 +562,87 @@ class: inverse middle center
 # A Brief Interruption to Our Regularly Scheduled Programming
 ----
 &lt;svg viewBox="0 0 640 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M592 0H48A48 48 0 0 0 0 48v320a48 48 0 0 0 48 48h240v32H112a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16H352v-32h240a48 48 0 0 0 48-48V48a48 48 0 0 0-48-48zm-16 352H64V64h512z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+
+---
+
+.center[
+# Help!
+]
+
+.left-column[
+.center[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src = "https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif" /&gt;
+.caption[
+Via [Giphy](https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif)
+]
+]
+]
+
+.right-column[
+- To learn more about a function, use help documentation
+  - `?function`
+  - `help(function)`
+- Help documentation consists of the following sections:
+  - *Description*: A short summary of the what the function does
+  - *Usage*: An example of how you would use the function
+  - *Arguments*: A list of each agument the function takes
+  - *Detail*: A more in-depth description of the fucntion and how it operates
+  - *Value*: A description of what the function returns when you run it
+  - *Examples*: Additional examples of the function in use
+- [CRAN documents](https://CRAN.R-project.org/package=gt) provide package-wide reference manuals, vignettes/tutorials, Github repos, and BugReports
+- When in doubt, [Stack Overflow](https://stackoverflow.com/)
+]
+
+
+---
+.center[
+# Miscelleneous Programming Specifics
+]
+
+.pull-left[
+1. R is **case sensitive**
+  - `mean` does not equal `Mean`
+&lt;br&gt;
+&lt;br&gt;
+1. Objects/variable names cannot begin with numbers and cannot include some special characters
+  - i.e., ^, !, $, @, +, -, /, or *
+&lt;br&gt;
+&lt;br&gt;
+1. Use `#` to comment code
+  - Will not evaluate anything written after `#`
+]
+
+.pull-right[
+
+```r
+Mean(c(1, 2, 3))
+```
+
+```
+## Error in Mean(c(1, 2, 3)): could not find function "Mean"
+```
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# mean(c(1, 2, 3))
+```
+
+]
+
+---
+.center[
+# Debugging
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

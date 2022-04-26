@@ -72,10 +72,10 @@ xaringanExtra::use_logo(
 ---
 class: inverse, center, middle
 
-`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
 # Introduction
 ----
-
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
 ---
@@ -182,10 +182,10 @@ Figure from [Gergely Daróczi](https://gist.github.com/daroczig/3cf06d6db4be2bbe
 ---
 class: inverse, middle, center
 
-`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
-# Overview
 
+# Overview
 ----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 ---
 # .center[History of R]
@@ -306,7 +306,7 @@ class: center, middle
   - functions are also objects!
 - **Package** - a collection of functions that are bundled together
   - typically, functions in a pacakge accomplish a similar set of tasks
-  - e.g., `ggplot2` is a package (bundle of functions) that is focused on data visualization
+  - e.g., `ggplot2` is a package focused on data visualization
 ]
 
 .pull-right[
@@ -359,10 +359,11 @@ library(tidyverse)
 ---
 class: inverse, center, middle
 
-`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
-
 # Concluding Remarks
 ----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
 
 ---
 .center[

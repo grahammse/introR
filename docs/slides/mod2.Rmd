@@ -216,8 +216,8 @@ x * z
 .pull-left[
 ```{r echo = FALSE}
 data.frame(
-  Name = c("mean", "median", "sd", "var", "max", "min", "rank", "log", "exp", "round", "cor"),
-  Operation = c("Mean", "Median", "Standard Deviation", "Variance", "Largest Element", "Smallest Element", "Rank of Elements", "Natural Log", "Exponential", "Round to n Decimal Places", "Correlation")) %>% 
+  Function = c("mean", "median", "sd", "var", "max", "min", "log", "exp", "round", "cor"),
+  Operation = c("Mean", "Median", "Standard Deviation", "Variance", "Largest Element", "Smallest Element", "Natural Log", "Exponential", "Round to n Decimal Places", "Correlation")) %>% 
   kable(format = "html") %>% 
   kableExtra::column_spec(1:2, background = "white")
 ```
@@ -237,8 +237,7 @@ var(y)
 ```
 
 ```{r}
-a <- var(y)
-round(a, digits = 0)
+round(var(y), digits = 0)
 ```
 
 ]
@@ -370,3 +369,78 @@ class: inverse middle center
 # A Brief Interruption to Our Regularly Scheduled Programming
 ----
 `r icons::icon_style(icons::fontawesome("tv"), scale = 3, fill = "white")`
+
+
+
+
+---
+
+.center[
+# Help!
+]
+
+.left-column[
+.center[
+<br>
+<br>
+<br>
+<br>
+<img src = "https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif" />
+.caption[
+Via [Giphy](https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif)
+]
+]
+]
+
+.right-column[
+- To learn more about a function, use help documentation
+  - `?function`
+  - `help(function)`
+- Help documentation consists of the following sections:
+  - *Description*: A short summary of the what the function does
+  - *Usage*: An example of how you would use the function
+  - *Arguments*: A list of each agument the function takes
+  - *Detail*: A more in-depth description of the fucntion and how it operates
+  - *Value*: A description of what the function returns when you run it
+  - *Examples*: Additional examples of the function in use
+- [CRAN documents](https://CRAN.R-project.org/package=gt) provide package-wide reference manuals, vignettes/tutorials, Github repos, and BugReports
+- When in doubt, [Stack Overflow](https://stackoverflow.com/)
+]
+
+
+---
+.center[
+# Miscelleneous Programming Specifics
+]
+
+.pull-left[
+1. R is **case sensitive**
+  - `mean` does not equal `Mean`
+<br>
+<br>
+1. Objects/variable names cannot begin with numbers and cannot include some special characters
+  - i.e., ^, !, $, @, +, -, /, or *
+<br>
+<br>
+1. Use `#` to comment code
+  - Will not evaluate anything written after `#`
+]
+
+.pull-right[
+```{r error = TRUE}
+Mean(c(1, 2, 3))
+```
+
+<br>
+<br>
+<br>
+```{r}
+# mean(c(1, 2, 3))
+```
+
+]
+
+---
+.center[
+# Debugging
+]
