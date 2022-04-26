@@ -410,12 +410,12 @@ Via [Giphy](https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif)
 
 ---
 .center[
-# Miscelleneous Programming Specifics
+# Programming Miscellany
 ]
 
 .pull-left[
 1. R is **case sensitive**
-  - `mean` does not equal `Mean`
+  - e.g., `mean` does not equal `Mean`
 <br>
 <br>
 1. Objects/variable names cannot begin with numbers and cannot include some special characters
@@ -424,6 +424,10 @@ Via [Giphy](https://media.giphy.com/media/fdLR6LGwAiVNhGQNvf/giphy.gif)
 <br>
 1. Use `#` to comment code
   - Will not evaluate anything written after `#`
+<br>
+<br>
+1. Spaces are not allowed
+  - Use `_` instead
 ]
 
 .pull-right[
@@ -437,6 +441,10 @@ Mean(c(1, 2, 3))
 ```{r}
 # mean(c(1, 2, 3))
 ```
+<br>
+```{r error = TRUE}
+x miss
+```
 
 ]
 
@@ -444,3 +452,130 @@ Mean(c(1, 2, 3))
 .center[
 # Debugging
 ]
+
+.panelset[
+.panel[.panel-name[Debugging Messages]
+- <span style = 'color: red; font-weight: bold;'>Errors</span>: Text will begin with "*Error in...*" and include a description of the error
+  -  Your code will not work
+  - These messages cannot be ignored
+- <span style = 'color: yellow; font-weight: bold;' >Warnings</span>: Text will begin with "*Warning:*" and followed by an explanation of the cause of the warning
+  - Your code will probably still work, but there may be issues
+  - Evaluate the warning and determine whether changes are necessary
+- <span style = 'color: green; font-weight: bold;' >Messages</span>: Text will not begin with "*Error in...*" or "*Warning:*"
+  - These are helpful diagnostics and will not stop your code from running
+] <!---->
+
+.panel[.panel-name[Error Example]
+
+```{r error = TRUE}
+f <- c(1, 2, 3, 4, 5)
+Mean(f)
+```
+
+
+```{r echo = FALSE}
+detach("package:ggplot2", unload=TRUE)
+```
+
+
+```{r error = TRUE}
+
+ggplot(mtcars, aes(x = disp, y = mpg)) + 
+  geom_point()
+```
+
+] <!---->
+
+.panel[.panel-name[Warning Example]
+
+.pull-left[
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+require(ggplot2)
+```
+
+```{r plot-right1, fig.show = 'hide'}
+ggplot(airquality, aes(x = Ozone, y = Temp)) + 
+  geom_point()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot-right1', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+] <!---->
+
+.panel[.panel-name[Message Example]
+.pull-left[
+
+```{r echo = FALSE}
+detach("package:ggplot2", unload=TRUE)
+```
+
+
+```{r plot-right2, fig.show = 'hide'}
+require(ggplot2)
+ggplot(mtcars, aes(x = disp, y = mpg)) + 
+  geom_point()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot-right2', echo = FALSE, fig.width = 7, fig.height = 7 * .619}
+```
+
+]
+
+] <!---->
+
+
+] <!--end of panelset-->
+
+---
+
+class: center middle hide_logo
+background-image: url(img/mod2/quiz.jpg)
+background-size: cover
+
+
+<span style = 'color: red; font-weight: bold; font-size: 120px'>Pop Quiz!</span> 
+
+
+---
+
+.center[
+# Calculating Correlations
+]
+
+.pull-left[
+1. Create a vector of values 42, 75, 38, NA, 10, 120, 32 and name it "a" 
+
+1. Create a second vector of values 504, NA, 690, 200, 250, NA, 400 and name it "b"
+
+1. Calculate the Spearman rank correlation of vector "a" and vector "b"
+  - Hint:  Use the `cor` function
+`r countdown::countdown(minutes = 3, seconds = 00, play_sound = TRUE, font_size = "3em", margin = "8% 68%", color_running_background = "#e3e3e2", color_running_text = "#a6873b", color_finished_background = "#a6873b", color_finished_text = "#e3e3e2")`
+]
+
+--
+
+.pull-right[
+```{r}
+a <- c(42, 75, 38, NA, 10, 120, 32)
+b <- c(504, NA, 690, 200, 250, NA, 400)
+cor(a, b, use = "complete.obs", method = "spearman")
+```
+
+]
+
+
+---
+class: inverse center middle
+
+# Types of R Objects
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
