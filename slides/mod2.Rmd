@@ -579,3 +579,4 @@ class: inverse center middle
 `r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
+
