@@ -473,13 +473,7 @@ Mean(f)
 ```
 
 
-```{r echo = FALSE}
-detach("package:ggplot2", unload=TRUE)
-```
-
-
 ```{r error = TRUE}
-
 ggplot(mtcars, aes(x = disp, y = mpg)) + 
   geom_point()
 ```
@@ -574,9 +568,396 @@ cor(a, b, use = "complete.obs", method = "spearman")
 ---
 class: inverse center middle
 
-# Types of R Objects
+# R Objects:  More Than Just (Atomic) Vectors
 ----
 `r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
+---
+.center[
+# Atomic Vectors
+]
+
+.left-column[
+.center[
+<br>
+<br>
+<br>
+<img src = "https://media.giphy.com/media/tAPkUnA2GQNVK/giphy.gif" />
+.caption[
+Via [Giphy](https://media.giphy.com/media/tAPkUnA2GQNVK/giphy.gif)
+]
+]
+]
+
+.right-column[
+- **Atomic Vector** - a simple vector of data
+  - One-dimensional
+  - All elements must be of the same type
+  - Basis of most data structures in R
+  - R recognizes six types of atomic vectors
+     1. **Doubles** - stores regular numbers, can include decimals
+     1. **Integers** - stores whole numbers
+     1. **Characters** - stores small pieces of text ("strings")
+     1. **Logicals** - stores TRUEs and FALSEs
+     1. **Complex** - stores complex numbers (e..g, imaginary numbers)
+     1. **Raw** -  stores raw bytes of data
+- You can check the type of a vector using the `typeof` or `is.*` functions
+          
+]
+
+
+---
+
+.center[
+# Double Atomic Vectors
+]
+
+.pull-left[
+- Stores regular numbers <br> <br>
+- Can have digits to the right of the decimal place or not <br> <br>
+- Default type for numbers in R <br> <br>
+- Sometimes referred to as a "numeric" in R <br> <br>
+- Numbers are stored to 16 significant digits
+]
+
+.pull-left[
+```{r}
+x_type <- c(1, 2, 3, 4, 5)
+typeof(x_type)
+```
+
+```{r}
+is.numeric(x_type)
+```
+
+```{r}
+sqrt(2)^2 - 2
+```
+
+]
+
+
+---
+
+.center[
+# Integer Atomic Vectors
+]
+
+.pull-left[
+- Stores whole numbers <br> <br>
+- Cannot have digits to the right of the decimal place <br> <br>
+- Needs to be specified in R using an `L` after a number <br> <br>
+- More precise than doubles <br> <br>
+]
+
+.pull-left[
+```{r}
+x_type <- c(1L, 2L, 3L, 4L, 5L)
+typeof(x_type)
+```
+
+```{r}
+is.integer(x_type)
+```
+
+]
+
+
+
+---
+
+.center[
+# Character Atomic Vectors
+]
+
+.pull-left[
+- Stores text strings <br> <br>
+- Need to surround text with `""` in order to combine it into a vector <br> <br>
+- Text can be letters, special symbols, or numbers <br> <br>
+- Anything surrounded by quotes will be treated by R as a character string <br> <br>
+]
+
+.pull-left[
+```{r}
+x_type <- c("You", "Are", "Number", "1", "!")
+x_type
+typeof(x_type)
+```
+
+```{r}
+is.character(x_type)
+```
+
+]
+
+
+
+---
+
+.center[
+# Logical Atomic Vectors
+]
+
+.pull-left[
+- Stores TRUE and FALSE values <br> <br>
+- Important for logical and Boolean operators
+  - e.g., a > b & a > c <br> <br>
+- R will interpret TRUE, FALSE, T, or F as logical data
+  - Note the absence of quotations!
+]
+
+.pull-left[
+```{r}
+x_type <- c(TRUE, T, FALSE, F)
+x_type
+typeof(x_type)
+```
+
+```{r}
+is.logical(x_type)
+```
+
+]
+
+
+---
+.center[
+# `r emo::ji("flex")`   Coercion  `r emo::ji("flex")`
+]
+
+
+.panelset[
+.panel[.panel-name[Coercion Background]
+.pull-left[
+- **Coercion** - Conversion of data type when conflicting types are present
+  - e.g., double and character string
+- R follows a consistent set of rules for coercion
+  1.  character and double/integer/logical --> character
+  1.  double and integer --> double  
+  1.  double and logical --> double
+  1.  integer and logical --> integer
+     - TRUE = 1, FALSE = 0
+- Coercion rules retain information
+]
+
+.pull-right[
+<img src = "img/mod2/coercion.png" />
+.caption[
+Figure from [Hands-On Programming with R](https://rstudio-education.github.io/hopr/)
+]
+]
+
+] <!---->
+
+.panel[.panel-name[Coercion In Action]
+
+.pull-left[
+```{r}
+typeof(c("Hello", 1, 4, 8))
+```
+
+```{r}
+c("Hello", 1, 4, 8)
+```
+
+]
+
+.pull-right[
+```{r}
+typeof(c(TRUE, 1, 5, FALSE))
+```
+
+```{r}
+c(TRUE, 1, 5, FALSE)
+```
+
+```{r}
+sum(c(TRUE, FALSE, FALSE, TRUE))
+```
+
+
+]
+
+] <!---->
+] <!--end of panelset-->
+
+---
+
+.center[
+# Beyond Atomic Vectors:  Matrices!
+]
+
+.pull-left[
+- Matrices store values in a two-dimensional array
+  - like in linear algebra
+- Can only store a single type of information (e.g., doubles)
+- Use the `matrix` function to create a matrix
+<br>
+
+.center[
+<img src = "img/mod2/matrix.png" />
+.caption[ `matrix` Help Documentation]
+]
+]
+
+.pull-right[
+```{r}
+m <- matrix(c(1, 2, 3, 4, 5, 6), 
+         nrow = 2,
+         ncol = 3, 
+         byrow = TRUE)
+m
+```
+
+]
+
+
+---
+
+.center[
+# Beyond Atomic Vectors: Factors!
+]
+
+.pull-left[
+- Factors store categorical information 
+  - e.g., ethnicity, sex, etc.
+- R stores factors as integers
+  - Makes them good for using in models
+  - But confusing...
+      - Looks like a character string
+      - But behaves like an integer
+- To create a factor, use the `factor` function
+- Factors also have a levels attribute
+  - This can be specificied using the `levels` argument in the `factor` function
+]
+
+.pull-right[
+```{r}
+f <- factor(c("THC", "CBD", "CBD", "THC"))
+f
+```
+
+```{r}
+f <- factor(c("THC", "CBD", "CBD", "THC"),
+            levels = c("THC", "CBD"))
+f
+```
+
+]
+
+---
+
+.center[
+# Beyond Atomic Vectors: Lists!
+]
+
+.pull-left[
+- Lists group together R objects, such as atomic vectors
+- Lists can be comprised of many different data types
+  - e.g., double vectors, character vectors, other lists
+- Use the `list` function to create a list
+- Lists are very important in R but can get complicated quickly
+- We won't use lists much in this course, except...
+]
+
+.pull-right[
+```{r}
+list(1:5, c("Here", "I", "Am"), c(T, T, F))
+```
+
+]
+
+
+---
+
+.center[
+# Beyond Atomic Vectors: Dataframes!
+]
+
+.panelset[
+.panel[.panel-name[Data Frames Background]
+.pull-left[
+- Data frames are the two-dimensional version of a list
+- Vectors are columns in a data frame
+- Because data frames are lists, the columns (vectors) can be of different types
+- However, the cells (elements) within a column (vector) must all be of the same type
+- Data frames are the most common type of data object in R and we'll use them A LOT over the coming weeks
+]
+
+.pull-right[
+.center[Air Quality Data Frame]
+```{r echo = FALSE}
+head(airquality)
+```
+]
+
+] <!---->
+
+.panel[.panel-name[Data Frames In Action]
+.pull-left[
+- Use `data.frame` to create your own data frame
+- Note that data frames are lists
+```{r}
+dat <- data.frame(
+  x = c(1, 2, 3),
+  y = c(TRUE, FALSE, FALSE),
+  z = c("Bob", "Phil", "Jerry")
+)
+typeof(dat)
+```
+]
+
+.pull-right[
+- Data frames can contain different types of data in columns
+- To see the type of data of each column use the `str` (short for structure) function
+```{r}
+str(dat)
+```
+
+]
+
+] <!---->
+
+] <!--end of panelset-->
+
+---
+
+.center[
+# One More Time, Please!
+]
+
+.pull-left[
+- Data can be stored in **atomic vectors**
+<br> <br>
+- There are four main types of atomic vectors: **double, integer, character, and logical**
+<br> <br>
+- Conflicting data types are **coerced** following a consistent set of rules
+<br> <br>
+- **Factors** are well-suited for handling categorical data
+<br> <br>
+- **Lists** allow for different data types to co-exist
+<br> <br>
+- **Data Frames** are two-dimensional lists that are used frequently in data analysis
+]
+
+.pull-right[
+.center[
+<br>
+<br>
+<img src="img/mod2/review.jpg" height="266px" width="399px" />
+
+<figcaption> Photo by Markus Winkler </figcaption>
+]
+]
+
+
+---
+class: bottom right hide_logo
+background-image: url(img/mod2/vw.jpg)
+background-size: cover
+
+.left[.footnote[Photograph by [Tommy Lisbin](https://unsplash.com/photos/xr-y6Ruw7K8)]]
+
+# Off to the Tidyverse...
 
