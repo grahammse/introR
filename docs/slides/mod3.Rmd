@@ -545,3 +545,270 @@ ggplot(data = mpg) +
 .center[
 # Geometric Objects
 ]
+
+- There are many different `geoms`
+- The type of `geom` often defines the type of graph (e.g., line, bar, boxplot, etc.)
+- Different geoms may have different arguments (e.g., `method` for `geom_smooth`)
+
+
+.panelset[
+.panel[.panel-name[Scatter]
+
+.pull-left[
+```{r plot14, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot14', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Smooth, "loess"]
+
+.pull-left[
+```{r plot15, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot15', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Smooth, "lm"]
+
+.pull-left[
+```{r plot16, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy), method = "lm")
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot16', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Smooth, "gam"]
+
+.pull-left[
+```{r plot17, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy), method = "gam")
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot17', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+]<!--end panel set-->
+
+
+---
+
+.center[
+# Getting More from Your Plots
+]
+
+- We can use additional specifications to:
+  - Look at different smooth lines as a function of a third variable
+  - Overlay raw points on our plot
+
+--
+
+.panelset[
+.panel[.panel-name[Linetype]
+
+.pull-left[
+```{r plot18, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot18', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Color]
+
+.pull-left[
+```{r plot19, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot19', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Overlay Points]
+
+.pull-left[
+```{r plot20, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot20', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Overlay Points and Color!]
+
+.pull-left[
+```{r plot21, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot21', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+.panel[.panel-name[Fill]
+
+.pull-left[
+```{r plot22, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot22', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+]<!--end panel set-->
+
+
+---
+
+.center[
+# Let's Make a Mistake
+]
+
+- What do you think will happen if I run the following code?
+
+```{r plot23, fig.show = 'hide', warning = FALSE, message = FALSE, error = TRUE, eval = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy), color = drv) 
+```
+
+--
+
+```{r ref.label = 'plot23', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = TRUE, message = TRUE, error = TRUE}
+```
+
+
+
+---
+
+.center[
+# Let's Work with a New Dataset!
+]
+
+```{r echo = FALSE}
+knitr::kable(head(diamonds),
+            format = "html",
+            caption = "diamonds dataset")
+```
+
+
+---
+
+.center[
+# Statistical Transformations
+]
+
+.pull-left[
+- Statistical transformations are any instance in which new values are calculated in the process of creating a plot
+- Not present in scatter plots
+- But we did see them in our smooth line plots
+]
+
+.pull-right[
+```{r echo = FALSE, message = FALSE, warning = FALSE, fig.width = 7, fig.height = 7 * .619}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy), method = "lm") + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+]
+
+
+---
+
+.center[
+# Bar Charts
+]
+
+- Bar charts are a prototypical example of a statistical transformation
+- Note that bar charts present the frequency count of a variable
+- But frequency count was not a variable in our original dataset!
+
+.panelset[
+.panel[.panel-name[Bar Chart Plot]
+
+.pull-left[
+```{r plot24, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot24', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Bar Chart Transformation]
+
+.center[<img src = "img/mod3/transform.png" height = "5%" width = "60%" />
+.caption[Figure from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
+]
+
+]<!---->
+
+]<!--end panel set-->
