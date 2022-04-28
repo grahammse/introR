@@ -19,7 +19,7 @@ navbar:
         - text: "Module 2:  Base R"
           href: slides/mod2.html
         - text: "Module 3: Data Visualization 1"
-          href: slides/mod3.html
+          href: slides/mod3.html 
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github

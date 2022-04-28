@@ -102,7 +102,7 @@ class: inverse, center, middle
 ---
 
 .center[
-# Fundamental Components of A Graph
+# Fundamental Components of a Graph
 ]
 
 .pull-left[
@@ -150,18 +150,17 @@ datatable(mpg,
 
 
 ---
-
 .center[
-# Create a `ggplot`
+# Create your first ggplot!
 ]
 
 .pull-left[
 - Use `ggplot()` to initialize the plot
   - Creates a coordinate system to add layers to
-  - Supply data to the plot using the `data` argument
-- You can then add layers of geoms to the plot
-- Geoms require aesthetic mappings
-  - Use `mapping` argument and `aes` function to specify
+     - Supply data to the plot using the `data` argument
+- Add layers of geoms to the plot
+  - Geoms require aesthetic mappings
+     - Use `mapping` argument and `aes` function to specify
 ```{r plot1, fig.show = 'hide'}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy))
@@ -172,4 +171,377 @@ ggplot(data = mpg) +
 .pull-right[
 ```{r ref.label = 'plot1', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
 ```
+]
+
+---
+
+.center[
+# Additional Aesthetic Specifications
+]
+
+- We can supply additional aesthetic specifications in the `aes()` function (e.g., color, size, shape, alpha, fill) and map these to variables in your data set
+
+--
+
+.panelset[
+
+.panel[.panel-name[Color]
+
+.pull-left[
+```{r plot2, fig.show = 'hide'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           color = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot2', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[Size]
+
+.pull-left[
+```{r plot3, fig.show = 'hide'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           size = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot3', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Alpha]
+
+.pull-left[
+```{r plot4, fig.show = 'hide'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           alpha = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot4', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+
+.panel[.panel-name[Shape]
+
+.pull-left[
+```{r plot5, fig.show = 'hide'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           shape = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot5', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# Additional Aesthetic Specifications
+]
+
+- We can supply additional aesthetic specifications in the `aes()` function (e.g., color, size, shape, alpha, fill) and map these to variables in your data set
+
+
+.panelset[
+
+.panel[.panel-name[Color]
+
+.pull-left[
+```{r plot6, fig.show = 'hide'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           color = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot6', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Size]
+
+.pull-left[
+```{r plot7, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           size = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot7', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Alpha]
+
+.pull-left[
+```{r plot8, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           alpha = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot8', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+
+.panel[.panel-name[Shape]
+
+.pull-left[
+```{r plot9, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           shape = class))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot9', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+
+---
+.center[
+# Location, Location, Location!
+]
+
+- You can also set aesthetic properties of a geom manually
+  - But pay attention to the location of the specification!
+
+.panelset[
+.panel[.panel-name[Correct Manual Color]
+
+.center[
+```{r fig.width = 5, fig.height = 5 * .619, warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+]
+]<!---->
+
+.panel[.panel-name[Incorrect Manual Color]
+
+.center[
+```{r fig.width = 5, fig.height = 5 * .619, warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- Map a continuous variable to `color`, `size`, `shape`, and `alpha`.  How do these aesthetics behave differently for categorical versus continuous variables?
+
+`r countdown::countdown(minutes = 3, seconds = 00, play_sound = TRUE, left = 0, right = 0, padding = "50px",margin = "15%", font_size = "6em", color_running_background = "#e3e3e2", color_running_text = "#a6873b", color_finished_background = "#a6873b", color_finished_text = "#e3e3e2")`
+
+
+---
+
+.center[
+# Let's See!
+]
+
+.panelset[
+.panel[.panel-name[Color]
+
+.pull-left[
+```{r plot_ls1, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           color = cty))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot_ls1', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+
+]
+] <!---->
+
+.panel[.panel-name[Size]
+
+.pull-left[
+```{r plot_ls2, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           size = cty))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot_ls2', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+]
+] <!---->
+
+.panel[.panel-name[Shape]
+
+.pull-left[
+```{r plot_ls3, fig.show = 'hide', warning = FALSE, message = FALSE, error = TRUE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           shape = cty))
+```
+]
+
+] <!---->
+
+.panel[.panel-name[Alpha]
+
+.pull-left[
+```{r plot_ls4, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           alpha = cty))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot_ls4', echo = FALSE, fig.width = 7, fig.height = 7 * .619, warning = FALSE, message = FALSE}
+```
+]
+] <!---->
+
+
+] <!--end of panelset-->
+
+
+
+---
+
+.center[
+# Facet-nating
+]
+
+- Facets create small multiples of plots for each level of a categorical variables using `facet_wrap()` and `facet_grid()` 
+
+.panelset[
+.panel[.panel-name[Facet Wrap]
+
+.pull-left[
+```{r plot10, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot10', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+]<!---->
+
+.panel[.panel-name[Facet Grid]
+
+.pull-left[
+```{r plot11, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl)
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot11', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+.panel[.panel-name[Horizontal Facet]
+
+.pull-left[
+```{r plot12, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(. ~ cyl)
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot12', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+.panel[.panel-name[Vertical Facet]
+
+.pull-left[
+```{r plot13, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(cyl ~ .)
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot13', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# Geometric Objects
 ]
