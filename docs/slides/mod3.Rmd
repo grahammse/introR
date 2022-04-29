@@ -806,6 +806,7 @@ ggplot(data = diamonds) +
 .panel[.panel-name[Bar Chart Transformation]
 
 .center[<img src = "img/mod3/transform.png" height = "5%" width = "60%" />
+<br>
 .caption[Figure from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
 ]
 
@@ -845,8 +846,8 @@ ggplot(data = diamonds) +
 
 .pull-left[
 ```{r}
-dat <- data.frame(var = c("a", "b", "c"), 
-                  out = c(3, 5, 4))
+dat <- data.frame(group = c("group_a", "group_b", "group_c"), 
+                  group_mean = c(32, 25, 44))
 dat
 ```
 
@@ -855,7 +856,7 @@ dat
 .pull-right[
 ```{r fig.width = 6, fig.height = 6 * .619}
 ggplot(dat) + 
-  geom_bar(mapping = aes(x = var, y = out),
+  geom_bar(mapping = aes(x = group, y = group_mean),
            stat = "identity")
 ```
 
@@ -959,8 +960,8 @@ ggplot(data = diamonds) +
 
 .left-column[
 
-- To change positioning, use the `position` argument for `geom_bar`
-- "fill" will retain stacking, but render stacked bars the same height
+- To change positioning, use the `position` argument
+- "fill" will retain stacking, but stacked bars will be the same height
   - good for comparing proportions
 ]
 
@@ -1005,7 +1006,7 @@ ggplot(data = diamonds) +
 ---
 
 .center[
-# Position Adjustment with `geom_point`
+# Scatterplot Position Adjustment 
 ]
 
 - Some of the data points overlaped with one another
@@ -1027,3 +1028,225 @@ ggplot(data = mpg) +
 ```
 
 ]
+
+
+---
+
+.center[
+# Coordinate Systems
+]
+
+- The Cartesian coordinate system is the default for ggplot and is the one we'll mostly use
+  - Flipping x and y coordinates is often useful
+- There are others that are important, especially for spatial data, but we won't cover them
+
+.panelset[
+
+.panel[.panel-name[Original]
+
+.pull-left[
+
+```{r plot_original, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut))
+```
+
+]
+
+.pull-right[
+```{r ref.label = 'plot_original', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[`coord_flip`]
+
+.pull-left[
+
+```{r plot28, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut)) + 
+  coord_flip()
+```
+
+]
+
+.pull-right[
+```{r ref.label = 'plot28', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Specify in `aes`]
+
+.pull-left[
+
+```{r plot29, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(y = cut, fill = cut))
+```
+
+]
+
+.pull-right[
+```{r ref.label = 'plot29', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+]<!--end panel set-->
+
+---
+
+.center[
+# Themes!
+]
+
+- Themes control the finer points of display, like font type, font size, thickness of axes, tick marks, etc.
+- You can create your own theme or use pre-created themes in `ggplot2` or extension packages (like ggthemes)
+- Below are some examples of alternative `ggplot2` themes
+
+.panelset[
+.panel[.panel-name[Default]
+
+.pull-left[
+```{r plot_default, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot_default', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+.panel[.panel-name[`theme_minimal`]
+
+.pull-left[
+```{r plot30, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv)) + 
+  theme_minimal()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot30', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[`theme_dark`]
+
+.pull-left[
+```{r plot31, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv)) + 
+  theme_dark()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot31', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[`theme_light`]
+
+.pull-left[
+```{r plot32, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv)) + 
+  theme_light()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot32', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+.panel[.panel-name[`theme_bw`]
+
+.pull-left[
+```{r plot33, fig.show = 'hide', warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv)) + 
+  theme_bw()
+```
+]
+
+.pull-right[
+```{r ref.label = 'plot33', echo = FALSE, fig.width = 6, fig.height = 6 * .619, warning = FALSE, message = FALSE}
+```
+]
+
+]<!---->
+
+
+
+]<!--end panel set-->
+
+
+---
+
+.center[
+# Bringing it All Together!
+]
+
+.panelset[
+.panel[.panel-name[Formula]
+- The following can be used a default template for ggplots: <br> <br>
+<img src = "img/mod3/formula.png" width = "40%" />
+<br>
+.caption[Formula from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+<br>
+- Not all of these parameters need to be specified, defaults are often adequate
+
+]<!---->
+
+
+.panel[.panel-name[Steps 1 and 2]
+
+<img src = "img/mod3/step1.png" width = "90%" />
+<br>
+.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+
+]<!---->
+
+.panel[.panel-name[Steps 3 and 4]
+
+<img src = "img/mod3/step2.png" width = "90%" />
+<br>
+.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+
+]<!---->
+
+
+.panel[.panel-name[Steps 5 and 6]
+
+<img src = "img/mod3/step3.png" width = "80%" />
+<br>
+.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+
+]<!---->
+
+
+]<!--end panel set-->
