@@ -1,0 +1,150 @@
+---
+title: "Module 3:  Data Visualization"
+subtitle:  "A First Foray Into ggplot2"
+author: "Graham Eglit"
+institute: "Canopy Growth Corporation"
+date: "June 10, 2022"
+output:
+  xaringan::moon_reader:
+    css: 
+      - xaringan-themer.css
+      - extra.css
+    lib_dir: libs
+    seal: false
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+require(xaringanthemer)
+require(xaringanExtra)
+require(icons)
+style_duo(primary_color = "#e3e3e2", 
+          secondary_color = "#a6873b",
+          code_inline_color = "#746850",
+          text_font_size = "1.1rem",
+          header_font_google = google_font("Lato"),
+          text_font_google   = google_font("Lora"),
+          code_font_google   = google_font("Space Mono")
+          )
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_scribble()
+xaringanExtra::use_search(show_icon = FALSE)
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
+
+class: title-slide, right, top
+background-image: url(img/hex_dplyr.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "img/canopy_logo.png",
+  position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
+  height = "140px",
+  width = "160px",
+  exclude_class = c("title-slide", "inverse", "hide_logo")
+)
+```
+
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+`r rmarkdown::metadata$institute`<br>
+`r rmarkdown::metadata$date`
+]
+
+
+---
+
+.center[
+# The Big Picture
+]
+
+<br>
+<br>
+.center[<img src = "img/mod4/frame.png" height = "20%" width = "50%" />
+<br>
+.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/")]]
+
+
+
+---
+
+.center[
+# The Fab Five
+]
+
+- What do you think the following five functions do?
+<br>
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+require(tidyverse)
+require(knitr)
+options(knitr.kable.NA = '')
+data.frame(
+  Function = c("filter", "arrange", "select", "mutate", "summarize"),
+  Operation = NA
+) %>% 
+  knitr::kable("html")
+```
+
+
+---
+
+.center[
+# The Fab Five
+]
+
+- What do you think the following five functions do?
+<br>
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+require(tidyverse)
+require(knitr)
+options(knitr.kable.NA = '')
+data.frame(
+  Function = c("filter", "arrange", "select", "mutate", "summarize"),
+  Operation = c("Pick Observations", "Re-order Rows", "Pick Variables", "Create New Variables from Existing Variables", "Collapse Many Values to a Single Summary")
+) %>% 
+  knitr::kable("html")
+```
+
+- Each function works the same
+  1. The first argument is a data frame
+  2. Subsequent arguments describe what to do with the data frame
+  3. The result is a new data frame
+
+---
+
+.center[
+# A New Dataset:  nycflights
+]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+require(nycflights13) 
+head(flights) %>% 
+  DT::datatable(options = list(pageLength = 6, scrollX = 200))
+```
+
+
+---
+
+.center[
+# Filter
+]

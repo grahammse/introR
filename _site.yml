@@ -20,6 +20,8 @@ navbar:
           href: slides/mod2.html
         - text: "Module 3: Data Visualization 1"
           href: slides/mod3.html 
+        - text: "Module 4: Data Transformation"
+          href: slides/mod4.html 
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
