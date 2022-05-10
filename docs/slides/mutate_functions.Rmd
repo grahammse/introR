@@ -1,0 +1,276 @@
+---
+title: 'Mutate: Creation Function Demonstration'
+output:
+  html_document:
+    css: "styles.css"
+    toc: true
+    toc_float: true
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Packages
+
+First, let's load all relevant packages and explore the dataset
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(palmerpenguins)
+require(DT)
+```
+
+I'm going to select out several columns for ease of data presentation.  Note that throughout the code below, the
+`%>% datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))` syntax is
+used to print the data frame.
+
+```{r}
+penguins <- select(penguins, -c(bill_depth_mm, year, flipper_length_mm, island))
+penguins %>% 
+  datatable(options = list(pageLength = 344, scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+# Arithmetic Operations
+
+## Basic Arithmetic
+
+First, let's look at some basic arithmetic operations, i.e., `+`, `-`,
+`*`, and `/`.
+
+We can simply apply these functions to a single variable, like this:
+
+```{r}
+mutate(penguins, body_mass_2 = body_mass_g * 2) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+Or we can apply these to multiple variables to create a new variable,
+like this:
+
+```{r}
+mutate(penguins, body_mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+## Aggregate Arithmetic
+
+We can also use these basic arithmetic operations along with aggregate
+arithmetic operations, such as `mean` or `median`.
+
+The below example centers body mass at the mean, so all positive values
+are above average and all negative values are below average. Note that
+we had to use `na.rm = TRUE` because there are missing body mass values
+in the data set.
+
+```{r}
+mutate(penguins, body_mass_centered = body_mass_g - mean(body_mass_g, na.rm = TRUE)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+We could use two aggregate arithmetic functions in a `mutate`, but the
+result is unlikely to be what we want.
+
+```{r}
+mutate(penguins, bad_var = mean(body_mass_g, na.rm = TRUE) - mean(bill_length_mm, na.rm = TRUE)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+## Log Transformation
+
+Log transformation can be easily performed using the `log` functions.
+`log` will perform a natural log transformation, `log2` will perform a
+log transformation with base 2, and `log10` will perform a log
+transformation with base 10. You can specifify other bases using the
+`base` argument within the `log` function (e.g., `log(x, base = 4)`,
+where x is a vector of numbers).
+
+```{r}
+mutate(penguins, log_body_mass = log(body_mass_g)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+## Modular Arithmetic
+
+Modular arithmetic is helpful in breaking integers into pieces.
+**Integer division** yields the full integer from the arithmetic
+operation and **remainder** returns just the remainder from the
+operation.
+
+```{r}
+mutate(penguins, 
+       body_mass_div3_int = body_mass_g %/% 3,
+       body_mass_div3_rem = body_mass_g %% 3) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+# Offsets
+
+Offsets are very useful in creating new variables, especially when you
+have multiple observations on some grouped factor (e.g., multiple
+observations per person in longitudinal data). `lag` compares data to a
+previous instance (behind the current value) and `lead` compares data in
+a next instance (ahead of the current value). You can use the `n`
+argument within these functions to specify the distance between compared
+values
+
+## Lag
+
+```{r}
+mutate(penguins, body_mass_lag = body_mass_g - lag(body_mass_g, n = 1)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+## Lead
+
+```{r}
+mutate(penguins, body_mass_lag = body_mass_g - lead(body_mass_g, n = 2)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+# Cumulative Aggregates
+
+Cumulative aggreative functions allow for arithmetic calculations over
+cumulative sets of numbers. The cumulative aggreate functions include
+`cumsum`, `cumprod`, `cummin`, `cummmax`, and `cummean`.
+
+Here's a demonstration of the `cumsum` function.
+
+```{r}
+mutate(penguins, body_mass_cumsum = cumsum(body_mass_g)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+Note how NA values are produced when data are missing. Let's exlcude all
+missing cases and run this function again.
+
+```{r}
+penguins_full <- filter(penguins, !is.na(body_mass_g))
+mutate(penguins_full, body_mass_cumsum = cumsum(body_mass_g)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+<br>
+
+Here's a demonstration of the `cummin` function.
+
+```{r}
+mutate(penguins_full, body_mass_cummin = cummin(body_mass_g)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+And last let's look at `cummean`
+
+```{r}
+mutate(penguins_full, body_mass_cummean = cummean(body_mass_g)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+# Ranking
+
+There are several functions available to compute rank functions in R:
+<br>
+
+1.  `min_rank(x)`: ranks from smallest to largest <br>
+2.  `min_rank(desc(x))`: ranks from largest to smallest <br>
+3.  `dense_rank()`: like `min_rank`, but with no gaps between ranks <br>
+4.  `percent_rank()`: a number between 0 and 1 computed by rescaling
+    min_rank to [0, 1] <br>
+5.  `cume_dist()`: a cumulative distribution function. Proportion of all
+    values less than or equal to the current rank. <br>
+6.  `ntile()`: a rough rank, which breaks the input vector into n
+    buckets. The size of the buckets may differ by up to one, larger
+    buckets have lower rank. <br>
+
+<br>
+
+In the sample below, I use the `%>%` operator to chain together a string
+a functions. We'll talk about this next week, but basically this
+operator takes the result of the prior line and sends it through to the
+next line, where it becomes the first argument in the function. I've
+arranged and selected specific columns for ease of presentation.
+
+<br>
+
+```{r}
+mutate(penguins, 
+       min = min_rank(body_mass_g), 
+       max = min_rank(desc(body_mass_g)), 
+       dense = dense_rank(body_mass_g), 
+       cumulative = cume_dist(body_mass_g), 
+       percent = percent_rank(body_mass_g), 
+       n10 = ntile(body_mass_g, n = 10)) %>% 
+  arrange(min) %>% 
+  select(body_mass_g, min, max, dense, cumulative, percent, n10) %>% 
+  datatable(options = list(pageLength = 100, scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+
+# Logical Comparisons
+
+Logical comparisons are often performed to re-code variables using the `case_when` function.
+
+```{r}
+mutate(penguins, high_body_mass = 
+         case_when(body_mass_g > 4000 ~ 1, 
+                   body_mass_g <= 4000 ~ 0)) %>% 
+  datatable(options = list(pageLength = 10, scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+

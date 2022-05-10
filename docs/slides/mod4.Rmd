@@ -1,6 +1,6 @@
 ---
-title: "Module 3:  Data Visualization"
-subtitle:  "A First Foray Into ggplot2"
+title: "Module 4:  Data Transformation"
+subtitle:  "Bringing Energy to Your Analyses"
 author: "Graham Eglit"
 institute: "Canopy Growth Corporation"
 date: "June 10, 2022"
@@ -96,6 +96,8 @@ xaringanExtra::use_logo(
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 require(tidyverse)
 require(knitr)
+require(palmerpenguins)
+require(DT)
 options(knitr.kable.NA = '')
 data.frame(
   Function = c("filter", "arrange", "select", "mutate", "summarize"),
@@ -115,9 +117,6 @@ data.frame(
 <br>
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-require(tidyverse)
-require(knitr)
-options(knitr.kable.NA = '')
 data.frame(
   Function = c("filter", "arrange", "select", "mutate", "summarize"),
   Operation = c("Pick Observations", "Re-order Rows", "Pick Variables", "Create New Variables from Existing Variables", "Collapse Many Values to a Single Summary")
@@ -133,18 +132,514 @@ data.frame(
 ---
 
 .center[
-# A New Dataset:  nycflights
+# A New Dataset:  Palmer Penguins!
 ]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-require(nycflights13) 
-head(flights) %>% 
-  DT::datatable(options = list(pageLength = 6, scrollX = 200))
+penguins %>% 
+  datatable(options = list(pageLength = 10, scrollX = 300, scrollY = 300))
 ```
+
+---
+class: inverse center middle
+
+# Filter!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
 ---
 
 .center[
 # Filter
+]
+
+.panelset[
+
+.panel[.panel-name[Example 1]
+
+.pull-left[
+- Rows can be filtered using the `filter` function
+- Only cases that satisfy the logical proposition will be retained
+```{r eval = FALSE}
+filter(penguins, species == "Chinstrap")
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+filter(penguins, species == "Chinstrap") %>% 
+  datatable(options = list(pageLength = 68, scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Logical Operators]
+
+```{r echo = FALSE}
+data.frame(
+  Operator = c(">", ">=", "<", "<=", "==", "!=", "%in%"),
+  Syntax = c("a > b", "a >= b", "a < b", "a<= b", "a == b", "a != b", "a %in% c(a, b, c)"),
+  Tests = c("Is a greater than b?", "Is a greater than or equal to b?", "Is a less than b?", "Is a less than or equal to b?", "Is a equal to b?", "Is a not equal to b?", "Is a in the group c(a, b, c)?")) %>% 
+    kable("html")
+```
+
+
+]<!---->
+
+.panel[.panel-name[Example 2]
+
+.pull-left[
+- Boolean operators can be used to create more complex logical propositions
+```{r eval = FALSE}
+filter(penguins, species == "Chinstrap" & sex == "male")
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+filter(penguins, species == "Chinstrap" & sex == "male") %>% 
+  datatable(options = list(pageLength = 68, scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+
+.panel[.panel-name[Boolean Operators]
+
+```{r echo = FALSE}
+data.frame(
+  Operator = c("&", "|", "xor", "!"),
+  Syntax = c("cond1 & cond2", "cond1 bar cond2", "xor(cond1, cond2)", "!cond1"),
+  Tests = c("Are both cond1 and cond2 true?", "Is one or more of cond1 and cond2 true?", "Is exactly one of cond1 and cond2 true?", "Is cond1 false?")) %>% 
+    kable("html")
+```
+
+]<!---->
+
+
+]<!--end panelset-->
+
+---
+
+.center[
+# More Filter Examples!
+]
+
+[filter(penguins, sex == "male" & body_mass_g < 4000)](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28sex%20%3D%3D%20%22male%22%20%26%20body_mass_g%20%3C%204000%29&d=2022-05-09&lang=r&v=v1)
+<br> <br>
+[filter(penguins, sex == "male" | body_mass_g < 4000))](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28sex%20%3D%3D%20%22male%22%20%7C%20body_mass_g%20%3C%204000%29&d=2022-05-09&lang=r&v=v1)
+<br> <br>
+[filter(penguins, !is.na(sex))](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28!is.na%28sex%29%29&d=2022-05-09&lang=r&v=v1)
+<br> <br>
+[filter(penguins, island %in% c("Biscoe", "Dream"))](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28island%20%25in%25%20c%28%22Biscoe%22,%20%22Dream%22%29%29&d=2022-05-09&lang=r&v=v1)
+<br> <br>
+[filter(penguins, !c(species == "Adelie" & sex == "male"))](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28!c%28species%20%3D%3D%20%22Adelie%22%20%26%20sex%20%3D%3D%20%22male%22%29%29&d=2022-05-09&lang=r&v=v1)
+<br> <br>
+[filter(penguins, !c(species == "Adelie" | sex == "male"))](https://tidydatatutor.com/vis.html#code=require%28tidyverse%29%0Arequire%28palmerpenguins%29%0A%0Apenguins%20%25%3E%25%20%0Afilter%28!c%28species%20%3D%3D%20%22Adelie%22%20%7C%20sex%20%3D%3D%20%22male%22%29%29&d=2022-05-09&lang=r&v=v1)
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- How many Chinstrap penguins were there with a bill length less than 45 mm in 2007?
+
+--
+
+```{r eval = FALSE}
+filter(penguins, species == "Chinstrap" & bill_length_mm < 45 & year == 2007)
+```
+
+--
+
+- How many Chinstrap penguins were there with a bill length  less than 45 mm or greater than 50 mm in 2007?
+
+--
+
+```{r eval = FALSE}
+filter(penguins, species == "Chinstrap" & c(bill_length_mm < 45 | bill_length_mm > 50) & year == 2007)
+```
+
+
+---
+class: inverse center middle
+
+# Arrange!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+
+.center[
+# Arrange
+]
+
+
+
+.panelset[
+
+.panel[.panel-name[Single Arrange]
+
+.pull-left[
+- Rows can be sorted using the `arrange` function
+- The default sort is in ascending order
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_length_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[Descending Arrange]
+
+.pull-left[
+- the `desc` function can be added to `arrange` to reverse the sort order
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, desc(bill_length_mm))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, desc(bill_length_mm)) %>% 
+  DT::datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Multiple Arrange]
+
+.pull-left[
+- Rows can be sorted based on multiple variables
+- Rows will be sorted by the first variable first, then by the second variable within the first variable
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_length_mm, bill_depth_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_length_mm, bill_depth_mm) %>% 
+  DT::datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+
+]
+]<!---->
+
+
+.panel[.panel-name[Reverse Multiple Arrange]
+
+.pull-left[
+- Note here how changing the variable order changes the sort
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_depth_mm, bill_length_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+arrange(penguins, bill_depth_mm, bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+---
+class: inverse center middle
+
+# Select!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+
+.center[
+# Select
+]
+
+.panelset[
+
+.panel[.panel-name[Single Select]
+
+.pull-left[
+- `select` is used to pick columns
+```{r eval = FALSE}
+select(penguins, species)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+select(penguins, species) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+
+
+]<!---->
+
+.panel[.panel-name[Multiple Select]
+
+.pull-left[
+- To select multiple columns, add them as additional names to the function call
+```{r eval = FALSE}
+select(penguins, species, bill_length_mm)
+```
+]
+
+.pull-right[
+```{r echo = FALSE}
+select(penguins, species, bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+.panel[.panel-name[Negating Select]
+
+.pull-left[
+- To select out columns, use `-`
+```{r eval = FALSE}
+select(penguins, -c(species, bill_length_mm))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+select(penguins, -c(species, bill_length_mm)) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+.panel[.panel-name[Helper Functions]
+- The tidyverse provides several helper functions for selecting columns
+
+```{r echo = FALSE}
+data.frame(
+  Function = c("starts_with", "ends_with", "contains", "everything"),
+  Operation = c("Matches names that begin with specified string", "Matches names that end with specified string", "Matches names that contain a specified string", "Selects all columns")) %>% 
+    kable("html")
+```
+
+]<!---->
+
+
+.panel[.panel-name[Helper Functions Example]
+
+.pull-left[
+```{r eval = FALSE}
+select(penguins, ends_with("mm"))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+select(penguins, ends_with("mm")) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+.panel[.panel-name[Ordering Columns]
+
+.pull-left[
+- `select` can also be used to order columns in a data frame
+- the `everything` helper function is useful for this purpose
+
+```{r eval = FALSE}
+select(penguins, species, year, everything())
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+select(penguins, species, year, everything()) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+class: inverse center middle
+
+# Mutate!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+
+.center[
+# Mutate
+]
+
+.panelset[
+
+.panel[.panel-name[Simple Mutate]
+
+.pull-left[
+- `mutate` is used to add new columns to a dataframe
+- **Element-Wise Execution** is used to calculate new values
+- Columns are always added at the end of the dataframe
+- Note that to use `mutate`, we must specify the new column name during the function call
+
+```{r eval = FALSE}
+mutate(penguins, 
+       mass_to_flipper = body_mass_g / flipper_length_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+mutate(penguins, mass_to_flipper = body_mass_g / flipper_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+
+
+]<!---->
+
+.panel[.panel-name[Multiple Mutate]
+
+.pull-left[
+- We can also create multiple new variables at once
+
+```{r eval = FALSE}
+mutate(penguins, 
+       mass_to_flipper = body_mass_g / flipper_length_mm,
+       mass_to_bill_length = body_mass_g / bill_length_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+mutate(penguins, 
+       mass_to_flipper = body_mass_g / flipper_length_mm,
+       mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+.panel[.panel-name[Transmute]
+
+.pull-left[
+- `transmute` can be used to retain only the newly created variables
+- This is used much less often than `mutate`
+```{r eval = FALSE}
+transmute(penguins, 
+       mass_to_flipper = body_mass_g / flipper_length_mm,
+       mass_to_bill_length = body_mass_g / bill_length_mm)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+transmute(penguins, 
+       mass_to_flipper = body_mass_g / flipper_length_mm,
+       mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
+  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+```
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+---
+
+.center[
+# Mutate:  Creation Functions
+]
+
+
+.pull-left[
+
+.pull-left[
+**Arithmetic Operations**
+- `+`, `-`, `*`, `/`
+- `mean`, `median`, `sum`
+- `log`, `log2`, `log10`
+
+**Modular Arithmetic**
+- `%/%`
+- `%%`
+]
+
+.pull-right[
+**Offsets**
+- `lead`
+- `lag`
+
+**Cumulative/Rolling Aggregates**
+- `cumsum`
+- `cumprod`
+- `cummin`
+- `cummax`
+- `cummean`
+]
+
+]
+
+.pull-right[
+
+.pull-left[
+**Logical Comparisons**
+- `<`
+- `<=`
+- `>`
+- `>=`
+- `==`
+- `!=`
+]
+
+.pull-right[
+**Ranking**
+- `min_rank`
+- `row_number`
+- `dense_rank`
+- `percent_rank`
+- `cume_dist`
+
+]
+
+]
+<br>
+<br>
+
+.center[
+[Click here for examples of these functions in action!](mutate_functions.html)
 ]
