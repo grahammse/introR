@@ -1,0 +1,153 @@
+---
+title: "Summary Functions"
+output:
+  html_document:
+    css: "styles.css"
+    toc: true
+    toc_float: true
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Packages
+
+First, let's load all relevant packages and explore the dataset
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(palmerpenguins)
+require(DT)
+require(knitr)
+```
+
+Note that throughout the code below, the
+`datatable(options = list(pageLength = 3, dom= "t"))`) syntax is used to print the data frame. <br>
+
+Let's take a look at the data
+
+```{r}
+penguins %>% 
+  datatable(options = list(pageLength = 344, scrollX = 250, scrollY = 300))
+```
+
+<br>
+
+# Standard Example
+
+For continuous measures, the most commonly used summary measures are `mean`, `median`, `sd`, `IQR` or `mad`, `min`, `max`, and `sum(!is.na())`.  This last function is used to count how many non-missing observations are in the variable.
+<br> <br>
+In this first example, we'll use these standard summary functions to explore the body_mnass_g variable in the penguins dataset.  We'll produce a grouped summary using the `group_by` function on the species variable, which will allow us to summarize body mass across species
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(mean_bm = mean(body_mass_g, na.rm = TRUE),
+            sd_bm = sd(body_mass_g, na.rm = TRUE),
+            median_bm = median(body_mass_g, na.rm = TRUE),
+            iqr_bm = IQR(body_mass_g, na.rm = TRUE),
+            min_bm = min(body_mass_g, na.rm = TRUE),
+            max_bm = max(body_mass_g, na.rm = TRUE),
+            nonmiss_bm = sum(!is.na(body_mass_g))
+            ) %>% 
+  datatable(options = list(pageLength = 3, dom= "t"))
+```
+
+
+Note that no rounding was performed on the mean and sd variables.  We probably don't want that many numbers after the decimal place.  One way to limit the number of decimals after the decimal place is to use the `round` function.  The `round` function has a `digits` argument that allows us to control how many digits after the decimal place are reported.  For this example, we'll round to two digits.
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(mean_bm = round(mean(body_mass_g, na.rm = TRUE), digits = 2),
+            sd_bm = round(sd(body_mass_g, na.rm = TRUE), digits = 2),
+            median_bm = median(body_mass_g, na.rm = TRUE),
+            iqr_bm = IQR(body_mass_g, na.rm = TRUE),
+            min_bm = min(body_mass_g, na.rm = TRUE),
+            max_bm = max(body_mass_g, na.rm = TRUE),
+            nonmiss_bm = sum(!is.na(body_mass_g))
+            ) %>% 
+  datatable(options = list(pageLength = 3, dom= "t"))
+```
+
+<br>
+
+# Count Functions
+
+A common source of confusion in summary functions is the distinction between `n()` and `sum(!is.na())`.  `n()` calculates the current groups size (the number of rows for a specified group) whereas `sum(!is.na())` calculates the number of non-missing cases for a specified variable in the data set.  Therefore, if there is a missing value in a variable, this will results in a smaller number for `sum(!is.na())` than `n()`.
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+    summarize(nonmiss_bm = sum(!is.na(body_mass_g)),
+              count = n()) %>% 
+  datatable(options = list(pageLength = 3, dom= "t"))
+```
+
+
+You can double-check that there is one missing body mass case for the Adelie species and one missing case for the Gentoo species in the data table above.
+
+<br>
+
+# Measures of Position
+
+Measures of position are less commonly used but can be a source of confusion.  These functions are not based on a ranking of values; instead, they merely pick out values associated with specific rows.  The `first()` function will return the value in the first row of a group, the `last()` function will return the value in the last row of a group, and the `nth()` function will return the value in the row specified in the n argument of the function.
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+    summarize(first = first(body_mass_g),
+              last = last(body_mass_g),
+              fifth = nth(body_mass_g, n = 5)) %>% 
+  datatable(options = list(pageLength = 3, dom= "t"))
+```
+
+
+You can double-check that the correct values were selected for each group in the data table above.

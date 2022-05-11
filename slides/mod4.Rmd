@@ -367,6 +367,35 @@ arrange(penguins, bill_depth_mm, bill_length_mm) %>%
 
 ]<!--end panelset-->
 
+
+---
+
+.center[
+# Now You Try!
+]
+
+Arrange the penguins data set by island and bill length
+
+--
+
+```{r eval = FALSE}
+arrange(penguins, island, bill_length_mm)
+```
+
+--
+
+Reverse the order of islands
+
+--
+
+```{r eval = FALSE}
+arrange(penguins, desc(island), bill_length_mm)
+```
+
+
+
+
+
 ---
 class: inverse center middle
 
@@ -488,6 +517,37 @@ select(penguins, species, year, everything()) %>%
 ]<!---->
 
 ]<!--end panelset-->
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+Create a data frame that includes only species, island, body_mass_g, sex, and year
+
+--
+
+```{r eval = FALSE}
+select(penguins, species, island, body_mass_g, sex, year)
+```
+
+--
+
+Generate the same data frame as above using a different `select` specificiation
+
+--
+
+```{r eval = FALSE}
+select(penguins, -c(bill_length_mm, bill_depth_mm, flipper_length_mm))
+```
+
+```{r eval = FALSE}
+select(penguins, -ends_with("mm"))
+```
+
+
 
 
 ---
@@ -644,6 +704,10 @@ transmute(penguins,
 .center[
 [Click here for examples of these functions in action!](mutate_functions.html)
 ]
+
+
+
+
 
 ---
 class: inverse center middle
@@ -832,4 +896,65 @@ penguins %>%
 
 ]
 
+]
+
+<br>
+
+.center[
+[Click here for examples of these functions in action!](summary_functions.html)
+]
+
+---
+
+.center[
+# Summary Functions with Logical Values
+]
+
+- `mean` and `sum` calculate the proportion and frequency, respectively, of TRUEs for logical values
+- Can be used with both discrete and numeric data
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(n_female = sum(sex == "female", na.rm = TRUE),
+            prop_female = mean(sex == "female", na.rm = TRUE),
+            n_mass4000 = sum(body_mass_g > 4000, na.rm = TRUE),
+            prop_mass4000 = mean(body_mass_g > 4000, na.rm = TRUE)) %>% 
+  kable("html")
+```
+
+
+
+---
+
+.center[
+# Recap
+]
+
+.pull-left[
+1. Filter
+  - Logical Operators
+  - Boolean Operators
+1. Arrange
+  - Ascending (default)
+  - Descending (desc)
+1. Select
+  - Helper Functions
+1. Mutate
+  - Creation Functions
+1. Summarize
+  - Summary Functions
+1. The Pipe! ` %>% `
+]
+
+
+.pull-right[
+<br>
+<br>
+.center[
+<img src = "https://media.giphy.com/media/oubM1tKqnLW5G/giphy.gif" />
+.caption[
+Via [Giphy](https://media.giphy.com/media/oubM1tKqnLW5G/giphy.gif)
+]
+]
 ]
