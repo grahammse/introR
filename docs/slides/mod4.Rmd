@@ -1,6 +1,6 @@
 ---
 title: "Module 4:  Data Transformation"
-subtitle:  "Bringing Energy to Your Analyses"
+subtitle:  "The Data They Are A-Changin'"
 author: "Graham Eglit"
 institute: "Canopy Growth Corporation"
 date: "June 10, 2022"
@@ -593,6 +593,7 @@ transmute(penguins,
 - `+`, `-`, `*`, `/`
 - `mean`, `median`, `sum`
 - `log`, `log2`, `log10`
+<br>
 
 **Modular Arithmetic**
 - `%/%`
@@ -604,6 +605,7 @@ transmute(penguins,
 - `lead`
 - `lag`
 
+<br>
 **Cumulative/Rolling Aggregates**
 - `cumsum`
 - `cumprod`
@@ -638,8 +640,196 @@ transmute(penguins,
 
 ]
 <br>
-<br>
 
 .center[
 [Click here for examples of these functions in action!](mutate_functions.html)
+]
+
+---
+class: inverse center middle
+
+# Summarize!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+---
+
+.center[
+# But First, The Pipe!
+]
+
+.panelset[
+
+.panel[.panel-name[Background]
+- ` %>% `
+- Enables combining multiple operations in a single sequence
+- ` %>% ` can be read as "then"
+- Read operations from left-to-right and top-to-bottom
+- Result from previous operation becomes first argument (the data) for next operation
+  - Data is "piped" through
+- Obviates need to store intermediate transformed data
+- Produces more readable code, less cluttered environment
+- Used throughout the tidyverse except within ggplot2
+
+]
+
+.panel[.panel-name[Demonstration]
+
+- These two code chunks will produce the same results <br>
+- But the one on the bottom using the pipe is much cleaner
+
+```{r eval = FALSE}
+penguins_small <- select(penguins, species, island, bill_length_mm, bill_depth_mm)
+penguins_small2 <- mutate(penguins, length_to_depth = bill_length_mm / bill_depth_mm)
+penguins_small2_arr <- arrange(penguins, desc(length_to_depth))
+```
+
+
+```{r eval = FALSE}
+penguins %>% 
+  select(species, island, bill_length_mm, bill_depth_mm) %>% 
+  mutate(length_to_depth = bill_length_mm / bill_depth_mm) %>% 
+  arrange(desc(length_to_depth))
+```
+
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+.center[
+# Summarize
+]
+
+.panelset[
+
+.panel[.panel-name[Simple Summary]
+
+.pull-left[
+- `summarize` is used to collapse a data frame into a single summary row
+- Typically used with aggregate arithmetic functions
+  - Note the use of `na.rm = TRUE` for missing values
+
+]
+
+.pull-right[
+```{r }
+penguins %>% 
+  summarize(mean_mass = mean(body_mass_g, na.rm = TRUE)) %>% 
+  kable("html")
+```
+
+]
+
+]<!---->
+
+.panel[.panel-name[Missing Values]
+
+.pull-left[
+- If we forget to specify `na.rm = TRUE`, we will obtain a columns of NA values
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+options(knitr.kable.NA = 'NA')
+```
+
+```{r}
+penguins %>% 
+  summarize(mean_mass = mean(body_mass_g)) %>% 
+  kable("html")
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Grouped Summary]
+
+.pull-left[
+- `summarize` is often best used in conjunction with `group_by`
+- `group_by` will perform summary operations within each group and results will be returned by group
+
+]
+
+.pull-right[
+```{r }
+penguins %>% 
+  group_by(species) %>% 
+  summarize(mean_mass = mean(body_mass_g, na.rm = TRUE)) %>% 
+  kable("html")
+```
+]
+]<!---->
+
+.panel[.panel-name[Multiple Grouped Summaries]
+
+.pull-left[
+- We can perform multiple summaries simultaneously
+- Just add more aggregate arithmetic operations within the `summarize` function
+]
+
+.pull-right[
+```{r }
+penguins %>% 
+  group_by(species) %>% 
+  summarize(mean_mass = mean(body_mass_g, na.rm = TRUE),
+            median_mass = median(body_mass_g, na.rm = TRUE)) %>% 
+  kable("html")
+```
+]
+]<!---->
+
+]<!--end panelset-->
+
+---
+
+.center[
+# Summary Functions
+]
+
+.pull-left[
+
+.pull-left[
+**Measures of Location**
+- `mean(x)`
+- `median(x)`
+<br>
+<br>
+<br>
+
+**Measures of Spread**
+- `sd(x)`
+- `IQR(x)`
+- `mad(x)`
+]
+
+.pull-right[
+**Measures of Rank**
+- `min(x)`
+- `max(x)`
+- `quantile(x, probs = 0.25)`
+]
+
+]
+
+.pull-right[
+
+.pull-left[
+**Measures of Position**
+- `first(x)`
+- `last(x)`
+- `nth(x, n = 2)`
+]
+
+.pull-right[
+**Counts**
+- `n(x)`
+- `sum(!is.na(x))`
+- `n_distinct(x)`
+
+]
+
 ]
