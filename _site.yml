@@ -22,6 +22,8 @@ navbar:
           href: slides/mod3.html 
         - text: "Module 4: Data Transformation"
           href: slides/mod4.html 
+        - text: "Module 5: Style, Workflows, and Directory Structures"
+          href: slides/mod5.html 
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
