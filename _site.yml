@@ -24,6 +24,8 @@ navbar:
           href: slides/mod4.html 
         - text: "Module 5: Style, Workflows, and Directory Structures"
           href: slides/mod5.html 
+        - text: "Module 6: Exploratory Data Analysis"
+          href: slides/mod6.html
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github

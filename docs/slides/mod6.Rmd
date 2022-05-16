@@ -1,0 +1,628 @@
+---
+title: 'Module 6:  Exploratory Data Analysis'
+output:
+  html_document:
+    css: "styles.css"
+    toc: true
+    toc_float: true
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Overview
+
+This module will cover exploratory data analysis and largely follows the
+Exploratory Data Analysis chapter in [R for Data
+Science](https://r4ds.had.co.nz/exploratory-data-analysis.html).
+Exploratory data analysis is a systematic iterative process of data
+visualization and transformation to get a better understanding of your
+data. During this process, you will: <br>
+
+1.  Generate questions about your data
+2.  Use visualization, transformation, and sometimes modeling to find
+    answers to those questions.
+3.  Refine your questions/generate new questions based on findings in
+    step 2
+
+For this module, we'll be using the `diamonds` data set from the `dplyr`
+package in `tidyverse`. We'll rely heavily on the `dplyr` package for
+data transformation and `ggplot2` for data visualization. Let's load all
+relevant packages and take a look at the first 100 rows of that data set
+before we get started!
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(DT) # To print data frames
+```
+
+```{r}
+diamonds %>% 
+  head(n = 100) %>% 
+  datatable(options = list(pageLength = 100, scrollX = 250, scrollY = 300, dom = "tpi"))
+```
+
+And let's look at the structure of the data set as well...
+
+```{r}
+str(diamonds)
+```
+
+And we can also consult the help pages (`?diamonds`) to get additional
+information of the data set.
+
+# Fundamental Questions
+
+There are two basic questions that underlie almost all exploratory data
+analyses:
+
+1.  What type of variation occurs within my variables?
+2.  What type of covariation occurs between my variables?
+
+**Variation** refers to the tendency of the values of a variable to
+change from measurement to measurement.
+
+**Covariation** refers to the tendency for values of two or more values
+to vary together in a related way.
+
+We can think of variation as reflecting uncertainty and covariation as a
+means to reduce that uncertainty.
+
+# Variation
+
+## Visualizing Distributions
+
+The method of visualizing a distribution depends on whether the variable
+you're visualizing is discrete or continuous.
+
+### Discrete Variables
+
+For discrete variables, a bar chart if most relevant, so `geom_bar` is
+the most commonly used
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(aes(x = cut))
+```
+
+We could also compute the count values depicted in the figure above
+manually using the `count` function.
+
+```{r}
+diamonds %>% 
+  count(cut)
+```
+
+Count is a helpful function to quickly discern the number of unique
+values of one or more variables. Note that if we wanted to, we could
+supply multiple variables to the `count` function and get the unique
+values across both variables, like so:
+
+```{r}
+diamonds %>% 
+  count(cut, color)
+```
+
+### Continuous Variables
+
+We have more options in visualizing a continuous variable than a
+discrete one. Probably the most typical method is a histogram, which can
+be generated using the `geom_histogram` function in `ggplot2`
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(aes(x = carat))
+```
+
+Note the warning message about binwidth. This message is telling us that
+by default, ggplot creates 30 bins (discrete equal interval regions in a
+variable's distribution) within which to calculate the frequency count
+of values. We can change this default setting using the `binwidth`
+argument in `geom_histogram`. The `binwidth` argument requires us to
+specify how wide the bins should be in the raw score metric of the
+variable (in this case, in carats). To determine an appropriate bin
+width it helps to know the range of the distribution.
+
+```{r}
+diamonds %>% 
+  summarize(min = min(carat, na.rm = TRUE),
+            max = max(carat, na.rm = TRUE))
+```
+
+The range is roughly between 0 and 5. Let's change the binwidth to .25.
+This will yield 5 / .25 = 20 bins.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(aes(x = carat), binwidth = .25)
+```
+
+Notice how the bins are a little wider than the default of 30 bins
+above. I actually prefer the default 30 bins in this case. Let's try a
+thinner binwidth.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(aes(x = carat), binwidth = .01)
+```
+
+This plot has 5 / .01 = 500 bins, and I think it's an improvement over
+our previous two plots. Note that the `binwidth` argument was specified
+outside of the `aes` function because we're not mapping bindwidth to a
+variable in our `diamonds` data frame.
+
+In addition to a histogram, we could also visualize a continuous
+distribution using frequency polygons or a kernel density plot.
+
+Below is a frequency polygon. It's largely the same as a histogram
+except instead of drawing frequency counts in bins using bars, it draws
+frequency counts in bins using lines.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_freqpoly(aes(x = carat))
+```
+
+We can specify a narrower bindwidth in `geom_freqpoly`, just as with
+`geom_histogram` as well.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_freqpoly(aes(x = carat), binwidth = .01)
+```
+
+And note that we can also map additional aesthetics to other variables
+in `geom_freqpoly`, too.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_freqpoly(aes(x = carat, color = cut), binwidth = .1)
+```
+
+We can also visualize a continuous distribution using a kernel density
+plot via `geom_density`.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_density(aes(x = carat))
+```
+
+We can also visualize this kernel density plot as a function of a second
+variable using aesthetic specifications. Here, we'll use fill because we
+want to fill all the area under the curve.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_density(aes(x = carat, fill = cut))
+```
+
+That's kind of neat looking, but hard to interpret because the ideal cut
+covers over the others. Let's add some transparency to this plot using
+the `alpha` argument to improve visibility. We'll also map color to cut
+so that the curve perimeter lines are the same color as the area under
+the curves. Note again the placement of alpha outside of `aes` because
+it's not mapped to a variable in the `diamonds` data frame.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_density(aes(x = carat, fill = cut, color = cut), alpha = .4)
+```
+
+There are several other geoms that can be used to visualize univariate
+continuous distributions, including `geom_area`, `geom_dotplot`, and
+`geom_qq`. See the [ggplot2 cheat
+sheet](<https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf>)
+and help documentation for more details.
+
+A couple things to note about the distribution of this variable:
+
+1.  Whole integer and half-integer values appear to be more common than
+    other values
+
+2.  There are more values to the right of the whole integer values than
+    to the left
+
+3.  Small carat diamonds (those =\< 1 carat) are common, and large carat
+    diamonds (those greater than say 2 carats) are exceedingly rare
+
+## Detecting Outliers
+
+Another important aspect of univariate data screening is identifying
+outliers. Outliers may be extreme but valid values in the variable's
+distribution or they may be data entry errors. Our approach to dealing
+with outliers will differ depending on the source of the outlying value,
+so it's important to bring to bear our prior knowledge of the variable
+to our consideration of outliers.
+
+Let's take a look at the y variable in the `diamonds` data set.
+According to the help documentation, the y variable reflects the width
+(in mm) of diamonds. Let's visualize the distribution of this variable
+using a histogram
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(aes(x = y), binwidth = 0.5)
+```
+
+It's hard to see if there are any outliers in this distribution because
+there are so many obsevations in the bins. We'll need to zoom in on
+specific regions of the distribution to better visualize outlying
+values. To zoom in on a plot, we need to use the `coord_cartesion`
+function. This function includes `xlim` and `ylim` arguments, which help
+us specify which regions of the plot to zoom in on. In the plot below,
+we'll limit the y-axis to be between 0 and 50, which will allow us to
+visualize uncommon observations in the distribution.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(aes(x = y), binwidth = 0.5) + 
+  coord_cartesian(ylim = c(0, 50))
+```
+
+Now we see that there appear to be three uncommon values (low frequency
+occurrence) values in the distribution: 0, \~30, and \~60.
+
+Let's isolate those values in our data set and take a look at them
+
+```{r}
+diamonds %>% 
+  filter(y == 0 | y > 20) %>% 
+  arrange(y)
+```
+
+Based on our background knowledge, we know that diamonds cannot have a
+width of 0 mm. In addition, diamonds with a width of 31.8 mm or 58.9 mm
+would be exceedingly large (\> 1 inch) and should be very expensive, but
+these two diamonds are relatively modestly priced. It looks like all of
+these values are likely to be data entry errors and so we should be
+quite suspicious of them.
+
+## Dealing with Outliers
+
+Once we've detected outliers and reached a conclusion as their source,
+we need to deal with these values so they don't muddle our subsequent
+analyses.
+
+There are two approaches for dealing with outliers. One approach is to
+filter out the whole case associated with those suspicious outlying
+values. We could use the following code to do so:
+
+```{r eval = FALSE}
+diamonds2 <- diamonds %>% 
+  filter(y != 0 & y != 31.8 & y != 58.9)
+```
+
+Note that we could perform the same filter using the following code as
+well
+
+```{r eval = FALSE}
+diamonds2 <- diamonds %>% 
+  filter(! y %in% c(0, 31.8, 58.9))
+```
+
+```{r eval = FALSE}
+diamonds2 <- diamonds %>% 
+  filter(between(y, 3, 20))
+```
+
+In general, I prefer not to pursue this approach because we're removing
+all data associated with that case. Instead, it's often better to remove
+the specific outlying values associated with a case by setting them to
+NA. In so doing, we retain all of the other information from that case,
+which would do not have reason to believe originated from a data entry
+error.
+
+```{r}
+diamonds2 <- diamonds %>% 
+  mutate(y = case_when(
+    y == 0 | y == 31.8 | y == 58.9 ~ NA_real_,
+    TRUE ~ y
+  ))
+```
+
+We used the `case_when` function here to replace these values with NAs.
+Note that we had to specify the data type of the resulting variable when
+we converted to NA. This is because by default NA values are of type
+logical; however, the other values in this variable are double. Recall,
+that all values within a column in a data frame must be of the same type
+(although values in different columns can be of different type). So, we
+have to specify what type we want the NA value to be so that it doesn't
+throw up an error. For double (numeric) values, this is "NA_real\_".
+Then, to keep all other values in the y variable the same, we use "TRUE
+\~ y". This is saying that for all values that don't satisfy the first
+logical proposition (i.e., the y == 0 \| y == 31.8 \| y == 58.9), keep
+them as is.
+
+Note that one helpful feature of `ggplot2` is that it will throw up a
+warning message when you have missing values. It won't plot those values
+because it doesn't have a place to put them, though.
+
+```{r}
+ggplot(data = diamonds2, aes(x = x, y = y)) + 
+  geom_point()
+```
+
+# Covariation
+
+The best way to visualize covariation depends on the type of variables
+that we're evaluating. So, we'll divide this section by type of
+variables.
+
+## Continuous x Discrete
+
+The best way to visualize covariation between a continuous and discrete
+variable is to depict the continuous variable at each level of the
+discrete variable. For this example, we'll look at variability of price
+at different levels of cut for diamonds in the diamonds data set.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_freqpoly(aes(x = price, color = cut))
+```
+
+This frequency polygon visualization is not ideal because the sizes of
+cut groups differed greatly and the frequency polygon presented simple
+counts.
+
+```{r}
+diamonds %>% 
+  count(cut)
+```
+
+Instead, what we'd like to do is normalize the count for each cut level
+so that they're all on the same scale. We can do so by plotting density
+instead of count on the y-axis (in this case, using a density plot
+renders the area under the density curve to 1 for each cut level, so all
+levels of cut will be on the same scale).
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_freqpoly(aes(x = price, y = ..density.., color = cut))
+```
+
+This plot reveals something surprising...fair diamonds (the lowest
+quality) appear to be the most expensive! We'll come back to this
+surprising result later.
+
+Another way to visualize a continuous variable across levels of a
+categorical variable is using a boxplot. Below is a depiction of the
+summarized quantities in a boxplot (from R for Data Science):
+
+![](https://d33wubrfki0l68.cloudfront.net/153b9af53b33918353fda9b691ded68cd7f62f51/5b616/images/eda-boxplot.png)
+
+Let's take a look at a boxplot of price by cut using `geom_boxplot`
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
+  geom_boxplot()
+```
+
+We lose a little bit of information about these distributions using
+boxplots, but note that we can still tell that fair diamonds tend to be
+more expensive than higher quality diamonds (especially ideal diamonds),
+and that distributions of price are positively skewed, especially for
+higher quality diamonds.
+
+Note that we could easily flip the x- and y-axis of this plot using
+`coord_flip`. This is something I often like to do when I have
+categorical labels on the x-axis, especially when those labels are long
+and consequently work better when presented horizontally on the y-axis.
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
+  geom_boxplot() + 
+  coord_flip()
+```
+
+In this instance, the coordinate flipping doesn't meaningfully improve
+the plot.
+
+## Categorical x Categorical
+
+To visualize covariation between two categorical variables, we need to
+count the number of instances for each combination of the two variables.
+One way to do this is to use `geom_count`, which will present the number
+of observations at each combination of values by the size of the
+resulting circles.
+
+```{r}
+ggplot(data = diamonds) +
+  geom_count(mapping = aes(x = cut, y = color))
+```
+
+We can also compute the count with `dplyr`
+
+```{r}
+diamonds %>% 
+  count(color, cut)
+```
+
+And then we can use those counts in a visualization using `geom_tile`
+
+```{r}
+diamonds %>% 
+  count(color, cut) %>%  
+  ggplot(mapping = aes(x = color, y = cut)) +
+    geom_tile(mapping = aes(fill = n))
+```
+
+Note that we've now scaled color to frequency count.
+
+## Continuous x Continuous 
+
+Probably the most common way to visualize continuous x continuous
+covariation is using a scatterplot, like so
+
+```{r}
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
+```
+
+Here we can see an exponential relationship between carat and price
+(price increases exponentially as a function of carat). The plot is
+somewhat difficulty to discern because there are so many data points. We
+can adjust the transparency of the points to help visualize these data
+points better.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_point(mapping = aes(x = carat, y = price), alpha = .01)
+```
+
+Another approach to visualizing large data sets is to use binning. We
+used binning previously with histograms and frequency polygons, but now
+we'll apply it in two dimensions using `geom_bind2d`
+
+```{r}
+ggplot(data = diamonds) +
+  geom_bin2d(mapping = aes(x = carat, y = price))
+```
+
+```{r}
+# install.packages("hexbin")
+ggplot(data = diamonds) +
+  geom_hex(mapping = aes(x = carat, y = price))
+```
+
+`geom_bin2d` and `geom_hex` both divide the coordinate plane into 2D
+bins and then scale the frequency count to color. `geom_bind2d` creates
+rectangular bins and `geom_hex` creates hexagonal bins. Note that you
+can change the number of bins using the `bins` argument in `geom_bin2d`
+and `geom_hex`
+
+```{r}
+ggplot(data = diamonds) +
+  geom_bin2d(mapping = aes(x = carat, y = price), bins = 100)
+```
+
+```{r}
+ggplot(data = diamonds) +
+  geom_hex(mapping = aes(x = carat, y = price), bins = 100)
+```
+
+An alternative way to visualize large data is to bin one of the
+continuous variables so it acts like a categorical variable. Then you
+can use one of the techniques for visualizing continuous x categorical
+covariation, such as a boxplot.
+
+To do so, we'll use the `cut_width` function, which divides up a
+continuous variable into bins of a specified width
+
+```{r}
+table(cut_width(runif(1000), width = 0.1, boundary = 0)) %>% 
+  knitr::kable("markdown")
+```
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) + 
+  geom_boxplot(mapping = aes(group = cut_width(carat, 0.1)))
+```
+
+We could also use `cut_number`, which will create bins with equal
+numbers of cases within each bin
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) + 
+  geom_boxplot(mapping = aes(group = cut_number(carat, n = 20)))
+```
+
+# Patterns and Models
+
+We won't be doing much modeling in this course, but I wanted to
+introduce it here because using simple models can be an important part
+of exploratory data analysis. Earlier, we encountered the paradoxical
+finding that lower quality diamonds were associated with higher price.
+We've also seen that larger diamonds (higher carat) are also more
+expensive. In addition, as can be seen below, lower quality diamonds
+tend to be larger than higher quality diamonds.
+
+```{r}
+ggplot(diamonds) + 
+  geom_boxplot(aes(x = cut, y = carat))
+```
+
+It's therefore possible that lower quality diamonds are more expensive
+because they tend to be larger than higher quality diamonds. We may be
+able to account for this paradoxical finding, then, by adjusting for
+diamond size before evaluating the association of diamond quality and
+price.
+
+To adjust for diamond size, we'll retain the residuals from a model
+predicting diamond price from diamond size (carat). We'll place price
+and carat on log scales to properly account for the exponential
+association observed between them.
+
+```{r}
+ggplot(data = diamonds2) + 
+  geom_point(mapping = aes(x = carat, y = price), alpha = .05)
+```
+
+```{r}
+require(modelr)
+
+mod <- lm(log(price) ~ log(carat), data = diamonds)
+
+diamonds2 <- diamonds %>% 
+  add_residuals(mod) %>% 
+  mutate(resid = exp(resid))
+
+ggplot(data = diamonds2) + 
+  geom_point(mapping = aes(x = carat, y = resid), alpha = .05)
+```
+
+After we've created this residualized price variable, we can then
+explore the association of residualized price and diamond quality
+
+```{r}
+ggplot(data = diamonds2) + 
+  geom_boxplot(mapping = aes(x = cut, y = resid))
+```
+
+And now we see the expected relationship between diamond quality and
+diamond price!
