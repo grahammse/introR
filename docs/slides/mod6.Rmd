@@ -257,7 +257,7 @@ ggplot(data = diamonds) +
 There are several other geoms that can be used to visualize univariate
 continuous distributions, including `geom_area`, `geom_dotplot`, and
 `geom_qq`. See the [ggplot2 cheat
-sheet](<https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf>)
+sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
 and help documentation for more details.
 
 A couple things to note about the distribution of this variable:
@@ -494,7 +494,7 @@ diamonds %>%
 
 Note that we've now scaled color to frequency count.
 
-## Continuous x Continuous 
+## Continuous x Continuous
 
 Probably the most common way to visualize continuous x continuous
 covariation is using a scatterplot, like so

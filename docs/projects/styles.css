@@ -1,0 +1,30 @@
+
+h1.title {
+  font-weight: bold;
+}
+
+h1 { /* Header 1 */
+  font-weight: bold;
+}
+
+h2 { /* Header 2 */
+  font-weight: bold;
+}
+
+h3 { /* Header 3 */
+  font-weight: bold;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+h1, h2, h3 {
+  color: black;
+}
+
+body {
+  color: #a6873b;
+  background-color: #e3e3e2;
+}

@@ -1,0 +1,244 @@
+---
+title: "Exploratory Data Analysis Project"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+
+For this exercise, you'll explore the Palmer penguins data set that we worked with in module 4.  
+
+```{r}
+require(tidyverse)
+require(palmerpenguins)
+```
+
+
+1.  First, I'd like to you to evaluate the structure of the data set and identify which variables are continuous and which are discrete.
+
+```{r}
+str(penguins)
+```
+
+2.  Based on the results from (1), it looks like we have a mix of discrete and continuous variables.  I want us to leave "year" off to the side for now.  Although it's an integer, it only has three values (2007, 2008, 2009), so may be better thought of as a factor.  For exercise 2, I would like you to make a visualization of the variability of each of the continuous outcomes.  Use at least two different geoms for this exercise and make sure to examine different bindwidths to improve your visualization.
+
+```{r}
+ggplot(penguins) + 
+  geom_histogram(aes(x = bill_length_mm), binwidth = 0.25)
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_histogram(aes(x = bill_depth_mm), binwidth = 0.1)
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_histogram(aes(x = flipper_length_mm), binwidth = 1)
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_freqpoly(aes(x = body_mass_g), binwidth = 30)
+```
+
+3.  Describe each of the distributions from exercise 2 above.  Are they normally distributed, unimodal/bimodal/etc., skewed, widely dispersed, etc.?  Based on the characteristics of these distributions and your knowledge of other variables in the dataset, come up with a hypothesis that might explain the variability that you see in these distributions.
+
+The bill length and flipper length distributions look fairly bimodal, and to some extent, the bill depth distribution as well.  Body mass appears slightly positively skewed
+
+4.  Now I'd like you to visualize the variability for each of the categorical variables in the penguins data set.
+
+```{r}
+ggplot(penguins) + 
+  geom_bar(aes(x = species))
+```
+```{r}
+ggplot(penguins) + 
+  geom_bar(aes(x = island))
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_bar(aes(x = sex))
+```
+
+
+5.  Now I'd like us to explore a hypothesis for exercise 3.  Let's look at the two distributions that looked the most bimodal.  Given the bimodality, sex may be important to the variation in these variables.  I'd like you to create a covariation plot where you map sex to color for bill length and flipper length.  Make sure to use a plot that is designed for a continuous x categorical variable covariation.
+
+```{r}
+ggplot(penguins) + 
+  geom_freqpoly(aes(x = bill_length_mm, y = ..density.., color = sex))
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_freqpoly(aes(x = flipper_length_mm, y = ..density.., color = sex))
+```
+
+
+6.  It looks like there are some missing values in sex that muddy up those visualization.  I'd like you to create those visualization again, but this time filtering the NA values for sex out of the plot.
+
+```{r}
+penguins %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot() + 
+  geom_freqpoly(aes(x = bill_length_mm, y = ..density.., color = sex))
+```
+
+```{r}
+penguins %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot() + 
+  geom_freqpoly(aes(x = flipper_length_mm, y = ..density.., color = sex))
+```
+
+
+7.  It doesn't look like sex accounts for the bimodality.  Male penguins appear to have greater bill and flipper length than female penguins, but both males and females appear to exhibit some bimodality.  Now I'd like you to replace sex with species in the plots from exercise 6 above so that we can see if species might explain variation in these variables.
+
+```{r}
+ggplot(penguins) + 
+  geom_freqpoly(aes(x = bill_length_mm, y = ..density.., color = species))
+```
+
+```{r}
+ggplot(penguins) + 
+  geom_freqpoly(aes(x = flipper_length_mm, y = ..density.., color = species))
+```
+
+8.  Now we're starting to see some separation!  It appears that Adelies have shorter bills than Chinstraps and Gentoos and that Adelies and Chinstraps have shorter flippers than Gentoos.  
+
+I'd now you like to facet each of the last two plots you created by sex.  Hint:  use `facet_wrap`
+
+```{r}
+penguins %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot() + 
+  geom_freqpoly(aes(x = bill_length_mm, y = ..density.., color = species)) + 
+  facet_wrap(~sex)
+```
+
+```{r}
+penguins %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot() + 
+  geom_freqpoly(aes(x = flipper_length_mm, y = ..density.., color = species)) + 
+  facet_wrap(~sex)
+```
+
+
+9.  It looks like the species-specific patterns for bill length and flipper length are pretty similar across male and female penguins.  
+
+Now I'd like to change gears and have you create a covariation plot of two discrete variables.  Pick two of the discrete variables and create a tile plot of them using `geom_tile`.  Describe what you see
+
+```{r}
+penguins %>% 
+  count(species, island) %>% 
+  ggplot() + 
+  geom_tile(aes(x = species, y = island, fill = n))
+```
+```{r}
+penguins %>% 
+  count(species, island)
+```
+
+Adelies are more widely dispersed across islands than Chinstraps and Gentoos, which exclusively reside on Dream and Biscoe islands, respectively.
+
+10. Now let's visualize the covariation between two continuous variables.  I'd like you to create a scatterplot exploring the relationship between bill depth and bill length and draw a linear regression line on top of the scatter plot.  Recall the method argument in `geom_smooth`
+
+```{r}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+11.  There appears to be modest negative association between bill depth and bill length...that's a bit surprising!  However, note that there appear to be three clusters in the scatter plot and that we have three species of penguin.  To evaluate whether species of penguin plays a role in the association between bill depth and bill length, I'd like you to map species to color and fill aesthetics and re-draw the plot from (10), including the linear regression line
+
+```{r}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm, color = species, fill = species)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+That makes more sense!  There's a positive association between bill depth and bill length for all three species, although it may be slightly less strong for Adelie penguins.
+
+
+
+Some bonus content.  The below visualization using a ggplot2 extension package called `ggradar`.  One of the really nice features of ggplot2 is the large number of extension packages that build upon its functionality.  We'll visit more of these packages in our second data visualization module.  The below plot is a radar (or sometimes called spider) plot.  These plots are well-suited to depicting the pattern of multiple continuous variables.
+```{r}
+require(ggradar)
+require(scales)
+penguins %>% 
+  group_by(species) %>% 
+  summarize(bill_length = mean(bill_length_mm, na.rm = TRUE),
+            bill_depth = mean(bill_depth_mm, na.rm = TRUE),
+            body_mass = mean(body_mass_g, na.rm = TRUE),
+            flipper_length = mean(flipper_length_mm, na.rm = TRUE)) %>% # summarize each of the variables by species
+  ungroup() %>% 
+  rename("Bill\nLength" = bill_length,
+         "Flipper\nLength" = flipper_length,
+         "Body\nMass" = body_mass,
+         "Bill\nDepth" = bill_depth) %>% # rename the variables so they look nicer in the plot
+  mutate_at(vars(-species), scales::rescale) %>% # to standardize variable so they're all on the same scale
+  ggradar(base.size = 12, legend.text.size = 12, fill = TRUE, group.point.size = 3, group.line.width = 1) + # ggradar function
+  scale_color_brewer(palette = "Set1") + # changes color of the lines
+  scale_fill_brewer(palette = "Set1") +  # changes fill color for the shaded areas
+  guides(fill = "none", color = "none") + # removes the legend for fill
+  labs(title = "Body Types of <span style = 'color: #E41A1C;'>**Adelie**</span>, <span style = 'color: #377EB8;'>**Chinstrap**</span>, and <span style = 'color: #4DAF4A;'>**Gentoo**</span> Penguins") + # creates a title for the plot
+  theme(plot.title = ggtext::element_markdown(size = 18, hjust = 0.5), # changes size of title text and centers the title
+        legend.position = "bottom") # moves legend to the bottom
+```
+ 
+
+

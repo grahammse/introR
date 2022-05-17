@@ -26,6 +26,14 @@ navbar:
           href: slides/mod5.html 
         - text: "Module 6: Exploratory Data Analysis"
           href: slides/mod6.html
+    - text: "Project Problems"
+      menu:
+        - text: "Module 6: Exploratory Data Analysis"
+          href: projects/proj6_probs.html
+    - text: "Project Solutions"
+      menu: 
+        - text: "Module 6: Exploratory Data Analysis"
+          href: projects/proj6_ans.html
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
