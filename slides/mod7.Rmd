@@ -1,0 +1,330 @@
+---
+title: "Module 7:  Dataframes and Tibbles"
+subtitle:  "A New Take on a Classic"
+author: "Graham Eglit"
+institute: "Canopy Growth Corporation"
+date: "June 17, 2022"
+output:
+  xaringan::moon_reader:
+    css: 
+      - xaringan-themer.css
+      - extra.css
+    lib_dir: libs
+    seal: false
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+require(xaringanthemer)
+require(xaringanExtra)
+require(icons)
+require(palmerpenguins)
+require(tidyverse)
+style_duo(primary_color = "#e3e3e2", 
+          secondary_color = "#a6873b",
+          code_inline_color = "#746850",
+          text_font_size = "1.1rem",
+          header_font_google = google_font("Lato"),
+          text_font_google   = google_font("Lora"),
+          code_font_google   = google_font("Space Mono")
+          )
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_scribble()
+xaringanExtra::use_search(show_icon = FALSE)
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
+
+class: title-slide, right, top
+background-image: url(img/hex_tibble.png), url(img/canopy_logo.png)
+background-position: 93% 75%, 50% 50%
+background-size: 10%, 50%
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "img/canopy_logo.png",
+  position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
+  height = "140px",
+  width = "160px",
+  exclude_class = c("title-slide", "inverse", "hide_logo")
+)
+```
+
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+`r rmarkdown::metadata$institute`<br>
+`r rmarkdown::metadata$date`
+]
+
+
+
+---
+class: inverse center middle
+
+# data.frame
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+
+---
+
+.center[
+# data.frames
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+.pull-left[
+- Most common data object for analysis and visualization
+- List type object
+- Composed of vectors of a single type as columns
+- Different columns can be of different type
+   - e.g., species is factor, flipper_length_mm is double
+- All rows must be of same length
+- data.frame is a base R object class
+]
+
+
+.pull-right[
+```{r echo = FALSE}
+head(mtcars)
+```
+
+]
+
+]<!---->
+
+
+.panel[.panel-name[Creating data.frames]
+
+.pull-left[
+- the `data.frame()` function can be used to create a data.frame <br> <br>
+- specify the data as arguments within the `data.frame()` function <br> <br>
+- can also convert other objects to a data frame using the `as.data.frame()` function
+]
+
+.pull-right[
+```{r}
+data.frame(
+  var1 = c(1, 2, 3, 4),
+  var2 = c(5, 6, 7, 8)
+)
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+
+
+---
+class: inverse center middle
+
+# Tibbles!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+
+---
+
+.center[
+# Tibbles
+]
+
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+.pull-left[
+- Tibbles are the tidyverse version of a data frame <br> <br>
+- Mostly the same as data.frames but changes some behavior <br> <br>
+- Part of the `tibble` package, which is bundled as part of the `tidyverse`
+]
+
+.pull-right[
+```{r echo = FALSE}
+head(penguins)
+```
+
+]
+
+]<!---->
+
+.panel[.panel-name[Creating Tibbles]
+
+.pull-left[
+- Tibbles are created much like data.frames <br> <br>
+- Use the `tibble()` function to create a tibble <br> <br>
+- Supply data as arguments
+- can convert a data.frame to a tibble using the `as_tibble()` function
+]
+
+.pull-right[
+```{r}
+tibble(
+  'var 1' = c(1, 2, 3, 4),
+  '2 var' = c(5, 6, 7, 8)
+)
+```
+
+]
+
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# Tibbles vs. data.frames
+]
+
+
+.pull-left[
+### data.frame
+- May convert variable types
+   - Used to default to converting string variables to factors before R 4.0.0
+- Will change variable names if non-syntactic characters are used (e.g., spaces will be replaced by ".")
+- Default print:  All columns, max number of rows
+]
+
+.pull-right[
+### tibble
+- Never converts variable type
+- Can use non-syntactic variable names (use backticks)
+- Default print: First 10 rows and all columns that fit on screen
+   - use `print()` to display more rows or columns
+      - n argument controls rows, width argument controls columns
+
+]
+
+
+---
+
+.center[
+# Tribble!
+]
+
+.pull-left[
+- The `tribble()` function provides a more user-friendly way of creating tibbles for data entry <br> <br>
+- `tribble()` stands for transposed tibble
+- creates tibbles in a row-wise fashion
+]
+
+
+.pull-right[
+```{r}
+tribble(
+  ~var1, ~var2,
+  1, 5,
+  2, 6,
+)
+```
+
+]
+
+
+---
+class: inverse center middle
+
+# Subsetting
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+---
+
+.center[
+# Subsetting
+]
+
+.pull-left[
+- There are three ways to pull out a single variable from a data.frame or tibble
+   1. `df$var`
+   1. `df[["var"]]`
+   1. `df %>% pluck("var")` (from the purrr pack in the tidyverse)
+]
+
+.pull-right[
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+penguins$species
+```
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+penguins[["species"]]
+```
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+penguins[[1]]
+```
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+penguins %>% 
+  pluck("species")
+```
+
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+penguins %>% 
+  pluck(1)
+```
+
+]
+
+
+
+---
+
+.center[
+# Subsetting in a Pipe
+]
+
+.pull-left[
+- To subset within a pipe, use the "." placeholder <br> <br>
+- "." means "everything up until this point" <br> <br>
+- Does not apply to `pluck`
+]
+
+.pull-right[
+```{r eval = FALSE}
+penguins %>% 
+  .$species
+```
+
+```{r eval = FALSE}
+penguins %>% 
+  .$[["species"]]
+```
+
+```{r eval = FALSE}
+penguins %>% 
+  pluck(1)
+```
+
+]

@@ -28,6 +28,8 @@ navbar:
           href: slides/mod6.html
     - text: "Project Problems"
       menu:
+        - text: "Module 2: Base R"
+          href: projects/proj2_probs.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_probs.html
     - text: "Project Solutions"

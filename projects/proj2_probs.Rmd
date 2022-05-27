@@ -1,0 +1,81 @@
+---
+title: "Base R:  Problems"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+
+For this exercise, you'll have an opportunity to try out some important base R functions and test your knowledge of a few core ideas in R.  You don't need to load any packages to complete this project.
+
+<br>
+
+
+1.  Create a vector containing the values 43, 52, 44, 75, 50, 44, 36, 75, 62, and 42.  Store that vector in your environment and call it "var1."  Now, call that vector back up.
+
+2.  Create summary statistics of "var1."  Calculate the mean, median, standard deviation, median absolute deviation, minimum, and maximum.  Round all summary values to the second decimal place where applicable.
+
+3.  Now create a second variable containing the values 16, 22, 73, 54, and 55.  Store it in your environment and name it "var2."  Add var1 to var2 and print your results
+
+4.  var1 contained 10 values but var2 only contained 5.  How were values 6-10 of var1 added to var2?
+
+5.  Now create a third variable that consists of the values TRUE, TRUE, FALSE, TRUE, FALSE.  Name it var3.  What type of vector is var3?
+
+6.  Now I'd like you to try out the following code `sum(var3)`.  What do you expect to be returned?  What was returned?  Why?
+
+7.  Now I'd like you to create a variable amed "group" that consists of the following values:  Group1, Group1, Group1, Group1, Group1, Group2, Group2, Group2, Group2, Group2.  What type of varible is this?  Hint:  you'll need to do something a little different to create this variable.
+
+8.  We won't be doing a lot of statistics in this training, but I'd like you to get a feel for how they're done in R.  So, for this item, I'd like you to run an independent samples t-test look at differences between two independent groups.  Copy the following code chunk into your console to create the data vectors for the two groups:  `group1 <- c(43, 52, 44, 75, 50); group2 <- c(44, 36, 75, 62, 42)`.  To run the t test, you'll need to use the `t.test` function.  Take a look at the help documentation for this function.  Run the test and print out your results.  What type of test does this function use by default?
+
+9.  Now I'd like you to change the var.equal argument in `t.test` to TRUE (note that it's set to FALSE as a default).  Now what type of t test was performed?  What aspects of the result changed between the two functions.  Were either tests significant?
+
+10.  A an independent samples t test is equivalent to a simple regression model with a single categorical predictor.  In R, ordinary least squares regression models can be conducted using the `lm` function.  Try running the following code chunk:  `mod  <- lm(var1 ~ group)`.  Then run `summary(mod)`.  Which of the two t tests do these results match?
+
+

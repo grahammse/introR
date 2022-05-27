@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Module 7: Dataframes and Tibbles</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Graham Eglit" />
+    <meta name="date" content="2022-06-17" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: title-slide, right, top
+background-image: url(img/hex_tibble.png), url(img/canopy_logo.png)
+background-position: 93% 75%, 50% 50%
+background-size: 10%, 50%
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 160px;
+height: 140px;
+z-index: 0;
+background-image: url(img/canopy_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:.5em;right:.5em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+.right-column[
+# Module 7:  Dataframes and Tibbles
+### A New Take on a Classic
+
+**Graham Eglit**&lt;br&gt;
+Canopy Growth Corporation&lt;br&gt;
+June 17, 2022
+]
+
+
+
+---
+class: inverse center middle
+
+# data.frame
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+
+---
+
+.center[
+# data.frames
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+.pull-left[
+- Most common data object for analysis and visualization
+- List type object
+- Composed of vectors of a single type as columns
+- Different columns can be of different type
+   - e.g., species is factor, flipper_length_mm is double
+- All rows must be of same length
+- data.frame is a base R object class
+]
+
+
+.pull-right[
+
+```
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+```
+
+]
+
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Creating data.frames]
+
+.pull-left[
+- the `data.frame()` function can be used to create a data.frame &lt;br&gt; &lt;br&gt;
+- specify the data as arguments within the `data.frame()` function &lt;br&gt; &lt;br&gt;
+- can also convert other objects to a data frame using the `as.data.frame()` function
+]
+
+.pull-right[
+
+```r
+data.frame(
+  var1 = c(1, 2, 3, 4),
+  var2 = c(5, 6, 7, 8)
+)
+```
+
+```
+##   var1 var2
+## 1    1    5
+## 2    2    6
+## 3    3    7
+## 4    4    8
+```
+
+]
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+
+
+---
+class: inverse center middle
+
+# Tibbles!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+
+---
+
+.center[
+# Tibbles
+]
+
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+.pull-left[
+- Tibbles are the tidyverse version of a data frame &lt;br&gt; &lt;br&gt;
+- Mostly the same as data.frames but changes some behavior &lt;br&gt; &lt;br&gt;
+- Part of the `tibble` package, which is bundled as part of the `tidyverse`
+]
+
+.pull-right[
+
+```
+## # A tibble: 6 × 8
+##   species island    bill_length_mm bill_depth_mm flipper_length_mm
+##   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
+## 1 Adelie  Torgersen           39.1          18.7               181
+## 2 Adelie  Torgersen           39.5          17.4               186
+## 3 Adelie  Torgersen           40.3          18                 195
+## 4 Adelie  Torgersen           NA            NA                  NA
+## 5 Adelie  Torgersen           36.7          19.3               193
+## 6 Adelie  Torgersen           39.3          20.6               190
+## # … with 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;
+```
+
+]
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Creating Tibbles]
+
+.pull-left[
+- Tibbles are created much like data.frames &lt;br&gt; &lt;br&gt;
+- Use the `tibble()` function to create a tibble &lt;br&gt; &lt;br&gt;
+- Supply data as arguments
+- can convert a data.frame to a tibble using the `as_tibble()` function
+]
+
+.pull-right[
+
+```r
+tibble(
+  'var 1' = c(1, 2, 3, 4),
+  '2 var' = c(5, 6, 7, 8)
+)
+```
+
+```
+## # A tibble: 4 × 2
+##   `var 1` `2 var`
+##     &lt;dbl&gt;   &lt;dbl&gt;
+## 1       1       5
+## 2       2       6
+## 3       3       7
+## 4       4       8
+```
+
+]
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# Tibbles vs. data.frames
+]
+
+
+.pull-left[
+### data.frame
+- May convert variable types
+   - Used to default to converting string variables to factors before R 4.0.0
+- Will change variable names if non-syntactic characters are used (e.g., spaces will be replaced by ".")
+- Default print:  All columns, max number of rows
+]
+
+.pull-right[
+### tibble
+- Never converts variable type
+- Can use non-syntactic variable names (use backticks)
+- Default print: First 10 rows and all columns that fit on screen
+   - use `print()` to display more rows or columns
+      - n argument controls rows, width argument controls columns
+
+]
+
+
+---
+
+.center[
+# Tribble!
+]
+
+.pull-left[
+- The `tribble()` function provides a more user-friendly way of creating tibbles for data entry &lt;br&gt; &lt;br&gt;
+- `tribble()` stands for transposed tibble
+- creates tibbles in a row-wise fashion
+]
+
+
+.pull-right[
+
+```r
+tribble(
+  ~var1, ~var2,
+  1, 5,
+  2, 6,
+)
+```
+
+```
+## # A tibble: 2 × 2
+##    var1  var2
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     5
+## 2     2     6
+```
+
+]
+
+
+---
+class: inverse center middle
+
+# Subsetting
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Subsetting
+]
+
+.pull-left[
+- There are three ways to pull out a single variable from a data.frame or tibble
+   1. `df$var`
+   1. `df[["var"]]`
+   1. `df %&gt;% pluck("var")` (from the purrr pack in the tidyverse)
+]
+
+.pull-right[
+
+```r
+penguins$species
+```
+
+
+```r
+penguins[["species"]]
+```
+
+
+```r
+penguins[[1]]
+```
+
+
+```r
+penguins %&gt;% 
+  pluck("species")
+```
+
+
+
+```r
+penguins %&gt;% 
+  pluck(1)
+```
+
+]
+
+
+
+---
+
+.center[
+# Subsetting in a Pipe
+]
+
+.pull-left[
+- To subset within a pipe, use the "." placeholder &lt;br&gt; &lt;br&gt;
+- "." means "everything up until this point" &lt;br&gt; &lt;br&gt;
+- Does not apply to `pluck`
+]
+
+.pull-right[
+
+```r
+penguins %&gt;% 
+  .$species
+```
+
+
+```r
+penguins %&gt;% 
+  .$[["species"]]
+```
+
+
+```r
+penguins %&gt;% 
+  pluck(1)
+```
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
