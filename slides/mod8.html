@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Module 8: Importing Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Graham Eglit" />
+    <meta name="date" content="2022-06-17" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: title-slide, right, top
+background-image: url(img/hex_readr.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 160px;
+height: 140px;
+z-index: 0;
+background-image: url(img/canopy_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:.5em;right:.5em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+.right-column[
+# Module 8:  Importing Data
+### 
+
+**Graham Eglit**&lt;br&gt;
+Canopy Growth Corporation&lt;br&gt;
+June 17, 2022
+]
+
+
+
+---
+
+.center[
+# readr Package Overview
+]
+
+- readr contains several related functions for reading flat files into data frames
+   - `read_csv()`: reads comma-delimited files
+   - `read_csv2()`: reads semicolon-separated files
+   - `read_tsv()`: reads tab-delimited files
+   - `read_delim`: reads in files with any delimiter
+   - `read_fwf()`: reads fixed-width files
+   - `read_table()`: reads fixed-width files where the columns are separated by a white space
+   - `read_log()`: reads Apache style log files
+- Other packages available to read other common file formats
+   - readxl: reads Excel files (.xls and .xlsx)
+   - haven:  reads SPSS, Stata, and SAS files
+   
+
+
+---
+
+.center[
+# Using readr
+]
+
+.panelset[
+
+.panel[.panel-name[Basic Usage]
+
+- We'll start with using `read_csv()`
+- `read_csv()` has several important arguments
+- The most important is the file argument, which allows you to specify the .csv file to import
+
+
+```r
+require(readr)
+dat &lt;- read_csv(file = "/Users/graham.eglit/Documents/R_Course/Intro_to_R/data/test_data.csv")
+```
+
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group sex    outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  
+## 1    NA    NA &lt;NA&gt;   &lt;NA&gt;   
+## 2    NA    NA &lt;NA&gt;   &lt;NA&gt;   
+## 3     1     0 male   73     
+## 4     2     0 female 46
+```
+
+
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Relative Paths]
+
+.pull-left[
+- We talked about using relative paths rather than absolute paths in mod5
+- Relative paths are relative to the location of .Rproj file
+  - Transferable across users/systems
+- We will use the here package to specify the relative path
+]
+
+.pull-right[
+
+```r
+require(here)
+read_csv(file = here("data", "test_data.csv"))
+```
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group sex    outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  
+## 1    NA    NA &lt;NA&gt;   &lt;NA&gt;   
+## 2    NA    NA &lt;NA&gt;   &lt;NA&gt;   
+## 3     1     0 male   73     
+## 4     2     0 female 46
+```
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Skip Lines]
+
+.pull-left[
+
+- Note that the data file we're importing has two blank lines beneath the column headers
+- To skip these lines, use the skip argument in `read_csv()`
+
+]
+
+.pull-right[
+
+```r
+read_csv(file = here("data", "test_data.csv"), skip = 2)
+```
+
+
+```
+## # A tibble: 4 × 4
+##    ...1  ...2 ...3    ...4 
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;
+## 1     1     0 male    73   
+## 2     2     0 female  46   
+## 3     3     0 male    26   
+## 4     4     0 Missing 86
+```
+]
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Column Names]
+
+- To supply column names, use the col_names argument in `read_csv`
+
+
+```r
+read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"))
+```
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group sex    outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  
+## 1    NA    NA &lt;NA&gt;   &lt;NA&gt;   
+## 2     1     0 male   73     
+## 3     2     0 female 46     
+## 4     3     0 male   26
+```
+
+]&lt;!----&gt;
+
+
+.panel[.panel-name[NA values]
+
+
+- To specify what values should be read in as missing (NA), use the na argument in `read_csv()`
+
+
+```r
+read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?"))
+```
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group sex      outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;
+## 1    NA    NA ""            NA
+## 2     1     0 "male"        73
+## 3     2     0 "female"      46
+## 4     3     0 "male"        26
+```
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+---
+.center[
+# read_xlsx
+]
+
+.panelset[
+
+.panel[.panel-name[Basic Usage]
+
+.pull-left[
+
+- readxl import functions operate very similar to `read_csv`
+   - `read_xlsx()` imports .xlsx files
+   - `read_xls()` imports .xls files
+   - `read_excel()` will guess whether the files is .xlsx or .xls and import it correctly
+      - if you know the file type, best to use `read_xlsx()` or `read_xls()`
+- As with readr import functions, we'll specify files using relative paths using the here package
+]
+
+.pull-right[
+
+
+```r
+require(readxl)
+read_xlsx(path = here("data", "test_data.xlsx"))
+```
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group sex    outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+## 1    NA    NA &lt;NA&gt;        NA
+## 2    NA    NA &lt;NA&gt;        NA
+## 3     1     0 male        73
+## 4     2     0 female      46
+```
+
+]
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Specifying Sheets]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Alpha]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Shape]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+
+
+
+
+
+
+
+
+---
+
+.center[
+# Parsing
+]
+
+.pull-left[
+- `read_*` functions guess the type of objects in a column
+   - Inspect the first 1000 rows and makes a best guess
+- These guesses are usually correct
+- When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

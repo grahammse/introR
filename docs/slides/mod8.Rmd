@@ -71,3 +71,223 @@ xaringanExtra::use_logo(
 `r rmarkdown::metadata$date`
 ]
 
+
+
+---
+
+.center[
+# readr Package Overview
+]
+
+- readr contains several related functions for reading flat files into data frames
+   - `read_csv()`: reads comma-delimited files
+   - `read_csv2()`: reads semicolon-separated files
+   - `read_tsv()`: reads tab-delimited files
+   - `read_delim`: reads in files with any delimiter
+   - `read_fwf()`: reads fixed-width files
+   - `read_table()`: reads fixed-width files where the columns are separated by a white space
+   - `read_log()`: reads Apache style log files
+- Other packages available to read other common file formats
+   - readxl: reads Excel files (.xls and .xlsx)
+   - haven:  reads SPSS, Stata, and SAS files
+   
+
+
+---
+
+.center[
+# Using readr
+]
+
+.panelset[
+
+.panel[.panel-name[Basic Usage]
+
+- We'll start with using `read_csv()`
+- `read_csv()` has several important arguments
+- The most important is the file argument, which allows you to specify the .csv file to import
+
+```{r eval = FALSE, message = FALSE}
+require(readr)
+dat <- read_csv(file = "/Users/graham.eglit/Documents/R_Course/Intro_to_R/data/test_data.csv")
+```
+
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+head(read_csv(file = "/Users/graham.eglit/Documents/R_Course/Intro_to_R/data/test_data.csv"), n = 4)
+```
+
+
+
+
+]<!---->
+
+.panel[.panel-name[Relative Paths]
+
+.pull-left[
+- We talked about using relative paths rather than absolute paths in mod5
+- Relative paths are relative to the location of .Rproj file
+  - Transferable across users/systems
+- We will use the here package to specify the relative path
+]
+
+.pull-right[
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+require(here)
+read_csv(file = here("data", "test_data.csv"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_csv(file = here("data", "test_data.csv")), n = 4)
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Skip Lines]
+
+.pull-left[
+
+- Note that the data file we're importing has two blank lines beneath the column headers
+- To skip these lines, use the skip argument in `read_csv()`
+
+]
+
+.pull-right[
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_csv(file = here("data", "test_data.csv"), skip = 2)
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_csv(file = here("data", "test_data.csv"), skip = 2), n = 4)
+```
+]
+]<!---->
+
+
+.panel[.panel-name[Column Names]
+
+- To supply column names, use the col_names argument in `read_csv`
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome")), n = 4)
+```
+
+]<!---->
+
+
+.panel[.panel-name[NA values]
+
+
+- To specify what values should be read in as missing (NA), use the na argument in `read_csv()`
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?")), n = 4)
+```
+
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+.center[
+# read_xlsx
+]
+
+.panelset[
+
+.panel[.panel-name[Basic Usage]
+
+.pull-left[
+
+- readxl import functions operate very similar to `read_csv`
+   - `read_xlsx()` imports .xlsx files
+   - `read_xls()` imports .xls files
+   - `read_excel()` will guess whether the files is .xlsx or .xls and import it correctly
+      - if you know the file type, best to use `read_xlsx()` or `read_xls()`
+- As with readr import functions, we'll specify files using relative paths using the here package
+]
+
+.pull-right[
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+require(readxl)
+read_xlsx(path = here("data", "test_data.xlsx"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_xlsx(path = here("data", "test_data.xlsx")), n = 4)
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[Specifying Sheets]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]<!---->
+
+.panel[.panel-name[Alpha]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]<!---->
+
+
+.panel[.panel-name[Shape]
+
+.pull-left[
+
+]
+
+.pull-right[
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+
+
+
+
+
+
+
+
+---
+
+.center[
+# Parsing
+]
+
+.pull-left[
+- `read_*` functions guess the type of objects in a column
+   - Inspect the first 1000 rows and makes a best guess
+- These guesses are usually correct
+- When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
+
+]

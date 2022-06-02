@@ -26,6 +26,8 @@ navbar:
           href: slides/mod5.html 
         - text: "Module 6: Exploratory Data Analysis"
           href: slides/mod6.html
+        - text: "Module 7: Dataframes and Tibbles"
+          href: slides/mod7.html
     - text: "Project Problems"
       menu:
         - text: "Module 2: Base R"
@@ -34,6 +36,8 @@ navbar:
           href: projects/proj6_probs.html
     - text: "Project Solutions"
       menu: 
+        - text: "Module 2: Base R"
+          href: projects/proj2_ans.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_ans.html
     - text: "Resources"

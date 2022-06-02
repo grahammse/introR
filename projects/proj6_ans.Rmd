@@ -214,31 +214,3 @@ ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm, color = species, fil
 That makes more sense!  There's a positive association between bill depth and bill length for all three species, although it may be slightly less strong for Adelie penguins.
 
 
-
-Some bonus content.  The below visualization using a ggplot2 extension package called `ggradar`.  One of the really nice features of ggplot2 is the large number of extension packages that build upon its functionality.  We'll visit more of these packages in our second data visualization module.  The below plot is a radar (or sometimes called spider) plot.  These plots are well-suited to depicting the pattern of multiple continuous variables.
-```{r}
-require(ggradar)
-require(scales)
-penguins %>% 
-  group_by(species) %>% 
-  summarize(bill_length = mean(bill_length_mm, na.rm = TRUE),
-            bill_depth = mean(bill_depth_mm, na.rm = TRUE),
-            body_mass = mean(body_mass_g, na.rm = TRUE),
-            flipper_length = mean(flipper_length_mm, na.rm = TRUE)) %>% # summarize each of the variables by species
-  ungroup() %>% 
-  rename("Bill\nLength" = bill_length,
-         "Flipper\nLength" = flipper_length,
-         "Body\nMass" = body_mass,
-         "Bill\nDepth" = bill_depth) %>% # rename the variables so they look nicer in the plot
-  mutate_at(vars(-species), scales::rescale) %>% # to standardize variable so they're all on the same scale
-  ggradar(base.size = 12, legend.text.size = 12, fill = TRUE, group.point.size = 3, group.line.width = 1) + # ggradar function
-  scale_color_brewer(palette = "Set1") + # changes color of the lines
-  scale_fill_brewer(palette = "Set1") +  # changes fill color for the shaded areas
-  guides(fill = "none", color = "none") + # removes the legend for fill
-  labs(title = "Body Types of <span style = 'color: #E41A1C;'>**Adelie**</span>, <span style = 'color: #377EB8;'>**Chinstrap**</span>, and <span style = 'color: #4DAF4A;'>**Gentoo**</span> Penguins") + # creates a title for the plot
-  theme(plot.title = ggtext::element_markdown(size = 18, hjust = 0.5), # changes size of title text and centers the title
-        legend.position = "bottom") # moves legend to the bottom
-```
- 
-
-
