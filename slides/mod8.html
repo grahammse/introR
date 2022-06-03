@@ -23,6 +23,8 @@
     <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
     <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
     <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="extra.css" type="text/css" />
   </head>
@@ -453,6 +455,21 @@ read_sav(file = here("data", "spss_data.sav"))
 ]
 
 
+---
+
+.center[
+# Now You Try!
+]
+
+1. Open a new .R script and save it as "mod8.R" &lt;br&gt; &lt;br&gt; 
+1. Load the tidyverse, readxl, and haven packages &lt;br&gt; &lt;br&gt; 
+1. Create a section header and name it "Read in data" &lt;br&gt; &lt;br&gt; 
+1. Read in the "problem.csv" file using an absolute path &lt;br&gt; &lt;br&gt;
+1. Read in the "problem.csv" file using a relative path &lt;br&gt; &lt;br&gt;
+1. Identify all problems in the data
+   - Hint:  There are multiple values used to indicate missing data &lt;br&gt; &lt;br&gt;
+1. Read the data in again, correcting for all the problems identified in the step above
+
 
 
 
@@ -485,9 +502,55 @@ class: inverse, center, middle
 
 .pull-left[
 - `read_*` functions guess the type of objects in a column
-   - Inspect the first 1000 rows and makes a best guess
-- These guesses are usually correct
-- When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
+   - Inspect the first 1000 rows and makes a best guess &lt;br&gt; &lt;br&gt;
+- These guesses are usually correct &lt;br&gt; &lt;br&gt;
+- When they're wrong, we can use parsing functions to ensure that the appropriate column type is created &lt;br&gt; &lt;br&gt;
+
+]
+
+.pull-right[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Type &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Heuristic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Contains only F, T, FALSE, or TRUE &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; integer &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Contains only numeric characters &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; double &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Contains only valid doubles (including numbers like 4.5e-5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; number &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Contains valid doubles with the grouping mark inside &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; time &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Matches the default time_format &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; date &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Matches the default date_format &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; date-time &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Any ISO8601 date &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; character &lt;/td&gt;
+   &lt;td style="text-align:left;background-color: white !important;"&gt; Doesn't meet any criteria above &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ]
 
@@ -579,6 +642,24 @@ write_sav(data = dat, path = here("data", "dat.csv"))
 ]&lt;!----&gt;
 
 ]&lt;!--end panelset--&gt;
+
+
+
+---
+
+
+.center[
+# Now You Try!
+]
+
+1. Create a new section header in you .R script and name it "Write to file". &lt;br&gt; &lt;br&gt;
+1. Load the palmerpenguins and nycflights13 packages &lt;br&gt; &lt;br&gt;
+1. Write the palmer penguins data set to a .csv file in your data folder &lt;br&gt; &lt;br&gt;
+1. Write the palmer penguins data set to a .xlsx file in your data folder &lt;br&gt; &lt;br&gt;
+1. Write the diamonds dataset to a .csv file in your data folder &lt;br&gt; &lt;br&gt;
+1. Write the mpg data set to a .csv file in your data folder &lt;br&gt; &lt;br&gt;
+1. Write the mpg data set to a .sav file in your data folder &lt;br&gt; &lt;br&gt;
+1. Write the flights data set to a .csv file in your data folder
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

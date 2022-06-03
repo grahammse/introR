@@ -360,6 +360,21 @@ head(read_sav(file = here("data", "spss_data.sav")), n = 9)
 ]
 
 
+---
+
+.center[
+# Now You Try!
+]
+
+1. Open a new .R script and save it as "mod8.R" <br> <br> 
+1. Load the tidyverse, readxl, and haven packages <br> <br> 
+1. Create a section header and name it "Read in data" <br> <br> 
+1. Read in the "problem.csv" file using an absolute path <br> <br>
+1. Read in the "problem.csv" file using a relative path <br> <br>
+1. Identify all problems in the data
+   - Hint:  There are multiple values used to indicate missing data <br> <br>
+1. Read the data in again, correcting for all the problems identified in the step above
+
 
 
 
@@ -392,9 +407,21 @@ class: inverse, center, middle
 
 .pull-left[
 - `read_*` functions guess the type of objects in a column
-   - Inspect the first 1000 rows and makes a best guess
-- These guesses are usually correct
-- When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
+   - Inspect the first 1000 rows and makes a best guess <br> <br>
+- These guesses are usually correct <br> <br>
+- When they're wrong, we can use parsing functions to ensure that the appropriate column type is created <br> <br>
+
+]
+
+.pull-right[
+```{r echo = FALSE}
+data.frame(
+   Type = c("logical", "integer", "double", "number", "time", "date", "date-time", "character"),
+   Heuristic = c("Contains only F, T, FALSE, or TRUE", "Contains only numeric characters", "Contains only valid doubles (including numbers like 4.5e-5", "Contains valid doubles with the grouping mark inside", "Matches the default time_format", "Matches the default date_format", "Any ISO8601 date", "Doesn't meet any criteria above")
+) %>% 
+   knitr::kable("html", booktabs = FALSE) %>% 
+  kableExtra::column_spec(1:2, background = "white")
+```
 
 ]
 
@@ -483,3 +510,21 @@ write_sav(data = dat, path = here("data", "dat.csv"))
 ]<!---->
 
 ]<!--end panelset-->
+
+
+
+---
+
+
+.center[
+# Now You Try!
+]
+
+1. Create a new section header in you .R script and name it "Write to file". <br> <br>
+1. Load the palmerpenguins and nycflights13 packages <br> <br>
+1. Write the palmer penguins data set to a .csv file in your data folder <br> <br>
+1. Write the palmer penguins data set to a .xlsx file in your data folder <br> <br>
+1. Write the diamonds dataset to a .csv file in your data folder <br> <br>
+1. Write the mpg data set to a .csv file in your data folder <br> <br>
+1. Write the mpg data set to a .sav file in your data folder <br> <br>
+1. Write the flights data set to a .csv file in your data folder
