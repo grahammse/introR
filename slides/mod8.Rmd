@@ -72,6 +72,15 @@ xaringanExtra::use_logo(
 ]
 
 
+---
+class: inverse, center, middle
+
+
+# Importing Data!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
 
 ---
 
@@ -87,6 +96,7 @@ xaringanExtra::use_logo(
    - `read_fwf()`: reads fixed-width files
    - `read_table()`: reads fixed-width files where the columns are separated by a white space
    - `read_log()`: reads Apache style log files
+   -  `read_rds()`: reads R data files
 - Other packages available to read other common file formats
    - readxl: reads Excel files (.xls and .xlsx)
    - haven:  reads SPSS, Stata, and SAS files
@@ -138,6 +148,7 @@ read_csv(file = here("data", "test_data.csv"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
+require(here)
 head(read_csv(file = here("data", "test_data.csv")), n = 4)
 ```
 
@@ -225,6 +236,7 @@ read_xlsx(path = here("data", "test_data.xlsx"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
+require(readxl)
 head(read_xlsx(path = here("data", "test_data.xlsx")), n = 4)
 ```
 
@@ -233,36 +245,77 @@ head(read_xlsx(path = here("data", "test_data.xlsx")), n = 4)
 
 ]<!---->
 
+.panel[.panel-name[Common to read_csv]
+
+.pull-left[
+
+- `read_xlsx()` shares many arguments in common with `read_csv()`
+   - For instance, you can skip lines, specify column names, and identify NA values in `read_xlsx()`
+   - See help documentation (`?read_xlsx`) for more detail
+
+]
+
+.pull-right[
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_xlsx(path = here("data", "test_data.xlsx"), skip = 3, col_names = c("ID", "Group", "sex", "outcome", "X5", "X6", "X7"), na = "-999"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_xlsx(path = here("data", "test_data.xlsx"), skip = 3, col_names = c("ID", "Group", "sex", "outcome", "X5", "X6", "X7"), na = "-999"), n = 4)
+```
+
+
+]
+]<!---->
+
+
+
 .panel[.panel-name[Specifying Sheets]
 
 .pull-left[
 
+- Use the sheets argument to change which sheet to import
+   - Can be a string
+      - The sheet name
+   - Or an integer
+     - The sheet number
 ]
 
 .pull-right[
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_xlsx(path = here("data", "test_data.xlsx"), sheet = 2)
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+require(readxl)
+head(read_xlsx(path = here("data", "test_data.xlsx"), sheet = 2), n = 4)
+```
 
 ]
 ]<!---->
 
-.panel[.panel-name[Alpha]
+.panel[.panel-name[Cell Range]
 
 .pull-left[
 
+- You can limit the rows and columns you import from an excel file using the range argument
+   - This can be helpful in excluding empty rows/columns
+     - For example, when a column includes an accidental space but no data
+   
 ]
 
 .pull-right[
 
-]
-]<!---->
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+read_xlsx(path = here("data", "test_data.xlsx"), sheet = 1, range = "A1:D11")
+```
 
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+head(read_xlsx(path = here("data", "test_data.xlsx"), range = "A1:D11"), n = 4)
+```
 
-.panel[.panel-name[Shape]
-
-.pull-left[
-
-]
-
-.pull-right[
 
 ]
 ]<!---->
@@ -271,7 +324,60 @@ head(read_xlsx(path = here("data", "test_data.xlsx")), n = 4)
 
 
 
+---
 
+.center[
+# haven Import Functions
+]
+
+
+
+.pull-left[
+
+- The haven package has functions to read SPSS, SAS, and Stata files
+   - `read_spss()` or `read_sav()` are the main SPSS import functions
+   - `read_stata()` or `read_dta()` are the main Stata import functions
+   - `read_sas()` is the main SAS import function
+- Here we'll demonstrate how to import a .sav file
+- Consult the help documentation for more import options
+
+]
+
+.pull-right[
+
+```{r eval = FALSE, message = FALSE, warning = FALSE}
+require(haven)
+read_sav(file = here("data", "spss_data.sav"))
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+require(haven)
+head(read_sav(file = here("data", "spss_data.sav")), n = 9)
+```
+
+
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Parsing!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
 
@@ -291,3 +397,89 @@ head(read_xlsx(path = here("data", "test_data.xlsx")), n = 4)
 - When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
 
 ]
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Exporting Data!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+
+---
+
+.center[
+# Writing to a File
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- readr contains several related functions for writing data back to disk
+   - `write_csv()`: creates a .csv file
+   - `write_tsv()`: creates a .tsv file
+   - `write_excel_csv()`: creates a .csv file for excel
+   - `write_rds()`: creates a .rds file (R specific data file)
+
+]<!---->
+
+.panel[.panel-name[write_csv]
+
+- the two most important arguments in the `write_*()` functions are:
+   - x: the data frame or tibble to write to disk
+   - file: the file or connectoin to write to
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+write_csv(x = dat, file = here("data", "dat.csv"))
+```
+
+- See help documentation (`?write_csv`) for details of other arguments
+
+]<!---->
+
+.panel[.panel-name[write.xlsx]
+
+- The readxl package does not contain any functions to write to excel file formats
+- There are several packages that do, though, including the openxlsx and xlsx packages
+- Here we'll use the openxlsx package
+- The `write.xlsx()` function will write to .xlsx file format
+- The two main arguments are again x and file, just as with `write_csv()`
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+require(openxlsx)
+write.xlsx(x = dat, file = here("data", "dat.csv"))
+```
+
+
+]<!---->
+
+
+.panel[.panel-name[write_sav]
+
+- The haven package contains functions that enable write to .sav (SPSS), .sas7bdat (SAS), and .dta (Stata) file formats
+   - `write_sav()`: writes to .sav
+   - `write_sas()`: writes to .sas7bdat
+   - `write_dta()`: writes to .dta
+- As with `write_csv()` and `write.xlsx()`, them main arguments specify the dataframe or table to be exported and the file to create
+   - Note that in haven, these arguments are "data" and "path"
+
+```{r}
+write_sav(data = dat, path = here("data", "dat.csv"))
+```
+
+]<!---->
+
+]<!--end panelset-->

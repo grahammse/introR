@@ -84,6 +84,15 @@ June 17, 2022
 ]
 
 
+---
+class: inverse, center, middle
+
+
+# Importing Data!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
 
 ---
 
@@ -99,6 +108,7 @@ June 17, 2022
    - `read_fwf()`: reads fixed-width files
    - `read_table()`: reads fixed-width files where the columns are separated by a white space
    - `read_log()`: reads Apache style log files
+   -  `read_rds()`: reads R data files
 - Other packages available to read other common file formats
    - readxl: reads Excel files (.xls and .xlsx)
    - haven:  reads SPSS, Stata, and SAS files
@@ -279,13 +289,13 @@ read_xlsx(path = here("data", "test_data.xlsx"))
 
 
 ```
-## # A tibble: 4 × 4
-##      ID Group sex    outcome
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
-## 1    NA    NA &lt;NA&gt;        NA
-## 2    NA    NA &lt;NA&gt;        NA
-## 3     1     0 male        73
-## 4     2     0 female      46
+## # A tibble: 4 × 7
+##      ID Group sex    outcome ...5  ...6  ...7 
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;
+## 1     1     0 male        73 NA    NA    NA   
+## 2     2     0 female      64 NA    NA    NA   
+## 3     3     0 male        26 NA    NA    NA   
+## 4     4     0 male      -999 NA    NA    NA
 ```
 
 ]
@@ -293,36 +303,100 @@ read_xlsx(path = here("data", "test_data.xlsx"))
 
 ]&lt;!----&gt;
 
+.panel[.panel-name[Common to read_csv]
+
+.pull-left[
+
+- `read_xlsx()` shares many arguments in common with `read_csv()`
+   - For instance, you can skip lines, specify column names, and identify NA values in `read_xlsx()`
+   - See help documentation (`?read_xlsx`) for more detail
+
+]
+
+.pull-right[
+
+
+```r
+read_xlsx(path = here("data", "test_data.xlsx"), skip = 3, col_names = c("ID", "Group", "sex", "outcome", "X5", "X6", "X7"), na = "-999"))
+```
+
+
+```
+## # A tibble: 4 × 7
+##      ID Group sex    outcome X5    X6    X7   
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt; &lt;chr&gt;
+## 1     3     0 male        26 NA    &lt;NA&gt;  &lt;NA&gt; 
+## 2     4     0 male        NA NA    &lt;NA&gt;  &lt;NA&gt; 
+## 3     5     0 female      54 NA    &lt;NA&gt;  &lt;NA&gt; 
+## 4     6     1 female      73 NA    &lt;NA&gt;  &lt;NA&gt;
+```
+
+
+]
+]&lt;!----&gt;
+
+
+
 .panel[.panel-name[Specifying Sheets]
 
 .pull-left[
 
+- Use the sheets argument to change which sheet to import
+   - Can be a string
+      - The sheet name
+   - Or an integer
+     - The sheet number
 ]
 
 .pull-right[
+
+
+```r
+read_xlsx(path = here("data", "test_data.xlsx"), sheet = 2)
+```
+
+
+```
+## # A tibble: 4 × 4
+##      ID Group ethnicity outcome
+##   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1   101     0         1      84
+## 2   102     0         3      26
+## 3   103     0         4      45
+## 4   104     0         2      33
+```
 
 ]
 ]&lt;!----&gt;
 
-.panel[.panel-name[Alpha]
+.panel[.panel-name[Cell Range]
 
 .pull-left[
 
+- You can limit the rows and columns you import from an excel file using the range argument
+   - This can be helpful in excluding empty rows/columns
+     - For example, when a column includes an accidental space but no data
+   
 ]
 
 .pull-right[
 
-]
-]&lt;!----&gt;
+
+```r
+read_xlsx(path = here("data", "test_data.xlsx"), sheet = 1, range = "A1:D11")
+```
 
 
-.panel[.panel-name[Shape]
+```
+## # A tibble: 4 × 4
+##      ID Group sex    outcome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+## 1     1     0 male        73
+## 2     2     0 female      64
+## 3     3     0 male        26
+## 4     4     0 male      -999
+```
 
-.pull-left[
-
-]
-
-.pull-right[
 
 ]
 ]&lt;!----&gt;
@@ -331,7 +405,72 @@ read_xlsx(path = here("data", "test_data.xlsx"))
 
 
 
+---
 
+.center[
+# haven Import Functions
+]
+
+
+
+.pull-left[
+
+- The haven package has functions to read SPSS, SAS, and Stata files
+   - `read_spss()` or `read_sav()` are the main SPSS import functions
+   - `read_stata()` or `read_dta()` are the main Stata import functions
+   - `read_sas()` is the main SAS import function
+- Here we'll demonstrate how to import a .sav file
+- Consult the help documentation for more import options
+
+]
+
+.pull-right[
+
+
+```r
+require(haven)
+read_sav(file = here("data", "spss_data.sav"))
+```
+
+
+```
+## # A tibble: 9 × 4
+##      ID group     bmi outcome
+##   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1     1 Group 1  19.6   108. 
+## 2     2 Group 2  29.1    89.0
+## 3     3 Group 1  31.8    98.2
+## 4     4 Group 2  26.3   102. 
+## 5     5 Group 1  22.2   101. 
+## 6     6 Group 2  15.2   112. 
+## 7     7 Group 1  22.4    99.2
+## 8     8 Group 2  23.3   107. 
+## 9     9 Group 1  17.6   118.
+```
+
+
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Parsing!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
 
 
 
@@ -351,6 +490,95 @@ read_xlsx(path = here("data", "test_data.xlsx"))
 - When they're wrong, we can use parsing functions to ensure that the appropriate column type is column type is created
 
 ]
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Exporting Data!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+
+---
+
+.center[
+# Writing to a File
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- readr contains several related functions for writing data back to disk
+   - `write_csv()`: creates a .csv file
+   - `write_tsv()`: creates a .tsv file
+   - `write_excel_csv()`: creates a .csv file for excel
+   - `write_rds()`: creates a .rds file (R specific data file)
+
+]&lt;!----&gt;
+
+.panel[.panel-name[write_csv]
+
+- the two most important arguments in the `write_*()` functions are:
+   - x: the data frame or tibble to write to disk
+   - file: the file or connectoin to write to
+
+
+```r
+write_csv(x = dat, file = here("data", "dat.csv"))
+```
+
+- See help documentation (`?write_csv`) for details of other arguments
+
+]&lt;!----&gt;
+
+.panel[.panel-name[write.xlsx]
+
+- The readxl package does not contain any functions to write to excel file formats
+- There are several packages that do, though, including the openxlsx and xlsx packages
+- Here we'll use the openxlsx package
+- The `write.xlsx()` function will write to .xlsx file format
+- The two main arguments are again x and file, just as with `write_csv()`
+
+
+```r
+require(openxlsx)
+write.xlsx(x = dat, file = here("data", "dat.csv"))
+```
+
+
+]&lt;!----&gt;
+
+
+.panel[.panel-name[write_sav]
+
+- The haven package contains functions that enable write to .sav (SPSS), .sas7bdat (SAS), and .dta (Stata) file formats
+   - `write_sav()`: writes to .sav
+   - `write_sas()`: writes to .sas7bdat
+   - `write_dta()`: writes to .dta
+- As with `write_csv()` and `write.xlsx()`, them main arguments specify the dataframe or table to be exported and the file to create
+   - Note that in haven, these arguments are "data" and "path"
+
+
+```r
+write_sav(data = dat, path = here("data", "dat.csv"))
+```
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
