@@ -1,0 +1,108 @@
+---
+title: "Data Transformation:  Problems"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+
+
+For this project, you'll be working with the flights data set in the nycflights13 package.  If you haven't already done so, install the nycflights13 package (`install.packages("nycflights13")`) and load it (`require(nycflights13)`) along with the tidyverse (`require(tidyverse)`).
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(nycflights13)
+```
+
+
+To get you oriented, let's first take a look at the flights data set
+
+```{r}
+flights
+```
+
+
+```{r}
+glimpse(flights)
+```
+
+Consult the help documentation (`?flights`) for more information on the variables in this data set.
+
+# Filter 
+
+1. Find all flights that
+   a. Had an arrival delay of two or more hours
+   b. Flew to Houston
+   c. Were operated by United, American, or Delta
+   d. Departed in summer (July, August, and September)
+   e. Arrived more tehan two hours late, but didn't leave
+   f. Were delayed by at least one hour, but made up over 30 minutes in flight
+   g. Departed between midnight and 6 a.m. (inclusive)
+2. How many flights have a missing `dep_time`?  What other variables are missing?  What might these rows represent?
+
+# Arrange
+
+3.  How could you use `arrange()` to sort all missing values to the start? (Hint:  use `is.na()`)
+4.  Sort flights to find the most delayed flights.  Find the flights that left earliest.
+5.  Sort flights to find the fastest flights.
+
+# Select
+
+6. Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`.
+7. What happens if you include the name of a variable multiple times in a select() call?
+
+# Mutate
+
+8. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
+9. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?
+
+# Summarize
+
+10.  Use the following code to identify canceled flights: `is.na(arr_delay) | is.na(dep_delay)`.  Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?

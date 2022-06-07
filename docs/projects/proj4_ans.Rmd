@@ -1,0 +1,443 @@
+---
+title: "Data Transformation:  Solutions"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+For this project, you'll be working with the flights data set in the
+nycflights13 package. If you haven't already done so, install the
+nycflights13 package (`install.packages("nycflights13")`) and load it
+(`require(nycflights13)`) along with the tidyverse
+(`require(tidyverse)`).
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(nycflights13)
+```
+
+To get you oriented, let's first take a look at the flights data set
+
+```{r}
+flights
+```
+
+```{r}
+glimpse(flights)
+```
+
+Consult the help documentation (`?flights`) for more information on the
+variables in this data set.
+
+# Filter
+
+1.  Find all flights that
+
+    a.  Had an arrival delay of two or more hours
+
+    ```{r}
+    filter(flights, arr_delay >= 120)
+    ```
+
+    b.  Flew to Houston
+
+    ```{r}
+    filter(flights, dest == "IAH" | dest == "HOU")
+    ```
+
+The above code is fine; however, using %in% is more compact and would
+scale to cases where there were more than two airports we were
+interested in.
+
+```{r}
+filter(flights, dest %in% c("IAH", "HOU"))
+```
+
+c.  Were operated by United, American, or Delta. Hint the carrier codes
+    for United, American, and Delta are "UL", "AA", and "DL",
+    respectively
+
+```{r}
+filter(flights, carrier %in% c("AA", "DL", "UA"))
+```
+
+d.  Departed in summer (July, August, and September)
+
+```{r}
+filter(flights, month >= 7, month <= 9)
+```
+
+e.  Arrived more than two hours late, but didn't leave late
+
+```{r}
+filter(flights, arr_delay > 120, dep_delay <= 0)
+```
+
+f.  Were delayed by at least one hour, but made up over 30 minutes in
+    flight
+
+```{r}
+filter(flights, dep_delay >= 60, dep_delay - arr_delay > 30)
+```
+
+g.  Departed between midnight and 6 a.m. (inclusive)
+
+In dep_time, midnight is represented by 2400, not 0. You can verify this
+by checking the minimum and maximum of dep_time.
+
+```{r}
+summary(flights$dep_time)
+```
+
+This is an example of why it is always good to check the summary
+statistics of your data. Unfortunately, this means we cannot simply
+check that dep_time \< 600, because we also have to consider the special
+case of midnight.
+
+```{r}
+filter(flights, dep_time <= 600 | dep_time == 2400)
+```
+
+2.  How many flights have a missing `dep_time`? What other variables are
+    missing? What might these rows represent?
+
+Find the rows of flights with a missing departure time (dep_time) using
+the is.na() function.
+
+```{r}
+filter(flights, is.na(dep_time))
+```
+
+Notably, the arrival time (arr_time) is also missing for these rows.
+These seem to be cancelled flights.
+
+# Arrange
+
+3.  How could you use `arrange()` to sort all missing values to the
+    start? (Hint: use `is.na()`)
+
+The arrange() function puts NA values last.
+
+```{r}
+arrange(flights, dep_time) %>%
+  tail()
+```
+
+Using desc() does not change that.
+
+```{r}
+arrange(flights, desc(dep_time))
+```
+
+To put NA values first, we can add an indicator of whether the column
+has a missing value. Then we sort by the missing indicator column and
+the column of interest. For example, to sort the data frame by departure
+time (dep_time) in ascending order but NA values first, run the
+following.
+
+```{r}
+arrange(flights, desc(is.na(dep_time)), dep_time)
+```
+
+The flights will first be sorted by desc(is.na(dep_time)). Since
+desc(is.na(dep_time)) is either TRUE when dep_time is missing, or FALSE,
+when it is not, the rows with missing values of dep_time will come
+first, since TRUE \> FALSE.
+
+4.  Sort flights to find the most delayed flights. Find the flights that
+    left earliest.
+
+```{r}
+arrange(flights, desc(dep_delay))
+```
+
+The most delayed flight was HA 51, JFK to HNL, which was scheduled to
+leave on January 09, 2013 09:00. Note that the departure time is given
+as 641, which seems to be less than the scheduled departure time. But
+the departure was delayed 1,301 minutes, which is 21 hours, 41 minutes.
+The departure time is the day after the scheduled departure time. Be
+happy that you weren't on that flight, and if you happened to have been
+on that flight and are reading this, I'm sorry for you.
+
+Similarly, the earliest departing flight can be found by sorting
+dep_delay in ascending order.
+
+```{r}
+arrange(flights, dep_delay)
+```
+
+Flight B6 97 (JFK to DEN) scheduled to depart on December 07, 2013 at
+21:23 departed 43 minutes early.
+
+5.  Sort flights to find the fastest flights.
+
+There are actually two ways to interpret this question: one that can be
+solved by using arrange(), and a more complex interpretation that
+requires creation of a new variable using mutate(), which we haven't
+seen demonstrated before.
+
+The colloquial interpretation of "fastest" flight can be understood to
+mean "the flight with the shortest flight time". We can use arrange to
+sort our data by the air_time variable to find the shortest flights:
+
+```{r}
+head(arrange(flights, air_time))
+```
+
+Another definition of the "fastest flight" is the flight with the
+highest average ground speed. The ground speed is not included in the
+data, but it can be calculated from the distance and air_time of the
+flight.
+
+```{r}
+flights %>% 
+  mutate(speed = distance / air_time) %>% 
+  arrange(desc(speed)) %>% 
+  select(speed, everything())
+```
+
+# Select
+
+6.  Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`.
+
+These are a few ways to select columns.
+
+-   Specify columns names as unquoted variable names.
+
+    ```{r}
+    select(flights, dep_time, dep_delay, arr_time, arr_delay)
+    ```
+
+-   Specify column names as strings.
+
+    ```{r}
+    select(flights, "dep_time", "dep_delay", "arr_time", "arr_delay")
+    ```
+
+-   Specify the column numbers of the variables.
+
+    ```{r}
+    select(flights, 4, 6, 7, 9)
+    ```
+
+- This works, but is not good practice for two reasons.
+   - First, the column location of variables may change, resulting in code that may continue to run without error, but produce the wrong answer.
+   - Second code is obfuscated, since it is not clear from the code which variables are being selected. What variable does column 6 correspond to?
+
+- Specify the names of the variables with character vector and `any_of()` or `all_of()`
+
+```{r}
+select(flights, all_of(c("dep_time", "dep_delay", "arr_time", "arr_delay")))
+```
+
+```{r}
+select(flights, any_of(c("dep_time", "dep_delay", "arr_time", "arr_delay")))
+```
+
+  -   This is useful because the names of the variables can be stored in a variable and passed to `all_of()` or `any_of()`.
+
+    -   These functions differ in their strictness. The function `all_of()` will raise an error if one of the variable names is not present, while `any_of()` will ignore it.
+
+```{r}
+variables <- c("dep_time", "dep_delay", "arr_time", "arr_delay") 
+select(flights, all_of(variables))
+```
+
+- Selecting the variables by matching the start of their names using `starts_with()`.
+
+```{r}
+select(flights, starts_with("dep_"), starts_with("arr_"))
+```
+
+7.  What happens if you include the name of a variable multiple times in
+    a `select()` call?
+
+The `select()` call ignores the duplication. Any duplicated variables are only included once, in the first location they appear.  The `select()` function does not raise an error or warning or print any message if there are duplicated variables.
+
+    ```{r}
+    select(flights, year, month, day, year, year)
+    ```
+
+This behavior is useful because it means that we can use `select()` with `everything()` in order to easily change the order of columns without having to specify the names of all the columns.
+
+```{r}
+select(flights, arr_delay, everything())
+```
+
+
+# Mutate
+
+8. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
+
+To get the departure times in the number of minutes, divide dep_time by 100 to get the hours since midnight and multiply by 60 and add the remainder of dep_time divided by 100. For example, 1504 represents 15:04 (or 3:04 PM), which is 904 minutes after midnight. To generalize this approach, we need a way to split out the hour-digits from the minute-digits. Dividing by 100 and discarding the remainder using the integer division operator, %/% gives us the following.
+
+```{r}
+1504 %/% 100
+```
+
+Instead of %/% could also use / along with trunc() or floor(), but round() would not work. To get the minutes, instead of discarding the remainder of the division by 100, we only want the remainder. So we use the modulo operator, %%, discussed in the Other Useful Functions section.
+
+```{r}
+1504 %% 100
+```
+
+Now, we can combine the hours (multiplied by 60 to convert them to minutes) and minutes to get the number of minutes after midnight.
+
+```{r}
+504 %/% 100 * 60 + 1504 %% 100
+```
+
+There is one remaining issue. Midnight is represented by 2400, which would correspond to 1440 minutes since midnight, but it should correspond to 0. After converting all the times to minutes after midnight, x %% 1440 will convert 1440 to zero while keeping all the other times the same.
+
+Now we will put it all together. The following code creates a new data frame flights_times with columns dep_time_mins and sched_dep_time_mins. These columns convert dep_time and sched_dep_time, respectively, to minutes since midnight.
+
+```{r}
+flights_times <- mutate(flights,
+  dep_time_mins = (dep_time %/% 100 * 60 + dep_time %% 100) %% 1440,
+  sched_dep_time_mins = (sched_dep_time %/% 100 * 60 +
+    sched_dep_time %% 100) %% 1440
+)
+
+select(
+  flights_times, dep_time, dep_time_mins, sched_dep_time,
+  sched_dep_time_mins
+)
+```
+
+9. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?
+
+I expect that air_time is the difference between the arrival (arr_time) and departure times (dep_time). In other words, air_time = arr_time - dep_time.
+
+To check that this relationship, I’ll first need to convert the times to a form more amenable to arithmetic operations using the same calculations as the previous exercise.
+
+```{r}
+flights_airtime <-
+  mutate(flights,
+    dep_time = (dep_time %/% 100 * 60 + dep_time %% 100) %% 1440,
+    arr_time = (arr_time %/% 100 * 60 + arr_time %% 100) %% 1440,
+    air_time_diff = air_time - arr_time + dep_time
+  )
+```
+
+So, does air_time = arr_time - dep_time? If so, there should be no flights with non-zero values of air_time_diff.
+
+```{r}
+nrow(filter(flights_airtime, air_time_diff != 0))
+```
+
+It turns out that there are many flights for which air_time != arr_time - dep_time. Other than data errors, I can think of two reasons why air_time would not equal arr_time - dep_time.
+
+- The flight passes midnight, so arr_time < dep_time. In these cases, the difference in airtime should be by 24 hours (1,440 minutes).
+
+- The flight crosses time zones, and the total air time will be off by hours (multiples of 60). All flights in flights departed from New York City and are domestic flights in the US. This means that flights will all be to the same or more westerly time zones. Given the time-zones in the US, the differences due to time-zone should be 60 minutes (Central) 120 minutes (Mountain), 180 minutes (Pacific), 240 minutes (Alaska), or 300 minutes (Hawaii).
+
+Both of these explanations have clear patterns that I would expect to see if they were true. In particular, in both cases, since time-zones and crossing midnight only affects the hour part of the time, all values of air_time_diff should be divisible by 60. I’ll visually check this hypothesis by plotting the distribution of air_time_diff. If those two explanations are correct, distribution of air_time_diff should comprise only spikes at multiples of 60.
+
+```{r}
+ggplot(flights_airtime, aes(x = air_time_diff)) +
+  geom_histogram(binwidth = 1)
+```
+
+To fix these time-zone issues, I would want to convert all the times to a date-time to handle overnight flights, and from local time to a common time zone, most likely UTC, to handle flights crossing time-zones. The tzone column of nycflights13::airports gives the time-zone of each airport. See the “Dates and Times” for an introduction on working with date and time data.
+
+But that still leaves the other differences unexplained. So what else might be going on? There seem to be too many problems for this to be data entry problems, so I’m probably missing something. So, I’ll reread the documentation to make sure that I understand the definitions of arr_time, dep_time, and air_time. The documentation contains a link to the source of the flights data, https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236. This documentation shows that the flights data does not contain the variables TaxiIn, TaxiOff, WheelsIn, and WheelsOff. It appears that the air_time variable refers to flight time, which is defined as the time between wheels-off (take-off) and wheels-in (landing). But the flight time does not include time spent on the runway taxiing to and from gates. With this new understanding of the data, I now know that the relationship between air_time, arr_time, and dep_time is air_time <= arr_time - dep_time, supposing that the time zones of arr_time and dep_time are in the same time zone.
+
+# Summarize
+
+10.  Use the following code to identify canceled flights: `is.na(arr_delay) | is.na(dep_delay)`.  Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?
+
+One pattern in cancelled flights per day is that the number of cancelled flights increases with the total number of flights per day. The proportion of cancelled flights increases with the average delay of flights.
+
+The first part of the question asks for any pattern in the number of cancelled flights per day. I’ll look at the relationship between the number of cancelled flights per day and the total number of flights in a day. There should be an increasing relationship for two reasons. First, if all flights are equally likely to be cancelled, then days with more flights should have a higher number of cancellations. Second, it is likely that days with more flights would have a higher probability of cancellations because congestion itself can cause delays and any delay would affect more flights, and large delays can lead to cancellations.
+
+```{r}
+cancelled_per_day <- 
+  flights %>%
+  mutate(cancelled = (is.na(arr_delay) | is.na(dep_delay))) %>%
+  group_by(year, month, day) %>%
+  summarise(
+    cancelled_num = sum(cancelled),
+    flights_num = n(),
+  )
+```
+
+Plotting flights_num against cancelled_num shows that the number of flights cancelled increases with the total number of flights.
+
+```{r}
+ggplot(cancelled_per_day) +
+  geom_point(aes(x = flights_num, y = cancelled_num)) 
+```
+
+The second part of the question asks whether there is a relationship between the proportion of flights cancelled and the average departure delay. I implied this in my answer to the first part of the question, when I noted that increasing delays could result in increased cancellations. The question does not specify which delay, so I will show the relationship for both.
+
+```{r}
+cancelled_and_delays <- 
+  flights %>%
+  mutate(cancelled = (is.na(arr_delay) | is.na(dep_delay))) %>%
+  group_by(year, month, day) %>%
+  summarise(
+    cancelled_prop = mean(cancelled),
+    avg_dep_delay = mean(dep_delay, na.rm = TRUE),
+    avg_arr_delay = mean(arr_delay, na.rm = TRUE)
+  ) %>%
+  ungroup()
+```
+
+There is a positive relationship between both average departure delay and
+and average arrival delay and the proportion of canceled flights.
+
+```{r}
+ggplot(cancelled_and_delays) +
+  geom_point(aes(x = avg_dep_delay, y = cancelled_prop))
+```
+
+```{r}
+ggplot(cancelled_and_delays) +
+  geom_point(aes(x = avg_arr_delay, y = cancelled_prop))
+```
+

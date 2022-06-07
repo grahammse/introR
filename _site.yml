@@ -32,12 +32,20 @@ navbar:
       menu:
         - text: "Module 2: Base R"
           href: projects/proj2_probs.html
+        - text: "Module 3: Data Visualization I"
+          href: projects/proj3_probs.html
+        - text: "Module 4: Data Transformation"
+          href: projects/proj4_probs.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_probs.html
     - text: "Project Solutions"
       menu: 
         - text: "Module 2: Base R"
           href: projects/proj2_ans.html
+        - text: "Module 3: Data Visualization I"
+          href: projects/proj3_ans.html
+        - text: "Module 4: Data Transformation"
+          href: projects/proj4_ans.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_ans.html
     - text: "Resources"

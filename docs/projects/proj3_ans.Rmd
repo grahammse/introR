@@ -1,0 +1,384 @@
+---
+title: "Data Visualization I:  Solutions"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+```{r}
+require(tidyverse)
+```
+
+1.  Run `ggplot(data = mpg)`. What do you see? <br>
+
+```{r}
+ggplot(data = mpg)
+```
+
+This code creates an empty plot. The ggplot() function creates the
+background of the plot, but since no layers were specified with geom
+function, nothing is drawn. <br> <br> 2. Make a scatterplot of hwy
+versus cyl using the mpg dataset. <br>
+
+```{r}
+ggplot(mpg, aes(x = cyl, y = hwy)) +
+  geom_point()
+```
+
+<br> <br> 3. What happens if you make a scatterplot of class versus drv?
+Why is the plot not useful? <br>
+
+```{r}
+ggplot(mpg, aes(x = class, y = drv)) +
+  geom_point()
+```
+
+<br> A scatter plot is not a useful display of these variables since
+both drv and class are categorical variables. Since categorical
+variables typically take a small number of values, there are a limited
+number of unique combinations of (x, y) values that can be displayed. In
+this data, drv takes 3 values and class takes 7 values, meaning that
+there are only 21 values that could be plotted on a scatterplot of drv
+vs. class. In this data, there 12 values of (drv, class) are observed.
+
+```{r}
+count(mpg, drv, class)
+```
+
+A simple scatter plot does not show how many observations there are for
+each (x, y) value. As such, scatterplots work best for plotting a
+continuous x and a continuous y variable, and when all (x, y) values are
+unique. <br>
+
+Below are two alternative plots that are well-suited for displaying
+categorical x categorical visualizations.
+
+```{r}
+ggplot(mpg, aes(x = class, y = drv)) +
+  geom_count()
+```
+
+```{r}
+mpg %>%
+  count(class, drv) %>%
+  ggplot(aes(x = class, y = drv)) +
+    geom_tile(mapping = aes(fill = n))
+```
+
+<br> <br> 4. Which variables in mpg are categorical? Which variables are
+continuous (Hint: type ?mpg to read the documentation for the dataset).
+How can you see this information when you run mpg? <br>
+
+The following list contains the categorical variables in mpg:
+
+-   manufacturer
+
+-   model
+
+-   trans
+
+-   drv
+
+-   fl
+
+-   class
+
+The following list contains the continuous variables in mpg:
+
+-   displ
+
+-   year
+
+-   cyl
+
+-   cty
+
+-   hwy
+
+In the printed tibble, angled brackets at the top of each column provide
+type of each variable.
+
+```{r}
+mpg
+```
+
+Those with `<chr>` above their columns are categorical, while those with
+`<dbl>` or `<int>` are continuous.
+
+We could also use the `str` function to evaluate object type
+
+```{r}
+str(mpg)
+```
+
+Finally, `glimpse` also produces an `str`-like summary of a data frame.
+
+```{r}
+glimpse(mpg)
+```
+
+<br> <br> 5. What happens if you map an aesthetic to something other
+than a variable name, like `aes(color = displ < 5)` 6. What happens if
+you facet on a continuous variable? <br>
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, colour = displ < 5)) +
+  geom_point()
+```
+
+<br>
+
+Aesthetics can also be mapped to expressions like `displ < 5`. The
+`ggplot()` function behaves as if a temporary variable was added to the
+data with values equal to the result of the expression. In this case,
+the result of `displ < 5` is a logical variable which takes values of
+`TRUE` or `FALSE`.
+
+<br> <br> 6. What happens if you facet on a continuous variable?
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(. ~ cty)
+```
+
+<br>
+
+The continuous variable is converted to a categorical variable, and the
+plot contains a facet for each distinct value.
+
+<br> <br> 7. What do the empty cells in a plot with
+`facet_grid(drv~cyl)` mean? How do they relate to this plot? <br>
+`ggplot(data = mpg) + geom_point(aes(x = drv, y = cyl)) <br>`
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = hwy, y = cty)) +
+  facet_grid(drv ~ cyl)
+```
+
+<br>
+
+The empty cells (facets) in this plot are combinations of `drv` and
+`cyl` that have no observations.
+These are the same locations in the scatter plot of `drv` and `cyl` that
+have no points.
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = cyl, y = drv)) + 
+  scale_y_discrete(limits = rev)
+```
+
+<br> <br> 8. What geom would you use to draw a line chart? A boxplot? A
+histogram? An area chart? <br>
+
+-   line chart: `geom_line()`
+
+-   boxplot: `geom_boxplot()`
+
+-   histogram: `geom_histogram()`
+
+-   area chart: `geom_area()`
+
+<br> <br> 9. What does `show.legend = FALSE` do? What happens if you
+remove it?
+
+The theme option `show.legend = FALSE` hides the legend box.
+
+Consider this example earlier in the chapter.
+
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, colour = drv),
+    show.legend = FALSE
+  )
+```
+
+<br>
+
+In that plot, there is no legend. Removing the `show.legend` argument or
+setting `show.legend = TRUE` will result in the plot having a legend
+displaying the mapping between colors and `drv`.
+
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, colour = drv))
+```
+
+<br> <br> 10. What does `geom_col` do? How is it different from
+`geom_bar`? <br>
+
+The `geom_col()` function has different default stat than `geom_bar()`.
+The default stat of `geom_col()` is `stat_identity()`, which leaves the
+data as is.
+The `geom_col()` function expects that the data contains `x` values and
+`y` values which represent the bar height.
+
+The default stat of `geom_bar()` is `stat_count()`.
+The `geom_bar()` function only expects an `x` variable.
+The stat, `stat_count()`, preprocesses input data by counting the number
+of observations for each value of `x`.
+The `y` aesthetic uses the values of these counts.
+
+<br> <br> 11. What is the problem with this plot? How could you improve
+it?
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+require(tidyverse)
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()
+```
+
+<br>
+
+There is overplotting because there are multiple observations for each
+combination of `cty` and `hwy` values.
+
+I would improve the plot by using a jitter position adjustment to
+decrease overplotting.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point(position = "jitter")
+```
+
+<br> <br> 13. What parameters to `geom_jitter` control the amount of
+jittering? <br>
+
+From the
+[`geom_jitter()`](https://ggplot2.tidyverse.org/reference/geom_jitter.html)
+documentation, there are two arguments to jitter:
+
+-   `width` controls the amount of horizontal displacement, and
+
+-   `height` controls the amount of vertical displacement.
+
+The defaults values of `width` and `height` will introduce noise in both
+directions.
+Here is what the plot looks like with the default values of `height` and
+`width`.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point(position = position_jitter())
+```
+
+<br>
+
+However, we can change these parameters.
+Here are few a examples to understand how these parameters affect the
+amount of jittering.
+When`width = 0` there is no horizontal jitter.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter(width = 0)
+```
+
+<br>
+
+When `width = 20`, there is too much horizontal jitter.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter(width = 20)
+```
+
+<br>
+
+When `height = 0`, there is no vertical jitter.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter(height = 0)
+```
+
+When `height = 15`, there is too much vertical jitter.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter(height = 15)
+```
+
+<br>
+
+When `width = 0` and `height = 0`, there is neither horizontal or
+vertical jitter,
+and the plot produced is identical to the one produced with
+`geom_point()`
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter(height = 0, width = 0)
+```
+
+Note that the `height` and `width` arguments are in the units of the
+data.
+Thus `height = 1` (`width = 1`) corresponds to different relative
+amounts of jittering depending on the scale of the `y` (`x`) variable.
+The default values of `height` and `width` are defined to be 80% of the
+`resolution()` of the data, which is the smallest non-zero distance
+between adjacent values of a variable.
+When `x` and `y` are discrete variables,
+their resolutions are both equal to 1, and `height = 0.4` and
+`width = 0.4` since the jitter moves points in both positive and
+negative directions.
+
+The default values of `height` and `width` in `geom_jitter()` are
+non-zero, so unless both `height` and `width` are explicitly set set 0,
+there will be some jitter.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter()
+```
