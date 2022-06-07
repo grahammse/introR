@@ -205,9 +205,8 @@ ggplot(data = mpg) +
 <br>
 
 The empty cells (facets) in this plot are combinations of `drv` and
-`cyl` that have no observations.
-These are the same locations in the scatter plot of `drv` and `cyl` that
-have no points.
+`cyl` that have no observations. These are the same locations in the
+scatter plot of `drv` and `cyl` that have no points.
 
 ```{r}
 ggplot(data = mpg) +
@@ -257,15 +256,13 @@ ggplot(data = mpg) +
 
 The `geom_col()` function has different default stat than `geom_bar()`.
 The default stat of `geom_col()` is `stat_identity()`, which leaves the
-data as is.
-The `geom_col()` function expects that the data contains `x` values and
-`y` values which represent the bar height.
+data as is. The `geom_col()` function expects that the data contains `x`
+values and `y` values which represent the bar height.
 
-The default stat of `geom_bar()` is `stat_count()`.
-The `geom_bar()` function only expects an `x` variable.
-The stat, `stat_count()`, preprocesses input data by counting the number
-of observations for each value of `x`.
-The `y` aesthetic uses the values of these counts.
+The default stat of `geom_bar()` is `stat_count()`. The `geom_bar()`
+function only expects an `x` variable. The stat, `stat_count()`,
+preprocesses input data by counting the number of observations for each
+value of `x`. The `y` aesthetic uses the values of these counts.
 
 <br> <br> 11. What is the problem with this plot? How could you improve
 it?
@@ -304,9 +301,8 @@ documentation, there are two arguments to jitter:
 -   `height` controls the amount of vertical displacement.
 
 The defaults values of `width` and `height` will introduce noise in both
-directions.
-Here is what the plot looks like with the default values of `height` and
-`width`.
+directions. Here is what the plot looks like with the default values of
+`height` and `width`.
 
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
@@ -315,9 +311,8 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 <br>
 
-However, we can change these parameters.
-Here are few a examples to understand how these parameters affect the
-amount of jittering.
+However, we can change these parameters. Here are few a examples to
+understand how these parameters affect the amount of jittering.
 When`width = 0` there is no horizontal jitter.
 
 ```{r}
@@ -353,9 +348,8 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 <br>
 
 When `width = 0` and `height = 0`, there is neither horizontal or
-vertical jitter,
-and the plot produced is identical to the one produced with
-`geom_point()`
+vertical jitter, and the plot produced is identical to the one produced
+with `geom_point()`
 
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
@@ -363,14 +357,12 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 ```
 
 Note that the `height` and `width` arguments are in the units of the
-data.
-Thus `height = 1` (`width = 1`) corresponds to different relative
+data. Thus `height = 1` (`width = 1`) corresponds to different relative
 amounts of jittering depending on the scale of the `y` (`x`) variable.
 The default values of `height` and `width` are defined to be 80% of the
 `resolution()` of the data, which is the smallest non-zero distance
-between adjacent values of a variable.
-When `x` and `y` are discrete variables,
-their resolutions are both equal to 1, and `height = 0.4` and
+between adjacent values of a variable. When `x` and `y` are discrete
+variables, their resolutions are both equal to 1, and `height = 0.4` and
 `width = 0.4` since the jitter moves points in both positive and
 negative directions.
 

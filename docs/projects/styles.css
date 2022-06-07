@@ -16,10 +16,6 @@ h3 { /* Header 3 */
 }
 
 
-h1 {
-  text-align: center;
-}
-
 h1, h2, h3 {
   color: black;
 }
@@ -27,4 +23,12 @@ h1, h2, h3 {
 body {
   color: #a6873b;
   background-color: #e3e3e2;
+}
+
+pre:not([class]) {
+  background-color: white;
+}
+
+pre {
+  background-color: #c5b690;
 }
