@@ -38,6 +38,8 @@ navbar:
           href: projects/proj4_probs.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_probs.html
+        - text: "Module 7: Tibbles"
+          href: projects/proj7_probs.html
     - text: "Project Solutions"
       menu: 
         - text: "Module 2: Base R"
@@ -48,6 +50,8 @@ navbar:
           href: projects/proj4_ans.html
         - text: "Module 6: Exploratory Data Analysis"
           href: projects/proj6_ans.html
+        - text: "Module 7: Tibbles"
+          href: projects/proj7_ans.html
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github

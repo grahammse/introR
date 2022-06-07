@@ -1,0 +1,127 @@
+---
+title: "Tibbles:  Solutions"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+```
+
+
+1.  How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).
+
+When we print mtcars, it prints all the columns.
+
+```{r}
+mtcars
+```
+
+But when we first convert `mtcars` to a tibble using `as_tibble()`, it prints only the first ten observations. There are also some other differences in formatting of the printed data frame. It prints the number of rows and columns and the date type of each column.
+
+```{r}
+as_tibble(mtcars)
+```
+
+You can use the function is_tibble() to check whether a data frame is a tibble or not. The mtcars data frame is not a tibble.
+
+```{r}
+is_tibble(mtcars)
+```
+
+More generally, you can use the class() function to find out the class of an object. Tibbles has the classes c("tbl_df", "tbl", "data.frame"), while old data frames will only have the class "data.frame".
+
+```{r}
+class(mtcars)
+```
+
+
+2. Practice referring to non-syntactic names in the following data frame by:
+```{r}
+annoying <- tibble(
+  `1` = 1:10,
+  `2` = `1` * 2 + rnorm(length(`1`))
+)
+```
+   - Extracting the variable called 1.
+    
+```{r}
+annoying[["1"]]
+```
+ 
+ or 
+ 
+```{r}
+annoying$`1`
+```
+    
+  - Plotting a scatterplot of 1 vs 2.
+```{r}
+ggplot(annoying, aes(x = `1`, y = `2`)) +
+  geom_point()
+```
+    
+  - Creating a new column called 3 which is 2 divided by 1.
+```{r}
+annoying <- mutate(annoying, `3` = `2` / `1`)
+annoying
+```
+    
+  - Renaming the columns to one, two and three.
+```{r}
+annoying <- rename(annoying, one = `1`, two = `2`, three = `3`)
+glimpse(annoying)
+```
+    
+
+3. What option controls how many additional column names are printed at the footer of a tibble?
+
+The help page for the `print()` method of tibble objects is discussed in `?print.tbl`. The `max_extra_cols` argument determines the number of extra columns to print information for.
+

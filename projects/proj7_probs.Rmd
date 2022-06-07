@@ -1,0 +1,71 @@
+---
+title: "Tibbles:  Problems"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+1.  How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).
+
+2. Practice referring to non-syntactic names in the following data frame by:
+```{r eval = FALSE}
+annoying <- tibble(
+  `1` = 1:10,
+  `2` = `1` * 2 + rnorm(length(`1`))
+)
+```
+    
+  - Extracting the variable called 1.
+  - Plotting a scatterplot of 1 vs 2.
+  - Creating a new column called 3 which is 2 divided by 1.
+  - Renaming the columns to one, two and three.
+3. What option controls how many additional column names are printed at the footer of a tibble?
+    
+    
