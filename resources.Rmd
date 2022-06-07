@@ -29,6 +29,11 @@ Good resource for data visualization with a focus on concrete applications
 
 ### R Markdown
 
+[![R Markdown](images/resources/rmc.png){width=17.5%}](https://bookdown.org/yihui/rmarkdown/){target="_blank"} 
+<br>
+The most comprehensive guide to R Markdown
+<br>
+
 [![R Markdown Cookbook](images/resources/rmc.png){width=17.5%}](https://bookdown.org/yihui/rmarkdown-cookbook/){target="_blank"} 
 <br>
 Great guide to R Markdown with specific strategies and use cases
