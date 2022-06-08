@@ -56,25 +56,25 @@ editor_options:
 For this exercise, you'll explore the Palmer penguins data set that we worked with in module 4.  Load the `tidyverse` and `palmerpenguins` packages.
 
 
-1.  First, I'd like to you to evaluate the structure of the data set and identify which variables are continuous and which are discrete.
+1.  First, I'd like to you to evaluate the structure of the data set and identify which variables are continuous and which are discrete. <br> <br> 
 
-2.  Based on the results from (1), it looks like we have a mix of discrete and continuous variables.  I want us to leave "year" off to the side for now.  Although it's an integer, it only has three values (2007, 2008, 2009), so it may be better thought of as a factor.  For exercise 2, I would like you to make a visualization of the variability of each of the continuous outcomes.  Use at least two different geoms for this exercise and make sure to examine different bindwidths to improve your visualization.
+2.  Based on the results from (1), it looks like we have a mix of discrete and continuous variables.  I want us to leave "year" off to the side for now.  Although it's an integer, it only has three values (2007, 2008, 2009), so it may be better thought of as a factor.  For exercise 2, I would like you to make a visualization of the variability of each of the continuous outcomes.  Use at least two different geoms for this exercise and make sure to examine different bindwidths to improve your visualization. <br> <br> 
 
-3.  Describe each of the distributions from exercise 2 above.  Are they normally distributed, unimodal/bimodal/etc., skewed, widely dispersed, etc.?  Based on the characteristics of these distributions and your knowledge of other variables in the dataset, come up with a hypothesis that might explain the variability that you see in these distributions.
+3.  Describe each of the distributions from exercise 2 above.  Are they normally distributed, unimodal/bimodal/etc., skewed, widely dispersed, etc.?  Based on the characteristics of these distributions and your knowledge of other variables in the dataset, come up with a hypothesis that might explain the variability that you see in these distributions. <br> <br> 
 
-4.  Now I'd like you to visualize the variability for each of the categorical variables in the penguins data set.
+4.  Now I'd like you to visualize the variability for each of the categorical variables in the penguins data set. <br> <br> 
 
-5.  Now I'd like us to explore a hypothesis for exercise 3.  Let's look at the two distributions that looked the most bimodal.  Given the bimodality, sex may be important to the variation in these variables.  I'd like you to create a covariation plot where you map sex to color for bill length and flipper length.  Make sure to use a plot that is designed for a continuous x categorical variable covariation.
+5.  Now I'd like us to explore a hypothesis for exercise 3.  Let's look at the two distributions that looked the most bimodal.  Given the bimodality, sex may be important to the variation in these variables.  I'd like you to create a covariation plot where you map sex to color for bill length and flipper length.  Make sure to use a plot that is designed for a continuous x categorical variable covariation. <br> <br> 
 
-6.  It looks like there are some missing values in sex that muddy up those visualization.  I'd like you to create those visualization again, but this time filtering the NA values for sex out of the plot.
+6.  It looks like there are some missing values in sex that muddy up those visualization.  I'd like you to create those visualization again, but this time filtering the NA values for sex out of the plot. <br> <br> 
 
-7.  It doesn't look like sex accounts for the bimodality.  Male penguins appear to have greater bill and flipper length than female penguins, but both males and females appear to exhibit some bimodality.  Now I'd like you to replace sex with species in the plots from exercise 6 above so that we can see if species might explain variation in these variables.
+7.  It doesn't look like sex accounts for the bimodality.  Male penguins appear to have greater bill and flipper length than female penguins, but both males and females appear to exhibit some bimodality.  Now I'd like you to replace sex with species in the plots from exercise 6 above so that we can see if species might explain variation in these variables. <br> <br> 
 
-8.  Now we're starting to see some separation!  It appears that Adelies have shorter bills than Chinstraps and Gentoos and that Adelies and Chinstraps have shorter flippers than Gentoos.  I'd now you like to facet each of the last two plots you created by sex.  Hint:  use `facet_wrap`
+8.  Now we're starting to see some separation!  It appears that Adelies have shorter bills than Chinstraps and Gentoos and that Adelies and Chinstraps have shorter flippers than Gentoos.  I'd now you like to facet each of the last two plots you created by sex.  Hint:  use `facet_wrap` <br> <br> 
 
-9.  It looks like the species-specific patterns for bill length and flipper length are pretty similar across male and female penguins.  Now I'd like to change gears and have you create a covariation plot of two discrete variables.  Pick two of the discrete variables and create a tile plot of them using `geom_tile`.  Describe what you see
+9.  It looks like the species-specific patterns for bill length and flipper length are pretty similar across male and female penguins.  Now I'd like to change gears and have you create a covariation plot of two discrete variables.  Pick two of the discrete variables and create a tile plot of them using `geom_tile`.  Describe what you see <br> <br> 
 
-10. Now let's visualize the covariation between two continuous variables.  I'd like you to create a scatterplot exploring the relationship between bill depth and bill length and draw a linear regression line on top of the scatter plot.  Recall the method argument in `geom_smooth`
+10. Now let's visualize the covariation between two continuous variables.  I'd like you to create a scatterplot exploring the relationship between bill depth and bill length and draw a linear regression line on top of the scatter plot.  Recall the method argument in `geom_smooth` <br> <br> 
 
-11.  There appears to be modest negative association between bill depth and bill length...that's a bit surprising!  However, note that there appear to be three clusters in the scatter plot and that we have three species of penguin.  To evaluate whether species of penguin plays a role in the association between bill depth and bill length, I'd like you to map species to color and fill aesthetics and re-draw the plot from (10), including the linear regression line
+11.  There appears to be modest negative association between bill depth and bill length...that's a bit surprising!  However, note that there appear to be three clusters in the scatter plot and that we have three species of penguin.  To evaluate whether species of penguin plays a role in the association between bill depth and bill length, I'd like you to map species to color and fill aesthetics and re-draw the plot from (10), including the linear regression line <br> <br> 
 
