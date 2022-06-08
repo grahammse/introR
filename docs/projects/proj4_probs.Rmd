@@ -84,25 +84,25 @@ Consult the help documentation (`?flights`) for more information on the variable
    d. Departed in summer (July, August, and September)
    e. Arrived more tehan two hours late, but didn't leave
    f. Were delayed by at least one hour, but made up over 30 minutes in flight
-   g. Departed between midnight and 6 a.m. (inclusive)
-2. How many flights have a missing `dep_time`?  What other variables are missing?  What might these rows represent?
+   g. Departed between midnight and 6 a.m. (inclusive) <br> <br> 
+2. How many flights have a missing `dep_time`?  What other variables are missing?  What might these rows represent? <br> <br> 
 
 # Arrange
 
-3.  How could you use `arrange()` to sort all missing values to the start? (Hint:  use `is.na()`)
-4.  Sort flights to find the most delayed flights.  Find the flights that left earliest.
-5.  Sort flights to find the fastest flights.
+3.  How could you use `arrange()` to sort all missing values to the start? (Hint:  use `is.na()`) <br> <br> 
+4.  Sort flights to find the most delayed flights.  Find the flights that left earliest. <br> <br> 
+5.  Sort flights to find the fastest flights. <br> <br> 
 
 # Select
 
-6. Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`.
-7. What happens if you include the name of a variable multiple times in a select() call?
+6. Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`. <br> <br> 
+7. What happens if you include the name of a variable multiple times in a select() call? <br> <br> 
 
 # Mutate
 
-8. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
-9. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?
+8. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight. <br> <br> 
+9. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it? <br> <br> 
 
 # Summarize
 
-10.  Use the following code to identify canceled flights: `is.na(arr_delay) | is.na(dep_delay)`.  Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?
+10.  Use the following code to identify canceled flights: `is.na(arr_delay) | is.na(dep_delay)`.  Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay? <br> <br> 

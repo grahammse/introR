@@ -52,7 +52,7 @@ editor_options:
 ```
 
 
-1.  How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).
+1.  How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame). <br> <br> 
 
 2. Practice referring to non-syntactic names in the following data frame by:
 ```{r eval = FALSE}
@@ -65,7 +65,7 @@ annoying <- tibble(
   - Extracting the variable called 1.
   - Plotting a scatterplot of 1 vs 2.
   - Creating a new column called 3 which is 2 divided by 1.
-  - Renaming the columns to one, two and three.
-3. What option controls how many additional column names are printed at the footer of a tibble?
+  - Renaming the columns to one, two and three. <br> <br> 
+3. What option controls how many additional column names are printed at the footer of a tibble? <br> <br> 
     
     

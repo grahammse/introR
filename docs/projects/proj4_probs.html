@@ -259,37 +259,37 @@ require(nycflights13)</code></pre>
 <li>Departed in summer (July, August, and September)</li>
 <li>Arrived more tehan two hours late, but didn’t leave</li>
 <li>Were delayed by at least one hour, but made up over 30 minutes in flight</li>
-<li>Departed between midnight and 6 a.m. (inclusive)</li>
+<li>Departed between midnight and 6 a.m. (inclusive) <br> <br></li>
 </ol></li>
-<li>How many flights have a missing <code>dep_time</code>? What other variables are missing? What might these rows represent?</li>
+<li>How many flights have a missing <code>dep_time</code>? What other variables are missing? What might these rows represent? <br> <br></li>
 </ol>
 </div>
 <div id="arrange" class="section level1">
 <h1>Arrange</h1>
 <ol start="3" style="list-style-type: decimal">
-<li>How could you use <code>arrange()</code> to sort all missing values to the start? (Hint: use <code>is.na()</code>)</li>
-<li>Sort flights to find the most delayed flights. Find the flights that left earliest.</li>
-<li>Sort flights to find the fastest flights.</li>
+<li>How could you use <code>arrange()</code> to sort all missing values to the start? (Hint: use <code>is.na()</code>) <br> <br></li>
+<li>Sort flights to find the most delayed flights. Find the flights that left earliest. <br> <br></li>
+<li>Sort flights to find the fastest flights. <br> <br></li>
 </ol>
 </div>
 <div id="select" class="section level1">
 <h1>Select</h1>
 <ol start="6" style="list-style-type: decimal">
-<li>Brainstorm as many ways as possible to select <code>dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, and <code>arr_delay</code> from <code>flights</code>.</li>
-<li>What happens if you include the name of a variable multiple times in a select() call?</li>
+<li>Brainstorm as many ways as possible to select <code>dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, and <code>arr_delay</code> from <code>flights</code>. <br> <br></li>
+<li>What happens if you include the name of a variable multiple times in a select() call? <br> <br></li>
 </ol>
 </div>
 <div id="mutate" class="section level1">
 <h1>Mutate</h1>
 <ol start="8" style="list-style-type: decimal">
-<li>Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.</li>
-<li>Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?</li>
+<li>Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight. <br> <br></li>
+<li>Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it? <br> <br></li>
 </ol>
 </div>
 <div id="summarize" class="section level1">
 <h1>Summarize</h1>
 <ol start="10" style="list-style-type: decimal">
-<li>Use the following code to identify canceled flights: <code>is.na(arr_delay) | is.na(dep_delay)</code>. Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?</li>
+<li>Use the following code to identify canceled flights: <code>is.na(arr_delay) | is.na(dep_delay)</code>. Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay? <br> <br></li>
 </ol>
 </div>
 

@@ -379,51 +379,91 @@ head(read_sav(file = here("data", "spss_data.sav")), n = 9)
 
 
 
-
-
-
-
-
-
-
 ---
 class: inverse, center, middle
 
 
-# Parsing!
+# Renaming!
 ----
 `r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
 
 
 
 
-
-
 ---
 
-.center[
-# Parsing
-]
+# Two Methods of Renaming
+
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+
+
+- There are two general ways to rename columns in R
+   - `dplyr::rename()` allows you to manually change column names
+   - `janitor::clean_names()` converts are column names to snake case <br> 
+   
+```{r message = FALSE, warning = FALSE}
+rename_data <- read_csv(here("data", "rename_data.csv"))
+head(rename_data, n = 2)
+```
+
+
+
+]<!---->
+
+
+.panel[.panel-name[`dplyr::rename()`]
 
 .pull-left[
-- `read_*` functions guess the type of objects in a column
-   - Inspect the first 1000 rows and makes a best guess <br> <br>
-- These guesses are usually correct <br> <br>
-- When they're wrong, we can use parsing functions to ensure that the appropriate column type is created <br> <br>
+
+- `dplyr_rename` uses two main arguments
+   1. data
+   2. new name = old name
+      - note that if the new or old names are non-syntactic, you need to use quotation marks
 
 ]
 
 .pull-right[
-```{r echo = FALSE}
-data.frame(
-   Type = c("logical", "integer", "double", "number", "time", "date", "date-time", "character"),
-   Heuristic = c("Contains only F, T, FALSE, or TRUE", "Contains only numeric characters", "Contains only valid doubles (including numbers like 4.5e-5", "Contains valid doubles with the grouping mark inside", "Matches the default time_format", "Matches the default date_format", "Any ISO8601 date", "Doesn't meet any criteria above")
-) %>% 
-   knitr::kable("html", booktabs = FALSE) %>% 
-  kableExtra::column_spec(1:2, background = "white")
+```{r }
+rename_data %>% 
+   rename(id = "Subject ID",
+          group = "treatment Group",
+          anxiety = "Self-report Anxiety") %>% 
+   head(n = 2)
 ```
 
 ]
+
+
+]<!---->
+
+.panel[.panel-name[`janitor::clean_names`]
+
+.pull-left[
+- the `clean_names()` function is included in the `janitor` package
+   - need to install the janitor package in order to use this function <br. <br>
+- The main `clean_names()` argument is data
+   - You can also change the case (e.g., "lower_camel"), but the default snake case is preferred
+]
+
+.pull-right[
+```{r }
+rename_data %>% 
+   janitor::clean_names() %>% 
+   head(n = 2)
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+
+
 
 
 
@@ -503,7 +543,7 @@ write.xlsx(x = dat, file = here("data", "dat.csv"))
 - As with `write_csv()` and `write.xlsx()`, them main arguments specify the dataframe or table to be exported and the file to create
    - Note that in haven, these arguments are "data" and "path"
 
-```{r}
+```{r eval = FALSE}
 write_sav(data = dat, path = here("data", "dat.csv"))
 ```
 

@@ -55,17 +55,17 @@ editor_options:
 
 
 
-1.  Run `ggplot(data = mpg)`.  What do you see?
-2.  Make a scatterplot of hwy versus cyl using the mpg dataset.
-3.  What happens if you make a scatterplot of class versus drv?  Why is the plot not useful?
-4.  Which variables in pg are categorical?  Which variables are continuous (Hint:  type ?mpg to read the documentation for the dataset).  How can you see this information when you run mpg?
-5.  What happens if you map an aesthetic to something other than a variable name, like `aes(color = displ < 5)`
-6.  What happens if you facet on a continuous variable?
+1.  Run `ggplot(data = mpg)`.  What do you see? <br> <br> 
+2.  Make a scatterplot of hwy versus cyl using the mpg dataset. <br> <br> 
+3.  What happens if you make a scatterplot of class versus drv?  Why is the plot not useful? <br> <br> 
+4.  Which variables in pg are categorical?  Which variables are continuous (Hint:  type ?mpg to read the documentation for the dataset).  How can you see this information when you run mpg? <br> <br> 
+5.  What happens if you map an aesthetic to something other than a variable name, like `aes(color = displ < 5)` <br> <br> 
+6.  What happens if you facet on a continuous variable? <br> <br> 
 7.  What do the empy cells in a plot with `facet_grid(drv~cyl)` mean?  How do they relate to this plot? <br>
-`ggplot(data = mpg) + geom_point(aes(x = drv, y = cyl))`
-8.  What geom would you use to draw a line chart?  A boxplot?  A histogram?  An area chart?
-9.  What does `show.legend = FALSE` do?  What happens if you remove it?  
-10.  What does `geom_col` do?  How is it different from `geom_bar`?
+`ggplot(data = mpg) + geom_point(aes(x = drv, y = cyl))` <br> <br> 
+8.  What geom would you use to draw a line chart?  A boxplot?  A histogram?  An area chart? <br> <br> 
+9.  What does `show.legend = FALSE` do?  What happens if you remove it?   <br> <br> 
+10.  What does `geom_col` do?  How is it different from `geom_bar`? <br> <br> 
 11.  What is the problem with this plot?  How could you improve it?
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 require(tidyverse)
@@ -75,5 +75,5 @@ require(tidyverse)
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
   geom_point()
 ```
-<br> 
-12.  What parameters to `geom_jitter` control the amount of jittering?
+<br>  <br> 
+12.  What parameters to `geom_jitter` control the amount of jittering? <br> <br> 
