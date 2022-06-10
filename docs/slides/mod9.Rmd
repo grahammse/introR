@@ -1,5 +1,5 @@
 ---
-title: "Module 8:  Data Tidying"
+title: "Module 9:  Data Tidying"
 subtitle:  ""
 author: "Graham Eglit"
 institute: "Canopy Growth Corporation"
@@ -255,11 +255,11 @@ class: inverse, center, middle
 ---
 
 .center[
-# The Billboard Dataset
+# table4a dataset
 ]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-DT::datatable(billboard, options = list(
+DT::datatable(table2, options = list(
   scrollY = 300,
   scrollX = 300,
   pageLength = 5,
@@ -271,16 +271,15 @@ DT::datatable(billboard, options = list(
 ---
 
 .center[
-# The Billboard Dataset
+# table4a dataset
 ]
 
-- the first three columns are variables that describe the song
-   - `artist`
-   - `track`
-   - `data.entered` <br> <br>
-- the next 76 columns describe the rank of the song in each week
-   - (`wk1`-`wk76`) <br> <br>
-- we'd like the weeks to all fall under a single `week` column and the ranks to fall in a separate `rank` column
+- problem:  the column names are not names of variables, but *values* of a variable
+   - `1999` and `2000` represent values of the `year` variable
+   - the values in `1999` and `2000` represent values of the `case` variable <br> <br>
+- the first column is ok...it partially identifies the observation
+   - `country` <br> <br>
+- we'd like the years (`1999` and `2000`) to all fall under a single `year` column and the cases to fall in a separate `cases` column
    - `pivot_longer()`!
 
 
@@ -296,76 +295,45 @@ DT::datatable(billboard, options = list(
 
 - there are three key arguments to `pivot_longer`
    1. `cols` specifies which columns need to be pivoted, i.e. which columns aren’t variables. 
-      - This argument uses the same syntax as `select()` so here we could use `!c(artist, track, date.entered)` or `starts_with("wk")`.
-   2. `names_to` names of the variable stored in the column names, here "week".
-   3. `values_to` names the variable stored in the cell values, here "rank".
+      - This argument uses the same syntax as `select()` so here we could use `!country)` or `c(1999, 2000)`.
+   2. `names_to` names of the variable stored in the column names, here "year".
+   3. `values_to` names the variable stored in the cell values, here "cases".
       
 
 ]<!---->
 
-.panel[.panel-name[`pivot_longer` code]
-
-```{r eval = FALSE}
-billboard %>%  
-  pivot_longer(
-    cols = starts_with("wk"), 
-    names_to = "week", 
-    values_to = "rank"
-  )
-```
-
-
-]<!---->
-
-.panel[.panel-name[`pivot_longer` results]
-
-```{r echo = FALSE}
-billboard %>%  
-  pivot_longer(
-    cols = starts_with("wk"), 
-    names_to = "week", 
-    values_to = "rank"
-  ) %>% 
-  head(n = 8) %>% 
-  knitr::kable()
-```
-
-
-]<!---->
-
-.panel[.panel-name[`pivot_longer` values_drop_na]
+.panel[.panel-name[`pivot_longer` in action!]
 
 .pull-left[
 ```{r eval = FALSE}
-billboard %>%  
+table4a %>%  
   pivot_longer(
-    cols = starts_with("wk"), 
-    names_to = "week", 
-    values_to = "rank",
-    values_drop_na = TRUE) %>% 
-    slice(6:10) %>% 
+    cols = c("1999", "2000"), 
+    names_to = "year", 
+    values_to = "cases"
+  )
 ```
 ]
+
 
 .pull-right[
 
 ```{r echo = FALSE}
-billboard %>%  
+table4a %>%  
   pivot_longer(
-    cols = starts_with("wk"), 
-    names_to = "week", 
-    values_to = "rank",
-    values_drop_na = TRUE
+    cols = c("1999", "2000"), 
+    names_to = "year", 
+    values_to = "cases"
   ) %>% 
-  slice(6:10) %>% 
+  head(n = 6) %>% 
   knitr::kable()
 ```
-
 ]
 
 ]<!---->
 
 ]<!--end panelset-->
+
 
 
 
@@ -501,6 +469,96 @@ From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
 
 ---
 
+.center[
+# Now You Try!
+]
+
+- using the `billboard` dataset in `tidyr`, create the following dataset
+
+```{r echo = FALSE}
+billboard %>%  
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) %>% 
+  slice(1:100) %>% 
+  DT::datatable(options = list(
+  scrollY = 300,
+  scrollX = 300,
+  pageLength = 10,
+  dom = "ltp",
+  ordering = FALSE))
+```
+
+---
+
+.center[
+# Solution
+]
+
+.panelset[
+
+.panel[.panel-name[Context]
+
+- the first three columns are variables that describe the song
+   - `artist`
+   - `track`
+   - `date.entered`
+- the next 76 columns describe the rank of the song in each week
+   - (`wk1`-`wk76`)
+- we'd like the weeks to all fall under a single `week` column and the ranks to fall in a separate `rank` column
+   - `pivot_longer()`!
+- missing values have been removed
+
+
+]<!---->
+
+.panel[.panel-name[Solution]
+
+.pull-left[
+
+```{r eval = FALSE}
+billboard %>%  
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    values_to = "rank",
+    values_drop_na = TRUE
+  )
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+billboard %>%  
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) %>% 
+  slice(1:100) %>% 
+  DT::datatable(options = list(
+  scrollY = 300,
+  scrollX = 300,
+  pageLength = 5,
+  dom = "tp",
+  ordering = FALSE))
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+
+---
 
 class: inverse, center, middle
 

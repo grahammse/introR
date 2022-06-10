@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Module 10: Relational Data with dplyr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Graham Eglit" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.19/datatables.js"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: title-slide, right, top
+background-image: url(img/hex_dplyr.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 160px;
+height: 140px;
+z-index: 0;
+background-image: url(img/canopy_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:.5em;right:.5em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+.right-column[
+# Module 10:  Relational Data with dplyr
+### 
+
+**Graham Eglit**&lt;br&gt;
+Canopy Growth Corporation&lt;br&gt;
+June 31, 2022
+]
+
+
+---
+class: inverse, center, middle
+
+
+# Relational Data!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Relational Data Overview
+]
+
+- Functions in this module will be used to combine multiple tables of data &lt;br&gt; &lt;br&gt;
+- **Relational data**: multiple tables of data that are defined by the relations between them
+   - dataset1 has IDs, demographics, and treatment assignment
+   - dataset2 has IDs and outcomes &lt;br&gt; &lt;br&gt;
+- Three families of verbs designed to work with relational data
+   1. **Mutating joins**: add new variables to one data frame from matching observations in another
+   1. **Filtering joins**: filter observations from one data frame based on whether or not they match an observation in the other table
+   1. **Set Operations**: treat observations as if they were set elements 
+   
+---
+
+.center[
+# nycflights13 data
+]
+
+
+
+
+
+.panelset[
+
+.panel[.panel-name[flights]
+
+<div id="htmlwidget-66e43801f6e711719b48" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-66e43801f6e711719b48">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100"],[2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013,2013],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[517,533,542,544,554,554,555,557,557,558,558,558,558,558,559,559,559,600,600,601,602,602,606,606,607,608,611,613,615,615,622,623,623,624,624,627,628,628,629,629,629,632,635,637,639,643,643,644,645,646,646,651,652,653,655,655,655,656,656,656,656,657,658,658,659,659,659,659,701,702,709,711,712,715,717,719,723,724,724,725,727,728,729,732,732,732,733,734,739,739,741,743,743,743,745,746,749,752,752,752],[515,529,540,545,600,558,600,600,600,600,600,600,600,600,600,559,600,600,600,600,610,605,610,610,607,600,600,610,615,615,630,610,627,630,630,630,630,630,630,630,630,608,635,645,640,646,645,636,647,645,645,655,655,700,655,700,700,700,659,705,700,700,700,700,700,700,705,700,700,700,700,715,715,713,720,721,725,730,725,730,730,732,730,735,729,645,736,737,745,739,745,730,749,730,745,746,710,755,750,759],[2,4,2,-1,-6,-4,-5,-3,-3,-2,-2,-2,-2,-2,-1,0,-1,0,0,1,-8,-3,-4,-4,0,8,11,3,0,0,-8,13,-4,-6,-6,-3,-2,-2,-1,-1,-1,24,0,-8,-1,-3,-2,8,-2,1,1,-4,-3,-7,0,-5,-5,-4,-3,-9,-4,-3,-2,-2,-1,-1,-6,-1,1,2,9,-4,-3,2,-3,-2,-2,-6,-1,-5,-3,-4,-1,-3,3,47,-3,-3,-6,0,-4,13,-6,13,0,0,39,-3,2,-7],[830,850,923,1004,812,740,913,709,838,753,849,853,924,923,941,702,854,851,837,844,812,821,858,837,858,807,945,925,1039,833,1017,920,933,909,840,1018,1137,1016,824,721,824,740,1028,930,739,922,837,931,815,910,1023,936,932,936,1021,1037,1002,854,949,1007,948,959,944,1027,1008,1008,907,959,1123,1058,852,1151,1023,911,850,1017,1013,1111,1020,1052,959,1041,1049,857,1041,1011,854,1047,918,1104,1038,1107,1043,1059,1135,1119,939,1041,1025,955],[819,830,850,1022,837,728,854,723,846,745,851,856,917,937,910,706,902,858,825,850,820,805,910,845,915,735,931,921,1100,842,1014,915,932,840,830,1018,1140,947,810,740,833,728,940,935,749,940,848,940,810,916,1030,942,921,1009,1030,1045,1020,850,959,940,1011,1013,939,1025,1015,1007,913,1008,1154,1014,832,1206,1035,850,840,1012,1017,1040,1030,1040,952,1038,1115,858,1039,941,850,1113,930,1038,1036,1100,1054,1056,1125,1129,850,1059,1029,959],[11,20,33,-18,-25,12,19,-14,-8,8,-2,-3,7,-14,31,-4,-8,-7,12,-6,-8,16,-12,-8,-17,32,14,4,-21,-9,3,5,1,29,10,0,-3,29,14,-19,-9,12,48,-5,-10,-18,-11,-9,5,-6,-7,-6,11,-33,-9,-8,-18,4,-10,27,-23,-14,5,2,-7,1,-6,-9,-31,44,20,-15,-12,21,10,5,-4,31,-10,12,7,3,-26,-1,2,30,4,-26,-12,26,2,7,-11,3,10,-10,49,-18,-4,-4],["UA","UA","AA","B6","DL","UA","B6","EV","B6","AA","B6","B6","UA","UA","AA","B6","UA","B6","MQ","B6","DL","MQ","AA","DL","UA","MQ","UA","B6","B6","DL","US","AA","UA","EV","MQ","US","AA","UA","AA","WN","US","EV","AA","B6","B6","UA","US","UA","B6","UA","UA","B6","B6","DL","DL","DL","DL","AA","AA","MQ","UA","DL","DL","VX","AA","B6","DL","UA","UA","B6","UA","B6","AA","UA","FL","B6","UA","AA","AS","AA","UA","UA","VX","B6","B6","UA","B6","B6","AA","UA","B6","AA","B6","DL","AA","UA","MQ","DL","UA","US"],[1545,1714,1141,725,461,1696,507,5708,79,301,49,71,194,1124,707,1806,1187,371,4650,343,1919,4401,1895,1743,1077,3768,303,135,709,575,245,1837,496,4626,4599,27,413,1665,303,4646,1019,4144,711,389,1002,556,926,1701,102,883,1496,203,117,1383,1415,1865,2003,305,1815,4534,1115,1879,1547,399,2279,981,831,960,1203,671,1092,715,825,544,850,987,962,715,11,2083,1162,473,11,20,1601,1111,44,643,309,1479,983,33,341,495,59,1668,3737,2263,477,1733],["N14228","N24211","N619AA","N804JB","N668DN","N39463","N516JB","N829AS","N593JB","N3ALAA","N793JB","N657JB","N29129","N53441","N3DUAA","N708JB","N76515","N595JB","N542MQ","N644JB","N971DL","N730MQ","N633AA","N3739P","N53442","N9EAMQ","N532UA","N635JB","N794JB","N326NB","N807AW","N3EMAA","N459UA","N11107","N518MQ","N535UW","N3BAAA","N33289","N3CYAA","N273WN","N426US","N13553","N3GKAA","N709JB","N805JB","N497UA","N178US","N75435","N796JB","N569UA","N38727","N558JB","N178JB","N327NW","N3763D","N705TW","N997DL","N4WNAA","N5FMAA","N722MQ","N24212","N318NB","N6703D","N627VA","N3EKAA","N646JB","N998DL","N838UA","N77296","N779JB","N26226","N651JB","N3ETAA","N841UA","N978AT","N562JB","N514UA","N541AA","N594AS","N4WRAA","N37462","N488UA","N635VA","N304JB","N563JB","N37456","N552JB","N625JB","N4WPAA","N37408","N633JB","N338AA","N624JB","N3760C","N336AA","N24224","N508MQ","N325US","N511UA","N543UW"],["EWR","LGA","JFK","JFK","LGA","EWR","EWR","LGA","JFK","LGA","JFK","JFK","JFK","EWR","LGA","JFK","EWR","LGA","LGA","EWR","LGA","LGA","EWR","JFK","EWR","EWR","JFK","JFK","JFK","EWR","EWR","LGA","LGA","EWR","LGA","JFK","JFK","EWR","LGA","LGA","EWR","EWR","LGA","LGA","JFK","EWR","EWR","EWR","JFK","LGA","EWR","JFK","JFK","LGA","JFK","JFK","LGA","LGA","JFK","LGA","EWR","LGA","LGA","JFK","LGA","JFK","LGA","EWR","EWR","JFK","LGA","JFK","JFK","EWR","LGA","JFK","EWR","LGA","EWR","EWR","EWR","LGA","JFK","JFK","LGA","EWR","JFK","JFK","LGA","EWR","LGA","JFK","JFK","JFK","JFK","EWR","EWR","LGA","LGA","LGA"],["IAH","IAH","MIA","BQN","ATL","ORD","FLL","IAD","MCO","ORD","PBI","TPA","LAX","SFO","DFW","BOS","LAS","FLL","ATL","PBI","MSP","DTW","MIA","ATL","MIA","ORD","SFO","RSW","SJU","ATL","PHX","MIA","IAH","MSP","MSP","PHX","SJU","LAX","ORD","BWI","CLT","IAD","DFW","MCO","BOS","PBI","CLT","FLL","BUF","DEN","SNA","LAS","MSY","PBI","SLC","SFO","MIA","ORD","MCO","XNA","TPA","FLL","ATL","LAX","MIA","FLL","DTW","RSW","SJU","LAX","ORD","SJU","FLL","ORD","MKE","MCO","PBI","DFW","SEA","DFW","DEN","IAH","SFO","ROC","RSW","MCO","SYR","SFO","ORD","IAH","TPA","LAX","SRQ","SEA","SFO","SFO","ORD","MCO","DEN","CLT"],[227,227,160,183,116,150,158,53,140,138,149,158,345,361,257,44,337,152,134,147,170,105,152,128,157,139,366,175,182,120,342,153,229,190,166,330,192,366,140,40,91,52,248,144,41,146,91,151,63,243,380,323,191,149,294,362,161,143,142,233,156,164,126,361,159,156,105,164,188,381,135,190,159,156,134,147,153,254,338,238,254,238,356,64,167,145,54,350,137,249,158,358,164,349,378,373,148,140,249,96],[1400,1416,1089,1576,762,719,1065,229,944,733,1028,1005,2475,2565,1389,187,2227,1076,762,1023,1020,502,1085,760,1085,719,2586,1074,1598,746,2133,1096,1416,1008,1020,2153,1598,2454,733,185,529,212,1389,950,187,1023,529,1065,301,1620,2434,2248,1182,1035,1990,2586,1096,733,944,1147,997,1076,762,2475,1096,1069,502,1068,1608,2475,733,1598,1069,719,738,944,1023,1389,2402,1372,1605,1416,2586,264,1080,937,209,2586,733,1400,1010,2475,1041,2422,2586,2565,719,950,1620,544],[5,5,5,5,6,5,6,6,6,6,6,6,6,6,6,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,6,7,7,7,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[15,29,40,45,0,58,0,0,0,0,0,0,0,0,0,59,0,0,0,0,10,5,10,10,7,0,0,10,15,15,30,10,27,30,30,30,30,30,30,30,30,8,35,45,40,46,45,36,47,45,45,55,55,0,55,0,0,0,59,5,0,0,0,0,0,0,5,0,0,0,0,15,15,13,20,21,25,30,25,30,30,32,30,35,29,45,36,37,45,39,45,30,49,30,45,46,10,55,50,59],["2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T10:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T11:00:00Z","2013-01-01T12:00:00Z","2013-01-01T11:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T11:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T11:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z","2013-01-01T12:00:00Z"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>month<\/th>\n      <th>day<\/th>\n      <th>dep_time<\/th>\n      <th>sched_dep_time<\/th>\n      <th>dep_delay<\/th>\n      <th>arr_time<\/th>\n      <th>sched_arr_time<\/th>\n      <th>arr_delay<\/th>\n      <th>carrier<\/th>\n      <th>flight<\/th>\n      <th>tailnum<\/th>\n      <th>origin<\/th>\n      <th>dest<\/th>\n      <th>air_time<\/th>\n      <th>distance<\/th>\n      <th>hour<\/th>\n      <th>minute<\/th>\n      <th>time_hour<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollY":300,"scrollX":300,"pageLength":5,"dom":"ltp","ordering":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,11,15,16,17,18]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+]&lt;!----&gt;
+
+
+
+.panel[.panel-name[airports]
+
+
+```
+## # A tibble: 1,458 × 8
+##    faa   name                             lat    lon   alt    tz dst   tzone              
+##    &lt;chr&gt; &lt;chr&gt;                          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;              
+##  1 04G   Lansdowne Airport               41.1  -80.6  1044    -5 A     America/New_York   
+##  2 06A   Moton Field Municipal Airport   32.5  -85.7   264    -6 A     America/Chicago    
+##  3 06C   Schaumburg Regional             42.0  -88.1   801    -6 A     America/Chicago    
+##  4 06N   Randall Airport                 41.4  -74.4   523    -5 A     America/New_York   
+##  5 09J   Jekyll Island Airport           31.1  -81.4    11    -5 A     America/New_York   
+##  6 0A9   Elizabethton Municipal Airport  36.4  -82.2  1593    -5 A     America/New_York   
+##  7 0G6   Williams County Airport         41.5  -84.5   730    -5 A     America/New_York   
+##  8 0G7   Finger Lakes Regional Airport   42.9  -76.8   492    -5 A     America/New_York   
+##  9 0P2   Shoestring Aviation Airfield    39.8  -76.6  1000    -5 U     America/New_York   
+## 10 0S9   Jefferson County Intl           48.1 -123.    108    -8 A     America/Los_Angeles
+## # … with 1,448 more rows
+```
+
+]&lt;!----&gt;
+
+.panel[.panel-name[planes]
+
+
+```
+## # A tibble: 3,322 × 9
+##    tailnum  year type                    manufacturer     model     engines seats speed engine   
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;                   &lt;chr&gt;            &lt;chr&gt;       &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    
+##  1 N10156   2004 Fixed wing multi engine EMBRAER          EMB-145XR       2    55    NA Turbo-fan
+##  2 N102UW   1998 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  3 N103US   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  4 N104UW   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  5 N10575   2002 Fixed wing multi engine EMBRAER          EMB-145LR       2    55    NA Turbo-fan
+##  6 N105UW   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  7 N107US   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  8 N108UW   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+##  9 N109UW   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+## 10 N110UW   1999 Fixed wing multi engine AIRBUS INDUSTRIE A320-214        2   182    NA Turbo-fan
+## # … with 3,312 more rows
+```
+]&lt;!----&gt;
+
+
+.panel[.panel-name[weather]
+
+
+```
+## # A tibble: 26,115 × 15
+##    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed wind_gust precip pressure visib time_hour          
+##    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dttm&gt;             
+##  1 EWR     2013     1     1     1  39.0  26.1  59.4      270      10.4         NA      0    1012     10 2013-01-01 01:00:00
+##  2 EWR     2013     1     1     2  39.0  27.0  61.6      250       8.06        NA      0    1012.    10 2013-01-01 02:00:00
+##  3 EWR     2013     1     1     3  39.0  28.0  64.4      240      11.5         NA      0    1012.    10 2013-01-01 03:00:00
+##  4 EWR     2013     1     1     4  39.9  28.0  62.2      250      12.7         NA      0    1012.    10 2013-01-01 04:00:00
+##  5 EWR     2013     1     1     5  39.0  28.0  64.4      260      12.7         NA      0    1012.    10 2013-01-01 05:00:00
+##  6 EWR     2013     1     1     6  37.9  28.0  67.2      240      11.5         NA      0    1012.    10 2013-01-01 06:00:00
+##  7 EWR     2013     1     1     7  39.0  28.0  64.4      240      15.0         NA      0    1012.    10 2013-01-01 07:00:00
+##  8 EWR     2013     1     1     8  39.9  28.0  62.2      250      10.4         NA      0    1012.    10 2013-01-01 08:00:00
+##  9 EWR     2013     1     1     9  39.9  28.0  62.2      260      15.0         NA      0    1013.    10 2013-01-01 09:00:00
+## 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8         NA      0    1012.    10 2013-01-01 10:00:00
+## # … with 26,105 more rows
+```
+]&lt;!----&gt;
+
+.panel[.panel-name[airlines]
+
+
+```
+## # A tibble: 16 × 2
+##    carrier name                       
+##    &lt;chr&gt;   &lt;chr&gt;                      
+##  1 9E      Endeavor Air Inc.          
+##  2 AA      American Airlines Inc.     
+##  3 AS      Alaska Airlines Inc.       
+##  4 B6      JetBlue Airways            
+##  5 DL      Delta Air Lines Inc.       
+##  6 EV      ExpressJet Airlines Inc.   
+##  7 F9      Frontier Airlines Inc.     
+##  8 FL      AirTran Airways Corporation
+##  9 HA      Hawaiian Airlines Inc.     
+## 10 MQ      Envoy Air                  
+## 11 OO      SkyWest Airlines Inc.      
+## 12 UA      United Air Lines Inc.      
+## 13 US      US Airways Inc.            
+## 14 VX      Virgin America             
+## 15 WN      Southwest Airlines Co.     
+## 16 YV      Mesa Airlines Inc.
+```
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Relationships]
+
+.center[
+&lt;img src = "img/mod10/relations.png" /&gt;
+.caption[
+From [R for Data Science](https://r4ds.had.co.nz/relational-data.html)
+]
+]
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+
+---
+class: inverse, center, middle
+
+
+# Keys!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Key Variables
+]
+
+- **Keys**: the variables used to connect each pair of tables
+   - A variable (or set of variables) that uniquely identifies an observation
+- In simple cases, a single variable is sufficient to identify an observation
+   - each plane is uniquely identified by `tailnum`
+- In more complex cases, multiple variables are needed to identify an observation
+   - to identify an observation in `weather`, you need five variables: `year`, `month`, `day`, `hour`, and `origin` &lt;br&gt; &lt;br&gt;
+- Two types of keys
+   - **Primary Key**: uniquely identifies an observation in its own table
+      - e.g., `flights$tailnum` identifies each plane in the `planes` table
+   - **Foreign Key**: uniquely identifies an observation in another table
+      - e.g., `flights$tailnum` appears in the `flights` table where it matches each flight to a unique plane
+- A primary key and the corresponding foreign key in another tabale form a **relation**
+
+
+---
+
+.center[
+# Does this key uniquely identify an observation?
+]
+
+- Once you'd identified a primary key, it's good practice to verify that it uniquely identifes each observation
+- You can use `count()` to do this:
+   - `count()` will calculate the frequency of each instance of the primary key
+   - if the frequency (`n`) is greater than 1, you haven't uniquely identified each observation
+
+
+```r
+planes %&gt;% 
+  count(tailnum) %&gt;% 
+  filter(n &gt; 1)
+```
+
+```
+## # A tibble: 0 × 2
+## # … with 2 variables: tailnum &lt;chr&gt;, n &lt;int&gt;
+```
+
+
+---
+
+.center[
+# Surrogate Keys
+]
+
+- In rare instances, there is no primary key in a table
+- You'll need to create a **surrogate key** in this instance
+- Use `mutate()` and `row_number()`
+
+
+```r
+flights %&gt;% mutate(key = row_number()) %&gt;% select(tailnum, year, month, day, key) %&gt;% head(5)
+```
+
+```
+## # A tibble: 5 × 5
+##   tailnum  year month   day   key
+##   &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1 N14228   2013     1     1     1
+## 2 N24211   2013     1     1     2
+## 3 N619AA   2013     1     1     3
+## 4 N804JB   2013     1     1     4
+## 5 N668DN   2013     1     1     5
+```
+
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- Install the `Bahman` package
+- Identify the keys in the Batting dataset &lt;br&gt; &lt;br&gt; &lt;br&gt;
+
+- Install the `babynames` package
+- Identify the keys in the babynames dataset &lt;br&gt; &lt;br&gt; &lt;br&gt;
+
+
+---
+
+.center[
+# Solution
+]
+
+
+```r
+Lahman::Batting %&gt;% 
+  count(playerID, yearID, stint) %&gt;% 
+  filter(n &gt; 1)
+```
+
+```
+## [1] playerID yearID   stint    n       
+## &lt;0 rows&gt; (or 0-length row.names)
+```
+
+
+```r
+babynames::babynames %&gt;%
+  count(year, sex, name) %&gt;%
+  filter(n &gt; 1)
+```
+
+```
+## # A tibble: 0 × 4
+## # … with 4 variables: year &lt;dbl&gt;, sex &lt;chr&gt;, name &lt;chr&gt;, n &lt;int&gt;
+```
+
+
+
+---
+class: inverse, center, middle
+
+
+# Mutating Joins!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Overview of Mutating Joins
+]
+
+- Allow you to combine variables from two tables
+   - first matches observations by their keys
+   - then copies across variables from one table to the other
+- Like `mutate()`, join functions add variables to the right
+- Let's make a smaller flights dataset for presenation purposes
+
+
+```r
+flights2 &lt;- flights %&gt;% 
+  select(year:day, hour, origin, dest, tailnum, carrier)
+head(flights2, n = 3)
+```
+
+```
+## # A tibble: 3 × 8
+##    year month   day  hour origin dest  tailnum carrier
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
+## 1  2013     1     1     5 EWR    IAH   N14228  UA     
+## 2  2013     1     1     5 LGA    IAH   N24211  UA     
+## 3  2013     1     1     5 JFK    MIA   N619AA  AA
+```
+
+
+
+---
+
+.center[
+# left_join()
+]
+
+- `left_join()` is the most common join
+- Adds new variables from a second table to the right of a first table
+- Let's `left_join()` the `airlines` table to the `flights2` table
+
+
+```r
+flights2 %&gt;%
+  left_join(airlines, by = "carrier") %&gt;% 
+  head(n = 5)
+```
+
+```
+## # A tibble: 5 × 9
+##    year month   day  hour origin dest  tailnum carrier name                  
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;                 
+## 1  2013     1     1     5 EWR    IAH   N14228  UA      United Air Lines Inc. 
+## 2  2013     1     1     5 LGA    IAH   N24211  UA      United Air Lines Inc. 
+## 3  2013     1     1     5 JFK    MIA   N619AA  AA      American Airlines Inc.
+## 4  2013     1     1     5 JFK    BQN   N804JB  B6      JetBlue Airways       
+## 5  2013     1     1     6 LGA    ATL   N668DN  DL      Delta Air Lines Inc.
+```
+
+
+---
+
+.center[
+# How Do Joins Work?
+]
+
+.pull-left[
+- Imagine we have two tables, `x` and `y`
+   - colored columns = key variables
+   - gray columns = values &lt;br&gt; &lt;br&gt;
+- A join is a way to connect reach row in `x` to zero, one or more rows in `y`
+- the diagram to the right shows each potential match as an intersection of lines &lt;br&gt; &lt;br&gt;
+- In an actual join, matches will be indicated with dots.
+   - The number of dots = the number of matches = the number of rows in the output.
+]
+
+
+.pull-right[
+.left[
+&lt;img src = "img/mod10/join1.png" height = 120/&gt;
+]
+.left[
+&lt;img src = "img/mod10/join2.png" height = 120/&gt;
+]
+.left[
+&lt;img src = "img/mod10/join3.png" height = 120/&gt;
+.caption[
+From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
+]
+]
+]
+
+
+
+---
+
+.center[
+# Inner Joins
+]
+
+.pull-left[
+- The simplest type of join is an inner join &lt;br&gt; &lt;br&gt;
+- An inner join matches pairs of observations whenever their keys are equal &lt;br&gt; &lt;br&gt;
+- The output of an inner join is a new data frame that contains the key, the x values, and the y values. 
+   - We use `by` to tell dplyr which variable is the key &lt;br&gt; &lt;br&gt;
+- The most important property of an inner join is that unmatched rows are not included in the result.
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[
+&lt;img src = "img/mod10/inner_join.png" height = 120/&gt;
+.caption[
+From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
+]
+]
+]
+
+
+---
+
+.center[
+# Inner Joins in Action!
+]
+
+.panelset[
+
+.panel[.panel-name[Create Data]
+
+.pull-left[
+
+```r
+x &lt;- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     3, "x3"
+)
+y &lt;- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2",
+     4, "y3"
+)
+```
+]
+
+.pull-right[
+
+.pull-left[
+
+| key|val_x |
+|---:|:-----|
+|   1|x1    |
+|   2|x2    |
+|   3|x3    |
+
+]
+
+.pull-right[
+
+| key|val_y |
+|---:|:-----|
+|   1|y1    |
+|   2|y2    |
+|   4|y3    |
+
+]
+
+&lt;br&gt;
+.center[
+&lt;img src = "img/mod10/join1.png" height = 120/&gt;
+]
+]
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Inner Join]
+
+
+```r
+x %&gt;% 
+  inner_join(y, by = "key")
+```
+
+
+| key|val_x |val_y |
+|---:|:-----|:-----|
+|   1|x1    |y1    |
+|   2|x2    |y2    |
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# Outer Joins!
+]
+
+.panelset[
+
+.panel[.panel-name[Description]
+
+- An **outer join** keeps observations that appear in at least one of the tables &lt;br&gt; &lt;br&gt;
+- Three types of outer joins
+   - **Left Join**: keeps all observations in `x`
+      - Most commonly used join
+   - **Right Join**: keeps all observations in y
+   - **Full Join**:  keeps all observations in x and y &lt;br&gt; &lt;br&gt;
+- These joins work by adding an additional “virtual” observation to each table. 
+   - This observation has a key that always matches (if no other key matches), and a value filled with `NA`.
+
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Graph]
+
+.center[
+&lt;img src = "img/mod10/outer_join1.png" height = 375 /&gt;
+.caption[
+From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
+]
+]
+
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Venn Diagram]
+
+.center[
+&lt;br&gt;
+
+&lt;img src = "img/mod10/outer_join2.png" width = 800 /&gt;
+.caption[
+From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
+]
+]
+
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+.panelset[
+
+.panel[.panel-name[Task]
+- I'd like to you to try out the `left_join()`, `right_join()`, and `full_join()` functions with the `x` and `y` tibbles &lt;br&gt; &lt;br&gt;
+- Before you run these functions, tell me which values of the key variable and how many `NA` values will be in the resulting merged tibble &lt;br&gt; &lt;br&gt;
+- Then, run the functions and see what you get!
+
+.center[
+&lt;img src = "img/mod10/join1.png" height = 150/&gt;
+]
+
+]&lt;!----&gt;
+
+.panel[.panel-name[left_join]
+
+
+```r
+x %&gt;% 
+  left_join(y, by = "key")
+```
+
+
+| key|val_x |val_y |
+|---:|:-----|:-----|
+|   1|x1    |y1    |
+|   2|x2    |y2    |
+|   3|x3    |NA    |
+
+]&lt;!----&gt;
+
+.panel[.panel-name[right_join]
+
+```r
+x %&gt;% 
+  right_join(y, by = "key")
+```
+
+
+| key|val_x |val_y |
+|---:|:-----|:-----|
+|   1|x1    |y1    |
+|   2|x2    |y2    |
+|   4|NA    |y3    |
+
+]&lt;!----&gt;
+
+
+.panel[.panel-name[full_join]
+
+```r
+x %&gt;% 
+  full_join(y, by = "key")
+```
+
+
+| key|val_x |val_y |
+|---:|:-----|:-----|
+|   1|x1    |y1    |
+|   2|x2    |y2    |
+|   3|x3    |NA    |
+|   4|NA    |y3    |
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+
+---
+
+.center[
+# Duplicate Keys
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- Duplicate keys arise when the values in the key column in one or more tables are not unique &lt;br&gt; &lt;br&gt;
+- Two scenarios
+   - One table has duplicate keys
+      - One-to-many
+   - Both tables have duplicate keys
+      - Most likely an error
+
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[One Table]
+
+.pull-left[
+
+.pull-left[
+
+```r
+x &lt;- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     2, "x3",
+     1, "x4")
+```
+]
+
+.pull-right[
+
+
+```r
+y &lt;- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2")
+```
+
+]
+
+.center[
+
+```r
+left_join(x, y, by = "key")
+```
+]
+
+]
+
+.pull-right[
+
+
+```
+## # A tibble: 4 × 3
+##     key val_x val_y
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+## 1     1 x1    y1   
+## 2     2 x2    y2   
+## 3     2 x3    y2   
+## 4     1 x4    y1
+```
+
+.left[
+&lt;img src = "img/mod10/duplicate1.png" height = 150/&gt;
+]
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Both Tables]
+
+.pull-left[
+
+.pull-left[
+
+```r
+x &lt;- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     2, "x3",
+     3, "x4")
+```
+
+]
+.pull-right[
+
+```r
+y &lt;- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2",
+     2, "y3",
+     3, "y4")
+```
+]
+
+.center[
+
+```r
+left_join(x, y, by = "key")
+```
+
+]
+]
+
+.pull-right[
+
+.pull-left[
+
+```
+## # A tibble: 6 × 3
+##     key val_x val_y
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+## 1     1 x1    y1   
+## 2     2 x2    y2   
+## 3     2 x2    y3   
+## 4     2 x3    y2   
+## 5     2 x3    y3   
+## 6     3 x4    y4
+```
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src = "img/mod10/duplicate2.png" /&gt;
+]
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# Defining Key Columns
+]
+.panelset[
+
+.panel[.panel-name[Default]
+
+- The specification of the key variables in our `*_join()` statements can be more complex than we've used so far
+   - By default, `by = NULL` uses all variables that appear in both tables (a natural join)
+
+
+```r
+flights2 %&gt;% left_join(weather) %&gt;% head(3) %&gt;% select(1:13)
+```
+
+```
+## Joining, by = c("year", "month", "day", "hour", "origin")
+```
+
+```
+## # A tibble: 3 × 13
+##    year month   day  hour origin dest  tailnum carrier  temp  dewp humid wind_dir wind_speed
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1  2013     1     1     5 EWR    IAH   N14228  UA       39.0  28.0  64.4      260       12.7
+## 2  2013     1     1     5 LGA    IAH   N24211  UA       39.9  25.0  54.8      250       15.0
+## 3  2013     1     1     5 JFK    MIA   N619AA  AA       39.0  27.0  61.6      260       15.0
+```
+
+]&lt;!----&gt;
+
+.panel[.panel-name[by = "x"]
+
+- We can also supply a character vector in common to both tables
+- Note that the year variables are disambiguated in the output with a suffix
+
+
+```r
+flights2 %&gt;% left_join(planes, by = "tailnum") %&gt;% head(3) %&gt;% select(1:10)
+```
+
+```
+## # A tibble: 3 × 10
+##   year.x month   day  hour origin dest  tailnum carrier year.y type                   
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;                  
+## 1   2013     1     1     5 EWR    IAH   N14228  UA        1999 Fixed wing multi engine
+## 2   2013     1     1     5 LGA    IAH   N24211  UA        1998 Fixed wing multi engine
+## 3   2013     1     1     5 JFK    MIA   N619AA  AA        1990 Fixed wing multi engine
+```
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[by = c("a" = "b")]
+
+- If the key variables have different names in the two tables, use `by = c("a" = "b")`
+   - Will match variable `a` in table `x` to variable `b` in table `y`
+
+
+```r
+flights2 %&gt;% left_join(airports, c("dest" = "faa")) %&gt;% head(n = 3) %&gt;% select(1:10)
+```
+
+```
+## # A tibble: 3 × 10
+##    year month   day  hour origin dest  tailnum carrier name                           lat
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;                        &lt;dbl&gt;
+## 1  2013     1     1     5 EWR    IAH   N14228  UA      George Bush Intercontinental  30.0
+## 2  2013     1     1     5 LGA    IAH   N24211  UA      George Bush Intercontinental  30.0
+## 3  2013     1     1     5 JFK    MIA   N619AA  AA      Miami Intl                    25.8
+```
+
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+---
+class: inverse, center, middle
+
+
+# Filtering Joins!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Filtering Joins
+]
+&lt;br&gt;
+- Filtering joins match observations in the same was as mutating joins &lt;br&gt; &lt;br&gt;
+- But filtering joins affect the observations, not the variables &lt;br&gt; &lt;br&gt;
+- There are two types:
+   - `semi_join(x, y)`:  Keeps all observations in `x` that have a match in `y`
+   - `anti_join(x, y)`:  Drops all observations in `x` that have a match in `y`
+
+---
+
+.center[
+# semi_join()
+]
+
+- Semi-joins are useful for matching filtered summary tables back to the original rows
+
+.pull-left[
+
+```r
+top_dest &lt;- flights %&gt;% count(dest, sort = TRUE) %&gt;% head(5)
+top_dest
+```
+
+```
+## # A tibble: 5 × 2
+##   dest      n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 ORD   17283
+## 2 ATL   17215
+## 3 LAX   16174
+## 4 BOS   15508
+## 5 MCO   14082
+```
+]
+
+.pull-right[
+
+```r
+flights %&gt;% semi_join(top_dest)
+```
+
+```
+## Joining, by = "dest"
+```
+
+```
+## # A tibble: 80,262 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin dest  air_time distance  hour minute time_hour          
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dttm&gt;             
+##  1  2013     1     1      554            600        -6      812            837       -25 DL         461 N668DN  LGA    ATL        116      762     6      0 2013-01-01 06:00:00
+##  2  2013     1     1      554            558        -4      740            728        12 UA        1696 N39463  EWR    ORD        150      719     5     58 2013-01-01 05:00:00
+##  3  2013     1     1      557            600        -3      838            846        -8 B6          79 N593JB  JFK    MCO        140      944     6      0 2013-01-01 06:00:00
+##  4  2013     1     1      558            600        -2      753            745         8 AA         301 N3ALAA  LGA    ORD        138      733     6      0 2013-01-01 06:00:00
+##  5  2013     1     1      558            600        -2      924            917         7 UA         194 N29129  JFK    LAX        345     2475     6      0 2013-01-01 06:00:00
+##  6  2013     1     1      559            559         0      702            706        -4 B6        1806 N708JB  JFK    BOS         44      187     5     59 2013-01-01 05:00:00
+##  7  2013     1     1      600            600         0      837            825        12 MQ        4650 N542MQ  LGA    ATL        134      762     6      0 2013-01-01 06:00:00
+##  8  2013     1     1      606            610        -4      837            845        -8 DL        1743 N3739P  JFK    ATL        128      760     6     10 2013-01-01 06:00:00
+##  9  2013     1     1      608            600         8      807            735        32 MQ        3768 N9EAMQ  EWR    ORD        139      719     6      0 2013-01-01 06:00:00
+## 10  2013     1     1      615            615         0      833            842        -9 DL         575 N326NB  EWR    ATL        120      746     6     15 2013-01-01 06:00:00
+## # … with 80,252 more rows
+```
+]
+
+---
+
+.center[
+# semi_join
+]
+
+.pull-left[
+
+- Figures to the right present a graphical depiction of a `semi_join()` &lt;br&gt; &lt;br&gt;
+- Filter joins just search for matches across tables
+   - Doesn't matter which observations match
+   - Filtering joins never duplicate rows like mutating joins do &lt;br&gt; &lt;br&gt;
+- Filtering joins will not add any new columns to `x`
+
+]
+
+.pull-right[
+.center[
+&lt;img src = "img/mod10/semi1.png" /&gt;
+]
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "img/mod10/semi2.png" /&gt;
+]
+]
+
+
+---
+
+.center[
+# anti_join
+]
+
+- Used less frequently than `semi_join()` &lt;br&gt; &lt;br&gt;
+- Useful for diagnosing join mismatches
+
+&lt;br&gt;
+.center[
+&lt;img src = "img/mod10/anti.png" height = 200 /&gt;
+]
+
+
+---
+
+.center[
+# anti_join
+]
+
+
+```r
+flights %&gt;% anti_join(planes, by = "tailnum") %&gt;% count(tailnum, sort = TRUE)
+```
+
+```
+## # A tibble: 722 × 2
+##    tailnum     n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 &lt;NA&gt;     2512
+##  2 N725MQ    575
+##  3 N722MQ    513
+##  4 N723MQ    507
+##  5 N713MQ    483
+##  6 N735MQ    396
+##  7 N0EGMQ    371
+##  8 N534MQ    364
+##  9 N542MQ    363
+## 10 N531MQ    349
+## # … with 712 more rows
+```
+
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+&lt;br&gt;
+
+- Create a smaller flights dataset containing only the five days with the highest average departure delay
+
+---
+
+
+.center[
+# Solution
+]
+
+
+```r
+long_delay5 &lt;- flights %&gt;% group_by(year, month, day) %&gt;% summarize(mean = mean(dep_delay, na.rm = TRUE)) %&gt;% ungroup() %&gt;% slice_max(order_by = mean, n = 5)
+```
+
+
+```r
+flights %&gt;% semi_join(long_delay5)
+```
+
+```
+## Joining, by = c("year", "month", "day")
+```
+
+```
+## # A tibble: 4,847 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin dest  air_time distance  hour minute time_hour          
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dttm&gt;             
+##  1  2013    12     5       16           2159       137      117           2307       130 9E        3525 N602LR  LGA    SYR         38      198    21     59 2013-12-05 21:00:00
+##  2  2013    12     5       27           2035       232      143           2203       220 9E        2914 N920XJ  JFK    DCA         51      213    20     35 2013-12-05 20:00:00
+##  3  2013    12     5       31           2229       122      153           2351       122 B6         486 N323JB  JFK    ROC         60      264    22     29 2013-12-05 22:00:00
+##  4  2013    12     5       32           1930       302      228           2136       292 EV        4370 N11121  EWR    CHS         94      628    19     30 2013-12-05 19:00:00
+##  5  2013    12     5       38           2359        39      505            445        20 B6         745 N663JB  JFK    PSE        186     1617    23     59 2013-12-05 23:00:00
+##  6  2013    12     5       50           2046       244      233           2224       249 EV        4106 N14171  EWR    GSO         80      445    20     46 2013-12-05 20:00:00
+##  7  2013    12     5       56           2359        57      510            437        33 B6         839 N523JB  JFK    BQN        178     1576    23     59 2013-12-05 23:00:00
+##  8  2013    12     5      155           2130       265      445             18       267 B6        1371 N556JB  LGA    FLL        148     1076    21     30 2013-12-05 21:00:00
+##  9  2013    12     5      457            500        -3      637            651       -14 US        1895 N563UW  EWR    CLT         81      529     5      0 2013-12-05 05:00:00
+## 10  2013    12     5      512            515        -3      753            814       -21 UA        1545 N14230  EWR    IAH        204     1400     5     15 2013-12-05 05:00:00
+## # … with 4,837 more rows
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
