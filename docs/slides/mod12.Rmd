@@ -1,0 +1,941 @@
+---
+title: "Module 12:  Factors with Forcats"
+subtitle:  ""
+author: "Graham Eglit"
+institute: "Canopy Growth Corporation"
+date: "June 31, 2022"
+output:
+  xaringan::moon_reader:
+    css: 
+      - xaringan-themer.css
+      - extra.css
+    lib_dir: libs
+    seal: false
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+require(xaringanthemer)
+require(xaringanExtra)
+require(icons)
+require(palmerpenguins)
+require(tidyverse)
+style_duo(primary_color = "#e3e3e2", 
+          secondary_color = "#a6873b",
+          code_inline_color = "#746850",
+          text_font_size = "1.1rem",
+          header_font_google = google_font("Lato"),
+          text_font_google   = google_font("Lora"),
+          code_font_google   = google_font("Space Mono")
+          )
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_scribble()
+xaringanExtra::use_search(show_icon = FALSE)
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
+
+class: title-slide, right, top
+background-image: url(img/hex_forcats.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "img/canopy_logo.png",
+  position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
+  height = "140px",
+  width = "160px",
+  exclude_class = c("title-slide", "inverse", "hide_logo")
+)
+```
+
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+`r rmarkdown::metadata$institute`<br>
+`r rmarkdown::metadata$date`
+]
+
+
+---
+class: inverse, center, middle
+
+
+# Factors Basics!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+---
+
+.center[
+# Factors
+]
+
+.pull-left[
+- Factors are used to work with categorical variables
+   - Categorical variables = variables with a fixed and known set of possible values
+      - e.g., eye color, treatment group, etc. <br> <br>
+- We've come across factors before back in Module 2
+   - Recall that factors are integers that look like characters
+   - Ideal for statistical modeling
+   - We'll also use them for ordering character strings
+      - e.g., for visualization
+]
+
+.pull-right[
+<br>
+<img src = "https://media.giphy.com/media/ibAtCaoRZHNFKP9te0/giphy.gif" />
+.center[
+.caption[
+Via [Giphy](https://media.giphy.com/media/ibAtCaoRZHNFKP9te0/giphy.gif)
+]
+]
+]
+
+
+---
+
+.center[
+# Creating Factors
+]
+
+- Use the `factor` function to create factors
+- Use the `levels` argument to specify levels of the factor
+- Use the `labels` argument to change the labels associated with each level of a factor
+
+```{r}
+x <- c("Tues", "Sat", "Thur")
+x
+```
+
+```{r}
+x <- factor(x, levels = c("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"),
+            labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+x
+```
+
+---
+class: inverse, center, middle
+
+
+# General Social Survey
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+---
+
+
+
+
+
+.center[
+# The General Social Survey: `gss_cat`
+]
+
+```{r echo = FALSE}
+head(gss_cat, n = 100) %>% 
+    DT::datatable(options = list(
+  scrollY = 300,
+  scrollX = 300,
+  pageLength = 10,
+  dom = "ltp",
+  ordering = FALSE))
+```
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Modifying Factor Order
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+---
+
+.center[
+# fct_reorder
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- all `forcats` functions begin with `fct_*`
+  - easy to use with function completion <br> <br>
+- `fct_reorder` re-orders levels of a factor
+    - arguments
+       - `f` = factors whose levels you want to modify
+       - `x` = a numeric vector that you want to use to reorder the levels
+       - `fun` = optional, a function that's used if there are multiple values of `x` for each value of `f`
+
+]<!---->
+
+.panel[.panel-name[Original Visualization]
+
+.pull-left[
+
+```{r eval = FALSE}
+relig_summary <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+
+ggplot(relig_summary, aes(tvhours, relig)) + geom_point()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+relig_summary <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+
+ggplot(relig_summary, aes(tvhours, relig)) + geom_point()
+```
+
+
+]
+]<!---->
+
+.panel[.panel-name[Re-Ordered Visualization]
+
+.pull-left[
+
+```{r eval = FALSE}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# How Could we Improve This Plot?
+]
+
+
+.panelset[
+
+.panel[.panel-name[Ideas?]
+
+.center[
+```{r echo = FALSE, fig.height = 6}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+]
+
+]<!---->
+
+.panel[.panel-name[Option 2]
+
+.pull-left[
+
+```{r eval = FALSE}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+  geom_col(aes(fill = relig)) +
+  geom_text(aes(label = round(tvhours, 2)), hjust = 1.2, color = "white", fontface = 2) + 
+  theme_light() + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+  geom_col(aes(fill = relig)) +
+  geom_text(aes(label = round(tvhours, 2)), hjust = 1.2, color = "white", fontface = 2) + 
+  theme_light() + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation")
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Option 2]
+
+.pull-left[
+
+```{r eval = FALSE}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_point() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_point() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+]<!---->
+
+
+.panel[.panel-name[Option 3]
+
+.pull-left[
+
+```{r eval = FALSE}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(x = tvhours, y = relig, label = round(tvhours, 2))) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_label() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(x = tvhours, y = relig, label = round(tvhours, 2))) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_label() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+
+---
+
+.center[
+# fct_relevel
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- `fct_relevel` re-levels a factor
+    - arguments
+       - `f` = factors whose levels you want to modify
+       - `...` = any number of levels that you want to move to the front of the line <br> <br>
+- `fct_reorder` changes the order of factor levels using a numeric vector or an arithmetic function (e.g., mean)
+- `fct_relvel` changes to order of factor levels through manual re-specification
+
+]<!---->
+
+.panel[.panel-name[Original Visualization]
+
+.pull-left[
+
+```{r eval = FALSE}
+rincome_summary <- gss_cat %>%
+  group_by(rincome) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n())
+
+ggplot(rincome_summary, aes(age, rincome)) + geom_point()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+rincome_summary <- gss_cat %>%
+  group_by(rincome) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n())
+
+ggplot(rincome_summary, aes(age, rincome)) + geom_point()
+```
+
+
+]
+]<!---->
+
+.panel[.panel-name[Re-Ordered Visualization]
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(rincome_summary, aes(age, fct_relevel(rincome, "Not applicable"))) +
+  geom_point()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 5}
+ggplot(rincome_summary, aes(age, fct_relevel(rincome, "Not applicable"))) +
+  geom_point()
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+
+---
+
+.center[
+# fct_reorder2
+]
+
+- `fct_reorder2` reorders the factor by the y values associated with the largest x values
+
+.panelset[
+
+.panel[.panel-name[Create Data]
+
+.pull-left[
+
+```{r}
+by_age <- gss_cat %>%
+  filter(!is.na(age)) %>%
+  count(age, marital) %>%
+  group_by(age) %>%
+  mutate(prop = n / sum(n))
+```
+
+]
+
+.pull-right[
+
+```{r}
+by_age %>% head(n = 5)
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[Figures]
+
+.pull-left[
+
+**Original**
+```{r fig.height = 2.5, fig.width = 5}
+ggplot(by_age, aes(age, prop, colour = marital)) +
+  geom_line(na.rm = TRUE)
+```
+
+]
+
+.pull-right[
+
+**Re-Ordered**
+
+```{r fig.height = 2.5, fig.width = 5}
+ggplot(by_age, aes(age, prop, colour = fct_reorder2(marital, age, prop))) +
+  geom_line() + labs(color = "marital")
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+---
+
+.center[
+# fct_infreq
+]
+
+- `fct_infreq()` orders factor levels by increasing frequency
+- Useful in bar plots
+- Combine with `fct_rev()` to order by decreasing frequency
+
+.panelset[
+
+.panel[.panel-name[fct_infreq]
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(marital = fct_infreq(marital)) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 3.75}
+gss_cat %>%
+  mutate(marital = fct_infreq(marital)) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[combine w/ fct_rev]
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(marital = fct_rev(fct_infreq(marital))) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height = 3.75}
+gss_cat %>%
+  mutate(marital = fct_rev(fct_infreq(marital))) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+---
+class: inverse, center, middle
+
+
+# Modifying Factor Levels
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+---
+.center[
+# Modifying Factor Levels
+]
+
+- Previous `fct_*` functions allowed you to re-order factor levels
+- These next functions will enable you to change the values of factor levels
+   - `fct_recode`: allows you to change the value of each level
+   - `fct_collapse`: allows you to combine factor levels
+   - `fct_lump`: allows you to lump together small groups
+   - `fct_drop`: allows you to remove factor levels that do not have any members
+   
+   
+---
+
+.center[
+# fct_recode
+]
+
+- `fct_recode`: allows you to change the value of each level
+   - "new name" = "old name"
+
+
+.panelset[
+
+.panel[.panel-name[Original Data]
+
+.pull-left[
+
+```{r eval = FALSE }
+gss_cat %>% count(partyid) %>% head(n = 7)
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>% count(partyid) %>% head(n = 7) %>% knitr::kable()
+```
+
+]
+
+
+]<!---->
+
+.panel[.panel-name[Recode]
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat"
+  )) %>% count(partyid) %>% head(n = 7)
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat"
+  )) %>% count(partyid) %>% head(n = 7) %>% knitr::kable()
+```
+
+]
+]<!---->
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# Combine Levels with fct_recode
+]
+
+- To combine groups, you can assign multiple old levels to the same new level
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party"
+  )) %>% count(partyid)
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party"
+  )) %>% count(partyid) %>% knitr::kable()
+```
+]
+
+---
+
+.center[
+# fct_collapse
+]
+
+- `fct_collapse`: allows you to combine factor levels
+   - useful when you want to collapse a lot levels
+   - "new level" = c("old level 1", "old level 2", "old level 3")
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %>%
+  count(partyid)
+```
+
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %>%
+  count(partyid) %>% knitr::kable()
+```
+
+]
+
+---
+
+.center[
+# fct_lump
+]
+
+- `fct_lump` combines smallest levels into an "Other" level group
+   - default behavior is to lump together the smallest groups ensuring that the aggregate group is still the smallest group
+   - you can use the `n` parameter to specify how many groups (excluding other) you want to keep
+   
+   
+   
+   
+   
+.panelset[
+
+.panel[.panel-name[Default]
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(relig = fct_lump(relig)) %>%
+  count(relig)
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>%
+  mutate(relig = fct_lump(relig)) %>%
+  count(relig) %>% 
+  knitr::kable()
+```
+
+]
+]<!---->
+
+.panel[.panel-name[Use n]
+
+.pull-left[
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(relig = fct_lump(relig, n = 4)) %>%
+  count(relig, sort = TRUE) %>%
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE}
+gss_cat %>%
+  mutate(relig = fct_lump(relig, n = 4)) %>%
+  count(relig, sort = TRUE) %>% 
+  knitr::kable()
+```
+
+]
+]<!---->
+
+
+]<!--end panelset-->
+
+
+---
+
+.center[
+# fct_drop
+]
+
+- `fct_drop`: allows you to remove factor levels that do not have any members
+
+```{r}
+f <- factor(c("a", "b"), levels = c("a", "b", "c"))
+f
+```
+
+```{r}
+fct_drop(f)
+```
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- Change the factor levels of the `gss_cat` variable `marital` to the following three categories:
+   - No Answer
+   - Not Married - Combination of Never Married, Separated, Divorced, and Widowed
+   - Married
+- Print out the frequency count of these three categories
+
+- Now, perform the same task using a different `fct_*` function
+
+---
+
+.center[
+# Solution
+]
+
+**Solution 1** 
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(marital = fct_recode(marital, 
+                              "Unmarried" = "Never married",
+                              "Unmarried" = "Separated",
+                              "Unmarried" = "Divorced",
+                              "Unmarried" = "Widowed")) %>% 
+  count(marital)
+```
+
+**Solution 2**  
+
+```{r eval = FALSE}
+gss_cat %>%
+  mutate(marital = fct_collapse(marital,
+                                "Unmarried" = c("Never married", "Separated", "Divorced", "Widowed"))) %>% 
+  count(marital)
+```
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Recap!
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+---
+
+.center[
+# Recap!
+]
+
+.pull-left[
+**Modifying Factor Order**
+- `fct_reorder` <br> <br> 
+- `fct_relevel` <br> <br> 
+- `fct_reorder2` <br> <br> 
+- `fct_infreq`
+   - `fct_rev` <br> <br> 
+]
+
+.pull-right[
+**Modifying Factor Levels**
+- `fct_recode` <br> <br> 
+- `fct_collapse` <br> <br> 
+- `fct_lump` <br> <br> 
+- `fct_drop` <br> <br> 
+]

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Module 12: Factors with Forcats</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Graham Eglit" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.19/datatables.js"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: title-slide, right, top
+background-image: url(img/hex_forcats.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 160px;
+height: 140px;
+z-index: 0;
+background-image: url(img/canopy_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:.5em;right:.5em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+.right-column[
+# Module 12:  Factors with Forcats
+### 
+
+**Graham Eglit**&lt;br&gt;
+Canopy Growth Corporation&lt;br&gt;
+June 31, 2022
+]
+
+
+---
+class: inverse, center, middle
+
+
+# Factors Basics!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# Factors
+]
+
+.pull-left[
+- Factors are used to work with categorical variables
+   - Categorical variables = variables with a fixed and known set of possible values
+      - e.g., eye color, treatment group, etc. &lt;br&gt; &lt;br&gt;
+- We've come across factors before back in Module 2
+   - Recall that factors are integers that look like characters
+   - Ideal for statistical modeling
+   - We'll also use them for ordering character strings
+      - e.g., for visualization
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;img src = "https://media.giphy.com/media/ibAtCaoRZHNFKP9te0/giphy.gif" /&gt;
+.center[
+.caption[
+Via [Giphy](https://media.giphy.com/media/ibAtCaoRZHNFKP9te0/giphy.gif)
+]
+]
+]
+
+
+---
+
+.center[
+# Creating Factors
+]
+
+- Use the `factor` function to create factors
+- Use the `levels` argument to specify levels of the factor
+- Use the `labels` argument to change the labels associated with each level of a factor
+
+
+```r
+x &lt;- c("Tues", "Sat", "Thur")
+x
+```
+
+```
+## [1] "Tues" "Sat"  "Thur"
+```
+
+
+```r
+x &lt;- factor(x, levels = c("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"),
+            labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+x
+```
+
+```
+## [1] Tuesday  Saturday Thursday
+## Levels: Sunday Monday Tuesday Wednesday Thursday Friday Saturday
+```
+
+---
+class: inverse, center, middle
+
+
+# General Social Survey
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+
+
+
+
+.center[
+# The General Social Survey: `gss_cat`
+]
+
+<div id="htmlwidget-ca40029d7d3b717e0c7f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca40029d7d3b717e0c7f">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100"],[2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000],["Never married","Divorced","Widowed","Never married","Divorced","Married","Never married","Divorced","Married","Married","Married","Married","Married","Married","Divorced","Married","Widowed","Never married","Married","Married","Married","Married","Never married","Widowed","Widowed","Widowed","Widowed","Widowed","Divorced","Widowed","Widowed","Married","Married","Never married","Married","Never married","Never married","Never married","Never married","Never married","Married","Married","Divorced","Never married","Never married","Never married","Married","Married","Married","Married","Never married","Married","Married","Married","Married","Divorced","Divorced","Divorced","Never married","Never married","Married","Married","Never married","Divorced","Never married","Widowed","Divorced","Married","Never married","Never married","Widowed","Widowed","Widowed","Widowed","Widowed","Never married","Widowed","Never married","Married","Never married","Married","Married","Widowed","Married","Married","Divorced","Never married","Separated","Never married","Widowed","Widowed","Married","Divorced","Never married","Never married","Never married","Married","Married","Widowed","Divorced"],[26,48,67,39,25,25,36,44,44,47,53,52,52,51,52,40,77,44,40,45,48,49,19,54,82,83,89,88,72,82,89,34,55,37,22,33,37,43,29,57,31,45,36,52,26,46,65,52,56,66,20,64,59,46,26,39,51,45,23,21,26,31,27,78,29,43,61,33,34,89,83,78,89,84,69,32,76,41,32,29,40,44,70,40,51,75,22,53,20,80,70,45,46,24,51,32,53,52,83,39],["White","White","White","White","White","White","White","White","White","White","White","White","White","White","White","Black","White","White","White","Black","White","White","White","White","White","White","White","White","White","White","White","White","Black","White","White","Other","White","White","White","White","White","White","Black","White","White","White","White","White","White","White","White","White","White","White","Other","Black","White","White","White","White","White","Other","Black","White","White","Black","White","White","Black","White","Black","Black","Black","Black","Black","Black","Black","Black","Black","Black","Black","White","Black","Black","Black","White","Black","Black","White","White","White","White","White","White","White","White","White","White","White","White"],["$8000 to 9999","$8000 to 9999","Not applicable","Not applicable","Not applicable","$20000 - 24999","$25000 or more","$7000 to 7999","$25000 or more","$25000 or more","$25000 or more","$25000 or more","$25000 or more","$25000 or more","$25000 or more","$25000 or more","Not applicable","$25000 or more","$10000 - 14999","Not applicable","$25000 or more","Refused","Not applicable","$25000 or more","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Refused","Not applicable","$25000 or more","$10000 - 14999","$20000 - 24999","$25000 or more","$20000 - 24999","$25000 or more","Refused","$20000 - 24999","$25000 or more","$15000 - 19999","Not applicable","$25000 or more","$10000 - 14999","$25000 or more","$3000 to 3999","$25000 or more","$25000 or more","$15000 - 19999","$5000 to 5999","$25000 or more","Not applicable","$10000 - 14999","Don't know","$20000 - 24999","$25000 or more","$1000 to 2999","Don't know","$10000 - 14999","$25000 or more","$25000 or more","Not applicable","$10000 - 14999","Not applicable","$25000 or more","Not applicable","$15000 - 19999","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","$10000 - 14999","Not applicable","Not applicable","$25000 or more","$25000 or more","$25000 or more","$3000 to 3999","Not applicable","Refused","$3000 to 3999","Not applicable","$20000 - 24999","$25000 or more","$10000 - 14999","Not applicable","Refused","$25000 or more","$25000 or more","$15000 - 19999","$20000 - 24999","$25000 or more","Refused","Lt $1000","Not applicable","Refused"],["Ind,near rep","Not str republican","Independent","Ind,near rep","Not str democrat","Strong democrat","Not str republican","Ind,near dem","Not str democrat","Strong republican","Not str democrat","Ind,near rep","Strong democrat","Strong republican","Ind,near dem","Strong democrat","Strong republican","Independent","Not str democrat","Independent","Ind,near dem","Strong republican","Independent","Ind,near rep","Not str democrat","Strong democrat","Not str democrat","Strong republican","Strong democrat","Independent","Ind,near rep","Not str democrat","Not str democrat","Independent","Ind,near dem","Not str democrat","Ind,near dem","Independent","Ind,near rep","Strong republican","Ind,near dem","Independent","Strong democrat","Ind,near dem","Ind,near rep","Strong democrat","Strong republican","Ind,near rep","Not str republican","Strong republican","Strong republican","Strong republican","Strong democrat","Not str republican","Not str democrat","Independent","Independent","Ind,near rep","Strong democrat","Not str republican","Not str republican","Not str republican","Strong democrat","Ind,near dem","Independent","Independent","Strong republican","Strong democrat","Strong democrat","Independent","Strong democrat","Strong democrat","Independent","Strong democrat","Not str democrat","Ind,near dem","Strong democrat","Strong democrat","Strong democrat","Not str republican","Strong democrat","Not str republican","Strong democrat","Ind,near dem","Strong democrat","Strong democrat","Independent","Strong democrat","Ind,near dem","Not str democrat","Not str republican","Independent","Not str democrat","Ind,near dem","Not str republican","Not str republican","Independent","Ind,near dem","Not str republican","Independent"],["Protestant","Protestant","Protestant","Orthodox-christian","None","Protestant","Christian","Protestant","Protestant","Protestant","Protestant","None","Protestant","Protestant","None","Protestant","Jewish","None","Catholic","Protestant","Catholic","Protestant","None","Christian","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","Catholic","Protestant","None","Protestant","Christian","None","Catholic","Catholic","Protestant","None","Catholic","None","Other","None","Catholic","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","None","None","Protestant","Protestant","Protestant","Protestant","Protestant","Christian","Protestant","Protestant","None","None","Catholic","Protestant","Protestant","Protestant","Protestant","Other","Protestant","Protestant","Protestant","Protestant","Protestant","Protestant","Catholic","Protestant","Protestant","Protestant","Catholic","Protestant","Protestant","Protestant","Protestant","Protestant","Catholic","Catholic","Catholic","Catholic","Inter-nondenominational","Catholic","Catholic","Catholic","Catholic","None","None","None"],["Southern baptist","Baptist-dk which","No denomination","Not applicable","Not applicable","Southern baptist","Not applicable","Lutheran-mo synod","Other","Southern baptist","Other","Not applicable","Southern baptist","United methodist","Not applicable","Baptist-dk which","Not applicable","Not applicable","Not applicable","United methodist","Not applicable","United methodist","Not applicable","Not applicable","Other","Episcopal","Other lutheran","Afr meth ep zion","Southern baptist","Am bapt ch in usa","Other methodist","Not applicable","Other","Not applicable","Other","Not applicable","Not applicable","Not applicable","Not applicable","Southern baptist","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Southern baptist","Presbyterian c in us","Episcopal","Southern baptist","Methodist-dk which","Other","Other","No denomination","Not applicable","Not applicable","Baptist-dk which","Southern baptist","Other","Presbyterian c in us","United methodist","Not applicable","Am bapt ch in usa","Southern baptist","Not applicable","Not applicable","Not applicable","No denomination","Nat bapt conv usa","Am lutheran","United methodist","Not applicable","Baptist-dk which","Nat bapt conv of am","Nat bapt conv of am","Nat bapt conv usa","Southern baptist","Nat bapt conv of am","Not applicable","Baptist-dk which","Southern baptist","Lutheran-mo synod","Not applicable","Other","Baptist-dk which","Am baptist asso","Southern baptist","Baptist-dk which","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable","Not applicable"],[12,null,2,4,1,null,3,null,0,3,2,null,1,null,1,7,null,3,3,null,1,2,2,1,3,null,4,null,7,null,3,null,1,null,null,null,1,4,2,1,2,null,null,1,1,null,1,4,5,3,2,null,null,3,2,null,2,2,0,null,2,null,4,4,null,3,null,2,null,2,12,4,8,null,4,5,null,5,2,4,1,null,2,3,null,7,3,1,2,8,null,1,2,3,null,0,4,null,null,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>marital<\/th>\n      <th>age<\/th>\n      <th>race<\/th>\n      <th>rincome<\/th>\n      <th>partyid<\/th>\n      <th>relig<\/th>\n      <th>denom<\/th>\n      <th>tvhours<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollY":300,"scrollX":300,"pageLength":10,"dom":"ltp","ordering":false,"columnDefs":[{"className":"dt-right","targets":[1,3,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Modifying Factor Order
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+
+.center[
+# fct_reorder
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- all `forcats` functions begin with `fct_*`
+  - easy to use with function completion &lt;br&gt; &lt;br&gt;
+- `fct_reorder` re-orders levels of a factor
+    - arguments
+       - `f` = factors whose levels you want to modify
+       - `x` = a numeric vector that you want to use to reorder the levels
+       - `fun` = optional, a function that's used if there are multiple values of `x` for each value of `f`
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Original Visualization]
+
+.pull-left[
+
+
+```r
+relig_summary &lt;- gss_cat %&gt;%
+  group_by(relig) %&gt;%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+
+ggplot(relig_summary, aes(tvhours, relig)) + geom_point()
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Re-Ordered Visualization]
+
+.pull-left[
+
+
+```r
+relig_summary %&gt;%
+  mutate(relig = fct_reorder(relig, tvhours)) %&gt;%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# How Could we Improve This Plot?
+]
+
+
+.panelset[
+
+.panel[.panel-name[Ideas?]
+
+.center[
+![](mod12_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+]
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Option 2]
+
+.pull-left[
+
+
+```r
+relig_summary %&gt;%
+  mutate(relig = fct_reorder(relig, tvhours)) %&gt;%
+  ggplot(aes(tvhours, relig)) +
+  geom_col(aes(fill = relig)) +
+  geom_text(aes(label = round(tvhours, 2)), hjust = 1.2, color = "white", fontface = 2) + 
+  theme_light() + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation")
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Option 2]
+
+.pull-left[
+
+
+```r
+relig_summary %&gt;%
+  mutate(relig = fct_reorder(relig, tvhours)) %&gt;%
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_point() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+.panel[.panel-name[Option 3]
+
+.pull-left[
+
+
+```r
+relig_summary %&gt;%
+  mutate(relig = fct_reorder(relig, tvhours)) %&gt;%
+  ggplot(aes(x = tvhours, y = relig, label = round(tvhours, 2))) +
+  geom_segment(aes(x = 0, xend = tvhours, y = relig, yend = relig)) + 
+  geom_label() + 
+  scale_x_continuous(expand = c(0, 0, 0, .5)) + 
+  labs(x = "Hours of TV Consumption", y = NULL, fill = "Religious Affiliation") + 
+  theme_light() 
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+
+---
+
+.center[
+# fct_relevel
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+- `fct_relevel` re-levels a factor
+    - arguments
+       - `f` = factors whose levels you want to modify
+       - `...` = any number of levels that you want to move to the front of the line &lt;br&gt; &lt;br&gt;
+- `fct_reorder` changes the order of factor levels using a numeric vector or an arithmetic function (e.g., mean)
+- `fct_relvel` changes to order of factor levels through manual re-specification
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Original Visualization]
+
+.pull-left[
+
+
+```r
+rincome_summary &lt;- gss_cat %&gt;%
+  group_by(rincome) %&gt;%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n())
+
+ggplot(rincome_summary, aes(age, rincome)) + geom_point()
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Re-Ordered Visualization]
+
+.pull-left[
+
+
+```r
+ggplot(rincome_summary, aes(age, fct_relevel(rincome, "Not applicable"))) +
+  geom_point()
+```
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+
+---
+
+.center[
+# fct_reorder2
+]
+
+- `fct_reorder2` reorders the factor by the y values associated with the largest x values
+
+.panelset[
+
+.panel[.panel-name[Create Data]
+
+.pull-left[
+
+
+```r
+by_age &lt;- gss_cat %&gt;%
+  filter(!is.na(age)) %&gt;%
+  count(age, marital) %&gt;%
+  group_by(age) %&gt;%
+  mutate(prop = n / sum(n))
+```
+
+]
+
+.pull-right[
+
+
+```r
+by_age %&gt;% head(n = 5)
+```
+
+```
+## # A tibble: 5 × 4
+## # Groups:   age [2]
+##     age marital           n    prop
+##   &lt;int&gt; &lt;fct&gt;         &lt;int&gt;   &lt;dbl&gt;
+## 1    18 Never married    89 0.978  
+## 2    18 Married           2 0.0220 
+## 3    19 Never married   234 0.940  
+## 4    19 Divorced          3 0.0120 
+## 5    19 Widowed           1 0.00402
+```
+
+]
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Figures]
+
+.pull-left[
+
+**Original**
+
+```r
+ggplot(by_age, aes(age, prop, colour = marital)) +
+  geom_line(na.rm = TRUE)
+```
+
+![](mod12_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+]
+
+.pull-right[
+
+**Re-Ordered**
+
+
+```r
+ggplot(by_age, aes(age, prop, colour = fct_reorder2(marital, age, prop))) +
+  geom_line() + labs(color = "marital")
+```
+
+![](mod12_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+---
+
+.center[
+# fct_infreq
+]
+
+- `fct_infreq()` orders factor levels by increasing frequency
+- Useful in bar plots
+- Combine with `fct_rev()` to order by decreasing frequency
+
+.panelset[
+
+.panel[.panel-name[fct_infreq]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(marital = fct_infreq(marital)) %&gt;%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+
+]
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[combine w/ fct_rev]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(marital = fct_rev(fct_infreq(marital))) %&gt;%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+
+]
+
+.pull-right[
+
+![](mod12_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+---
+class: inverse, center, middle
+
+
+# Modifying Factor Levels
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+---
+.center[
+# Modifying Factor Levels
+]
+
+- Previous `fct_*` functions allowed you to re-order factor levels
+- These next functions will enable you to change the values of factor levels
+   - `fct_recode`: allows you to change the value of each level
+   - `fct_collapse`: allows you to combine factor levels
+   - `fct_lump`: allows you to lump together small groups
+   - `fct_drop`: allows you to remove factor levels that do not have any members
+   
+   
+---
+
+.center[
+# fct_recode
+]
+
+- `fct_recode`: allows you to change the value of each level
+   - "new name" = "old name"
+
+
+.panelset[
+
+.panel[.panel-name[Original Data]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;% count(partyid) %&gt;% head(n = 7)
+```
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; partyid &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No answer &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Don't know &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other party &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 393 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Strong republican &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2314 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Not str republican &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3032 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ind,near rep &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4119 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+
+]&lt;!----&gt;
+
+.panel[.panel-name[Recode]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat"
+  )) %&gt;% count(partyid) %&gt;% head(n = 7)
+```
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; partyid &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No answer &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Don't know &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other party &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 393 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Republican, strong &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2314 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Republican, weak &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3032 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent, near rep &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4119 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+]&lt;!----&gt;
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# Combine Levels with fct_recode
+]
+
+- To combine groups, you can assign multiple old levels to the same new level
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party"
+  )) %&gt;% count(partyid)
+```
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; partyid &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 548 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Republican, strong &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2314 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Republican, weak &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3032 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent, near rep &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4119 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Independent, near dem &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2499 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Democrat, weak &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3690 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Democrat, strong &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3490 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+.center[
+# fct_collapse
+]
+
+- `fct_collapse`: allows you to combine factor levels
+   - useful when you want to collapse a lot levels
+   - "new level" = c("old level 1", "old level 2", "old level 3")
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %&gt;%
+  count(partyid)
+```
+
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; partyid &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 548 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rep &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5346 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ind &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8409 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; dem &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7180 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+---
+
+.center[
+# fct_lump
+]
+
+- `fct_lump` combines smallest levels into an "Other" level group
+   - default behavior is to lump together the smallest groups ensuring that the aggregate group is still the smallest group
+   - you can use the `n` parameter to specify how many groups (excluding other) you want to keep
+   
+   
+   
+   
+   
+.panelset[
+
+.panel[.panel-name[Default]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(relig = fct_lump(relig)) %&gt;%
+  count(relig)
+```
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; relig &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Protestant &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10846 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10637 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+]&lt;!----&gt;
+
+.panel[.panel-name[Use n]
+
+.pull-left[
+
+
+```r
+gss_cat %&gt;%
+  mutate(relig = fct_lump(relig, n = 4)) %&gt;%
+  count(relig, sort = TRUE) %&gt;%
+```
+
+]
+
+.pull-right[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; relig &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Protestant &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10846 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Catholic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5124 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3523 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1301 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Christian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 689 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+]&lt;!----&gt;
+
+
+]&lt;!--end panelset--&gt;
+
+
+---
+
+.center[
+# fct_drop
+]
+
+- `fct_drop`: allows you to remove factor levels that do not have any members
+
+
+```r
+f &lt;- factor(c("a", "b"), levels = c("a", "b", "c"))
+f
+```
+
+```
+## [1] a b
+## Levels: a b c
+```
+
+
+```r
+fct_drop(f)
+```
+
+```
+## [1] a b
+## Levels: a b
+```
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- Change the factor levels of the `gss_cat` variable `marital` to the following three categories:
+   - No Answer
+   - Not Married - Combination of Never Married, Separated, Divorced, and Widowed
+   - Married
+- Print out the frequency count of these three categories
+
+- Now, perform the same task using a different `fct_*` function
+
+---
+
+.center[
+# Solution
+]
+
+**Solution 1** 
+
+
+```r
+gss_cat %&gt;%
+  mutate(marital = fct_recode(marital, 
+                              "Unmarried" = "Never married",
+                              "Unmarried" = "Separated",
+                              "Unmarried" = "Divorced",
+                              "Unmarried" = "Widowed")) %&gt;% 
+  count(marital)
+```
+
+**Solution 2**  
+
+
+```r
+gss_cat %&gt;%
+  mutate(marital = fct_collapse(marital,
+                                "Unmarried" = c("Never married", "Separated", "Divorced", "Widowed"))) %&gt;% 
+  count(marital)
+```
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Recap!
+----
+&lt;svg viewBox="0 0 581 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:3em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+---
+
+.center[
+# Recap!
+]
+
+.pull-left[
+**Modifying Factor Order**
+- `fct_reorder` &lt;br&gt; &lt;br&gt; 
+- `fct_relevel` &lt;br&gt; &lt;br&gt; 
+- `fct_reorder2` &lt;br&gt; &lt;br&gt; 
+- `fct_infreq`
+   - `fct_rev` &lt;br&gt; &lt;br&gt; 
+]
+
+.pull-right[
+**Modifying Factor Levels**
+- `fct_recode` &lt;br&gt; &lt;br&gt; 
+- `fct_collapse` &lt;br&gt; &lt;br&gt; 
+- `fct_lump` &lt;br&gt; &lt;br&gt; 
+- `fct_drop` &lt;br&gt; &lt;br&gt; 
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
