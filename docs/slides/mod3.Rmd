@@ -724,6 +724,43 @@ ggplot(data = mpg) +
 ---
 
 .center[
+# Location, Location, Location - Part 2!
+]
+
+- These two specifications produce the same plot
+- Aesthetic mappings in a `ggplot()` function are passed on to all subsequent geoms
+
+.pull-left[
+
+```{r fig.height = 3.5, warning = FALSE, message = FALSE}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+
+]
+
+
+.pull-right[
+```{r fig.height = 3.5, warning = FALSE, message = FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv, fill = drv)) + 
+  geom_smooth() + 
+  geom_point()
+```
+
+]
+
+
+
+
+
+
+
+
+
+---
+
+.center[
 # Let's Make a Mistake
 ]
 
@@ -1216,7 +1253,7 @@ ggplot(data = mpg) +
 - The following can be used a default template for ggplots: <br> <br>
 <img src = "img/mod3/formula.png" width = "40%" />
 <br>
-.caption[Formula from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+.caption[Formula from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
 <br>
 - Not all of these parameters need to be specified, defaults are often adequate
 
@@ -1227,7 +1264,7 @@ ggplot(data = mpg) +
 
 <img src = "img/mod3/step1.png" width = "90%" />
 <br>
-.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+.caption[Figure from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
 
 ]<!---->
 
@@ -1235,7 +1272,7 @@ ggplot(data = mpg) +
 
 <img src = "img/mod3/step2.png" width = "90%" />
 <br>
-.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+.caption[Figure from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
 
 ]<!---->
 
@@ -1244,9 +1281,30 @@ ggplot(data = mpg) +
 
 <img src = "img/mod3/step3.png" width = "80%" />
 <br>
-.caption[Figure from [R for Data Science]("https://r4ds.had.co.nz/data-visualisation.html")]
+.caption[Figure from [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)]
 
 ]<!---->
 
 
 ]<!--end panel set-->
+
+
+
+---
+
+.center[
+# Scaffolding Resources
+]
+
+<br>
+
+<br>
+
+[Data to Viz Website](https://www.data-to-viz.com/)
+
+
+<br>
+
+
+[esquisse Package](https://cran.r-project.org/web/packages/esquisse/vignettes/get-started.html)
+
