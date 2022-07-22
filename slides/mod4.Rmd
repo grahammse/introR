@@ -3,7 +3,7 @@ title: "Module 4:  Data Transformation"
 subtitle:  "The Data They Are A-Changin'"
 author: "Graham Eglit"
 institute: "Canopy Growth Corporation"
-date: "June 10, 2022"
+date: "July 22, 2022"
 output:
   xaringan::moon_reader:
     css: 
