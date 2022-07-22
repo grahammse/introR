@@ -1,0 +1,252 @@
+---
+title: "Exploratory Data Analysis Project"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+
+For this exercise, you'll continue to explore the WHO datasets that we looked at in module 9. This code is reproduced from the chapter because it is needed by the exercises. 
+
+```{r}
+tidy4a <- table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+tidy4b <- table4b %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+```
+
+
+<br> <br> 
+
+
+1.  Recreate the plot showing change in cases over time using table2 instead of table1. What do you need to do first? 
+
+<br> <br>
+
+2.  Why does this code fail?
+
+```{r error = TRUE}
+table4a %>% 
+  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+```
+
+The code fails because the column names 1999 and 2000 are not non-syntactic variable names.[^non-syntactic] When selecting variables from a data frame, tidyverse functions will interpret numbers, like 1999 and 2000, as column numbers. In this case, pivot_longer() tries to select the 1999th and 2000th column of the data frame. To select the columns 1999 and 2000, the names must be surrounded in backticks (`) or provided as strings.
+
+```{r}
+table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+```
+
+
+```{r}
+table4a %>% 
+  pivot_longer(c("1999", "2000"), names_to = "year", values_to = "cases")
+```
+
+
+<br> <br>
+
+3.  What would happen if you widen this table? Why? How could you add a new column to uniquely identify each value?
+
+```{r}
+people <- tribble(
+  ~name, ~key, ~value,
+  #-----------------|--------|------
+  "Phillip Woods",  "age", 45,
+  "Phillip Woods", "height", 186,
+  "Phillip Woods", "age", 50,
+  "Jessica Cordero", "age", 37,
+  "Jessica Cordero", "height", 156
+)
+glimpse(people)
+```
+
+
+Widening this data frame using `pivot_wider()` produces columns that are lists of numeric vectors because the name and key columns do not uniquely identify rows. In particular, there are two rows with values for the age of “Phillip Woods”.
+
+```{r}
+pivot_wider(people, names_from="name", values_from = "value")
+```
+
+We could solve the problem by adding a row with a distinct observation count for each combination of name and key.
+
+```{r}
+people2 <- people %>%
+  group_by(name, key) %>%
+  mutate(obs = row_number())
+people2
+```
+
+We can make people2 wider because the combination of name and obs will uniquely identify the rows in the wide data frame.
+
+```{r}
+pivot_wider(people2, names_from="name", values_from = "value")
+```
+
+Another way to solve this problem is by keeping only distinct rows of the name and key values, and dropping duplicate rows.
+
+```{r}
+people %>%
+  distinct(name, key, .keep_all = TRUE) %>%
+  pivot_wider(names_from="name", values_from = "value")
+```
+
+However, before doing this understand why there are duplicates in the data. The duplicate values may not be just a nuisance, but may indicate deeper problems with the data.
+
+<br> <br>
+
+4. Tidy the simple tibble below. Do you need to make it wider or longer? What are the variables?
+
+```{r}
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes", NA, 10,
+  "no", 20, 12
+)
+```
+
+To tidy the preg table use pivot_longer() to create a long table. The variables in this data are: 
+
+- sex ("female", "male") 
+
+- pregnant ("yes", "no") 
+
+- count, which is a non-negative integer representing the number of observations.
+
+The observations in this data are unique combinations of sex and pregnancy status.
+
+```{r}
+preg_tidy <- preg %>%
+  pivot_longer(c(male, female), names_to = "sex", values_to = "count")
+preg_tidy
+```
+
+Remove the (male, pregnant) row with a missing value to simplify the tidied data frame.
+
+```{r}
+preg_tidy2 <- preg %>%
+  pivot_longer(c(male, female), names_to = "sex", values_to = "count", values_drop_na = TRUE)
+preg_tidy2
+```
+
+This an example of turning an explicit missing value into an implicit missing value, which is discussed in the upcoming section, Missing Values section. The missing (male, pregnant) row represents an implicit missing value because the value of count can be inferred from its absence. In the tidy data, we can represent rows with missing values of count either explicitly with an NA (as in preg_tidy) or implicitly by the absence of a row (as in preg_tidy2). But in the wide data, the missing values can only be represented explicitly.
+
+
+5.  What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets. 
+
+```{r}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+```{r}
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+The `extra` argument tells `separate()` what to do if there are too many pieces, and the `fill` argument tells it what to do if there aren’t enough. By default, `separate()` drops extra values with a warning.
+
+```{r}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+Adding the argument, `extra = "drop"`, produces the same result as above but without the warning.
+
+```{r}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
+  separate(x, c("one", "two", "three"), extra = "drop")
+```
+
+Setting `extra = "merge"`, then the extra values are not split, so "f,g" appears in column three.
+
+```{r}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
+  separate(x, c("one", "two", "three"), extra = "merge")
+```
+
+In this example, one of the values, "d,e", has too few elements. The default for `fill` is similar to those in `separate()`; it fills columns with missing values but emits a warning. In this example, the 2nd row of column `three` is `NA`.
+
+```{r}
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+Alternative options for the `fill` are "right", to fill with missing values from the right, but without a warning
+
+```{r}
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
+  separate(x, c("one", "two", "three"), fill = "right")
+```
+
+The option `fill = "left"` also fills with missing values without emitting a warning, but this time from the left side. Now, the 2nd row of column one will be missing, and the other values in that row are shifted right.
+
+```{r}
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
+  separate(x, c("one", "two", "three"), fill = "left")
+```
+
+
+<br>
+
+6.  Both `unite()` and `separate()` have a remove argument. What does it do? Why would you set it to FALSE?
+
+The `remove` argument discards input columns in the result data frame. You would set it to `FALSE` if you want to create a new variable, but keep the old one.
+
+<br>
+
+7.  What does the direction argument to fill() do?
+
+With `fill`, the direction determines whether `NA` values should be replaced by the previous non-missing value (`"down"`) or the next non-missing value (`"up"`).

@@ -1,0 +1,267 @@
+---
+title: "Factors Project: Solutions"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+
+For this exercise, you'll continue to explore the General Social Survey data set that we worked on in lecture.  Load the `tidyverse`.  The General Social Survey data set can be found using `gss_cat`. 
+
+```{r}
+require(tidyverse)
+head(gss_cat)
+```
+
+
+<br> <br>
+
+
+
+1.  What is the most common `relig` in this survey? What’s the most common `partyid`? <br>
+
+
+```{r}
+gss_cat %>%
+  count(relig) %>%
+  arrange(desc(n)) %>%
+  head(1)
+```
+
+The most common `relig` is “Protestant” <br>
+
+```{r}
+gss_cat %>%
+  count(partyid) %>%
+  arrange(desc(n)) %>%
+  head(1)
+```
+
+
+The most common `partyid` is “Independent”.
+
+
+
+<br> <br>
+
+
+
+2.  Which relig does denom (denomination) apply to? How can you find out with a table? How can you find out with a visualization? <br>
+
+```{r}
+levels(gss_cat$denom)
+```
+
+From the context it is clear that `denom` refers to “Protestant” (and unsurprising given that it is the largest category in `freq`). Let’s filter out the non-responses, no answers, others, not-applicable, or no denomination, to leave only answers to denominations. After doing that, the only remaining responses are “Protestant”.
+
+
+```{r}
+gss_cat %>%
+  filter(!denom %in% c(
+    "No answer", "Other", "Don't know", "Not applicable",
+    "No denomination"
+  )) %>%
+  count(relig)
+```
+
+
+This is also clear in a scatter plot of relig vs. denom where the points are proportional to the size of the number of answers (since otherwise there would be overplotting).
+
+```{r}
+gss_cat %>%
+  count(relig, denom) %>%
+  ggplot(aes(x = relig, y = denom, size = n)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+
+<br> <br>
+
+3. For each factor in gss_cat identify whether the order of the levels is arbitrary or principled. <br>
+
+
+```{r}
+gss_cat %>% select(where(is.factor)) %>% 
+  head()
+```
+
+There are six categorical variables: `marital`, `race`, `rincome`, `partyid`, `relig`, and `denom`.
+
+The ordering of marital is “somewhat principled”. There is some sort of logic in that the levels are grouped “never married”, married at some point (separated, divorced, widowed), and “married”; though it would seem that “Never Married”, “Divorced”, “Widowed”, “Separated”, “Married” might be more natural. I find that the question of ordering can be determined by the level of aggregation in a categorical variable, and there can be more “partially ordered” factors than one would expect.
+
+```{r}
+levels(gss_cat$marital)
+```
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = marital)) +
+  geom_bar()
+```
+
+The ordering of race is principled in that the categories are ordered by count of observations in the data.
+
+```{r}
+levels(gss_cat$race)
+```
+
+
+```{r}
+gss_cat %>%
+  ggplot(aes(race)) +
+  geom_bar() +
+  scale_x_discrete(drop = FALSE)
+```
+
+The levels of `rincome` are ordered in decreasing order of the income; however the placement of “No answer”, “Don’t know”, and “Refused” before, and “Not applicable” after the income levels is arbitrary. It would be better to place all the missing income level categories either before or after all the known values.
+
+```{r}
+levels(gss_cat$rincome)
+```
+
+```{r}
+gss_cat %>%
+  ggplot(aes(relig)) +
+  geom_bar() +
+  coord_flip()
+```
+
+
+The same goes for `denom`.
+
+
+```{r}
+levels(gss_cat$denom)
+```
+
+Ignoring “No answer”, “Don’t know”, and “Other party”, the levels of `partyid` are ordered from “Strong Republican”" to “Strong Democrat”.
+
+```{r}
+levels(gss_cat$partyid)
+```
+
+<br> <br>
+
+
+4.  How have the proportions of people identifying as Democrat, Republican, and Independent changed over time? <br>
+
+To answer that, we need to combine the multiple levels into Democrat, Republican, and Independent
+
+```{r}
+levels(gss_cat$partyid)
+```
+
+```{r}
+gss_cat %>%
+  mutate(
+    partyid =
+      fct_collapse(partyid,
+        other = c("No answer", "Don't know", "Other party"),
+        rep = c("Strong republican", "Not str republican"),
+        ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+        dem = c("Not str democrat", "Strong democrat")
+      )
+  ) %>%
+  count(year, partyid) %>%
+  group_by(year) %>%
+  mutate(p = n / sum(n)) %>%
+  ggplot(aes(
+    x = year, y = p,
+    colour = fct_reorder2(partyid, year, p)
+  )) +
+  geom_point() +
+  geom_line() +
+  labs(colour = "Party ID.")
+```
+
+
+
+<br> <br>
+
+
+5. How could you collapse rincome into a small set of categories? <br>
+
+Group all the non-responses into one category, and then group other categories into a smaller number. Since there is a clear ordering, we would not use `fct_lump()`
+
+```{r}
+levels(gss_cat$rincome)
+```
+
+
+```{r}
+gss_cat %>%
+  mutate(
+    rincome =
+      fct_collapse(
+        rincome,
+        `Unknown` = c("No answer", "Don't know", "Refused", "Not applicable"),
+        `Lt $5000` = c("Lt $1000", str_c(
+          "$", c("1000", "3000", "4000"),
+          " to ", c("2999", "3999", "4999")
+        )),
+        `$5000 to 10000` = str_c(
+          "$", c("5000", "6000", "7000", "8000"),
+          " to ", c("5999", "6999", "7999", "9999")
+        )
+      )
+  ) %>%
+  ggplot(aes(x = rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
+
+

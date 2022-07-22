@@ -202,7 +202,9 @@ filter(penguins, species == "Chinstrap" & sex == "male")
 .pull-right[
 ```{r echo = FALSE}
 filter(penguins, species == "Chinstrap" & sex == "male") %>% 
-  datatable(options = list(pageLength = 68, scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  select(species, sex, island, bill_length_mm) %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -319,7 +321,9 @@ arrange(penguins, desc(bill_length_mm))
 .pull-right[
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 arrange(penguins, desc(bill_length_mm)) %>% 
-  DT::datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  select(species, island, bill_length_mm, bill_depth_mm) %>% 
+  kable("html")
 ```
 
 ]
@@ -331,15 +335,17 @@ arrange(penguins, desc(bill_length_mm)) %>%
 - Rows can be sorted based on multiple variables
 - Rows will be sorted by the first variable first, then by the second variable within the first variable
 ```{r eval = FALSE, warning = FALSE, message = FALSE}
-arrange(penguins, bill_length_mm, bill_depth_mm)
+arrange(penguins, bill_depth_mm, bill_length_mm)
 ```
 
 ]
 
 .pull-right[
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-arrange(penguins, bill_length_mm, bill_depth_mm) %>% 
-  DT::datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+arrange(penguins, bill_depth_mm, bill_length_mm) %>% 
+  head() %>% 
+  select(species, island, bill_length_mm, bill_depth_mm) %>% 
+  kable("html")
 ```
 
 ]
@@ -351,15 +357,17 @@ arrange(penguins, bill_length_mm, bill_depth_mm) %>%
 .pull-left[
 - Note here how changing the variable order changes the sort
 ```{r eval = FALSE, warning = FALSE, message = FALSE}
-arrange(penguins, bill_depth_mm, bill_length_mm)
+arrange(penguins, bill_length_mm, bill_depth_mm)
 ```
 
 ]
 
 .pull-right[
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-arrange(penguins, bill_depth_mm, bill_length_mm) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+arrange(penguins, bill_length_mm, bill_depth_mm) %>% 
+  head() %>% 
+  select(species, island, bill_length_mm, bill_depth_mm) %>% 
+  kable("html")
 ```
 
 ]
@@ -424,7 +432,8 @@ select(penguins, species)
 .pull-right[
 ```{r echo = FALSE}
 select(penguins, species) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  kable("html")
 ```
 ]
 
@@ -443,7 +452,8 @@ select(penguins, species, bill_length_mm)
 .pull-right[
 ```{r echo = FALSE}
 select(penguins, species, bill_length_mm) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -461,7 +471,8 @@ select(penguins, -c(species, bill_length_mm))
 .pull-right[
 ```{r echo = FALSE}
 select(penguins, -c(species, bill_length_mm)) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -491,7 +502,8 @@ select(penguins, ends_with("mm"))
 .pull-right[
 ```{r echo = FALSE}
 select(penguins, ends_with("mm")) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -511,7 +523,8 @@ select(penguins, species, year, everything())
 .pull-right[
 ```{r echo = FALSE}
 select(penguins, species, year, everything()) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head() %>% 
+  kable("html")
 ```
 ]
 ]<!---->

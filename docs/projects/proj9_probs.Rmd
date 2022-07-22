@@ -1,0 +1,147 @@
+---
+title: "Tidy Data Project:  Problems"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+For this exercise, you'll continue to explore the WHO datasets that we
+looked at in module 9. Load the `tidyverse` package. This code is
+reproduced from the chapter because it is needed by the exercises.
+
+```{r}
+tidy4a <- table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+tidy4b <- table4b %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+```
+
+<br> <br>
+
+1.  Recreate the plot showing change in cases over time using table2
+    instead of table1. What do you need to do first? <br>
+
+Before creating the plot with change in cases over time, we need to
+filter table to only include rows representing cases of TB.
+
+```{r}
+table2 %>%
+  filter(type == "cases") %>%
+  ggplot(aes(year, count)) +
+  geom_line(aes(group = country), colour = "grey50") +
+  geom_point(aes(colour = country)) +
+  scale_x_continuous(breaks = unique(table2$year)) +
+  ylab("cases")
+```
+
+<br> <br>
+
+2.  Why does this code fail?
+
+```{r error = TRUE}
+table4a %>% 
+  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+```
+
+<br> <br>
+
+3.  
+
+    3.  What would happen if you widen this table? Why? How could you
+        add a new column to uniquely identify each value?
+
+```{r}
+people <- tribble(
+  ~name, ~key, ~value,
+  #-----------------|--------|------
+  "Phillip Woods",  "age", 45,
+  "Phillip Woods", "height", 186,
+  "Phillip Woods", "age", 50,
+  "Jessica Cordero", "age", 37,
+  "Jessica Cordero", "height", 156
+)
+glimpse(people)
+```
+
+<br> <br>
+
+4.  Tidy the simple tibble below. Do you need to make it wider or
+    longer? What are the variables?
+
+```{r}
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes", NA, 10,
+  "no", 20, 12
+)
+```
+
+<br> 
+<br>
+
+5.  What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets. 
+
+```{r}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+```{r}
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
+  separate(x, c("one", "two", "three"))
+```
+
+<br>
+<br>
+
+6.  Both `unite()` and `separate()` have a remove argument. What does it do? Why would you set it to FALSE?
+
+<br>
+<br>
+
+7.  What does the direction argument to fill() do?

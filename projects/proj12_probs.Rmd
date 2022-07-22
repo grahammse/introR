@@ -1,0 +1,78 @@
+---
+title: "Factors Project:  Problems"
+output:
+  html_document:
+    css: "styles.css"
+    theme: cosmo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<style>
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #a6873b;
+    color: black;
+    font-weight: bold;
+}
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #a6873b;
+     font-weight: bold;
+          color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+</style>
+```
+```{=html}
+<style>
+  a {
+     color: #a6873b;
+     text-decoration: none;
+     }
+</style>
+```
+```{=html}
+<style>
+  a:hover {
+     color: #a6873b;
+     font-weight: bold;
+     }
+</style>
+```
+
+
+For this exercise, you'll continue to explore the General Social Survey data set that we worked on in lecture.  Load the `tidyverse`.  The General Social Survey data set can be found using `gss_cat`. 
+
+<br> <br>
+
+
+
+1.  What is the most common relig in this survey? What’s the most common partyid?
+
+<br> <br>
+
+2.  Which relig does denom (denomination) apply to? How can you find out with a table? How can you find out with a visualization?
+
+<br> <br>
+
+3.  For each factor in gss_cat identify whether the order of the levels is arbitrary or principled.
+
+<br> <br>
+
+4.  How have the proportions of people identifying as Democrat, Republican, and Independent changed over time?
+
+<br> <br>
+
+5. How could you collapse rincome into a small set of categories?
+
