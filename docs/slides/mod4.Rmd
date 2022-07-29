@@ -3,7 +3,7 @@ title: "Module 4:  Data Transformation"
 subtitle:  "The Data They Are A-Changin'"
 author: "Graham Eglit"
 institute: "Canopy Growth Corporation"
-date: "June 10, 2022"
+date: "July 22, 2022"
 output:
   xaringan::moon_reader:
     css: 
@@ -607,11 +607,14 @@ mutate(penguins, mass_to_flipper = body_mass_g / flipper_length_mm) %>%
 
 .pull-left[
 - We can also create multiple new variables at once
+- Notice the use of the ` %>% `
+  - We'll talk abou this in a moment...
 
 ```{r eval = FALSE}
 mutate(penguins, 
        mass_to_flipper = body_mass_g / flipper_length_mm,
-       mass_to_bill_length = body_mass_g / bill_length_mm)
+       mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
+  select(mass_to_flipper, mass_to_bill_length, everything()
 ```
 
 ]
@@ -621,7 +624,9 @@ mutate(penguins,
 mutate(penguins, 
        mass_to_flipper = body_mass_g / flipper_length_mm,
        mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  select(mass_to_flipper, mass_to_bill_length, everything()) %>% 
+  head(n = 8) %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -644,7 +649,8 @@ transmute(penguins,
 transmute(penguins, 
        mass_to_flipper = body_mass_g / flipper_length_mm,
        mass_to_bill_length = body_mass_g / bill_length_mm) %>% 
-  datatable(options = list(scrollX = 250, scrollY = 300, dom = "t"))
+  head(n = 8) %>% 
+  kable("html")
 ```
 ]
 ]<!---->
@@ -926,7 +932,16 @@ penguins %>%
 - `mean` and `sum` calculate the proportion and frequency, respectively, of TRUEs for logical values
 - Can be used with both discrete and numeric data
 
-```{r}
+```{r echo = TRUE, eval = FALSE}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(n_female = sum(sex == "female", na.rm = TRUE),
+            prop_female = mean(sex == "female", na.rm = TRUE),
+            n_mass4000 = sum(body_mass_g > 4000, na.rm = TRUE),
+            prop_mass4000 = mean(body_mass_g > 4000, na.rm = TRUE))
+```
+
+```{r echo = FALSE}
 penguins %>% 
   group_by(species) %>% 
   summarize(n_female = sum(sex == "female", na.rm = TRUE),
@@ -935,7 +950,6 @@ penguins %>%
             prop_mass4000 = mean(body_mass_g > 4000, na.rm = TRUE)) %>% 
   kable("html")
 ```
-
 
 
 ---

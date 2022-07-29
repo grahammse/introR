@@ -1,5 +1,5 @@
 ---
-title: "Exploratory Data Analysis Project"
+title: "Tidy Data Project: Solutions"
 output:
   html_document:
     css: "styles.css"
@@ -56,6 +56,10 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
+```{r}
+require(tidyverse)
+```
+
 
 
 For this exercise, you'll continue to explore the WHO datasets that we looked at in module 9. This code is reproduced from the chapter because it is needed by the exercises. 
@@ -68,10 +72,24 @@ tidy4b <- table4b %>%
 ```
 
 
-<br> <br> 
+<br>
 
 
 1.  Recreate the plot showing change in cases over time using table2 instead of table1. What do you need to do first? 
+
+Before creating the plot with change in cases over time, we need to
+filter table to only include rows representing cases of TB.
+
+```{r}
+table2 %>%
+  filter(type == "cases") %>%
+  ggplot(aes(year, count)) +
+  geom_line(aes(group = country), colour = "grey50") +
+  geom_point(aes(colour = country)) +
+  scale_x_continuous(breaks = unique(table2$year)) +
+  ylab("cases")
+```
+
 
 <br> <br>
 
@@ -183,15 +201,17 @@ preg_tidy2
 
 This an example of turning an explicit missing value into an implicit missing value, which is discussed in the upcoming section, Missing Values section. The missing (male, pregnant) row represents an implicit missing value because the value of count can be inferred from its absence. In the tidy data, we can represent rows with missing values of count either explicitly with an NA (as in preg_tidy) or implicitly by the absence of a row (as in preg_tidy2). But in the wide data, the missing values can only be represented explicitly.
 
+<br> <br> 
+
 
 5.  What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets. 
 
-```{r}
+```{r }
 tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
   separate(x, c("one", "two", "three"))
 ```
 
-```{r}
+```{r }
 tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
   separate(x, c("one", "two", "three"))
 ```

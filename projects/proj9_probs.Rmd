@@ -50,6 +50,12 @@ editor_options:
      }
 </style>
 ```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+require(tidyverse)
+```
+
+
 For this exercise, you'll continue to explore the WHO datasets that we
 looked at in module 9. Load the `tidyverse` package. This code is
 reproduced from the chapter because it is needed by the exercises.
@@ -65,19 +71,6 @@ tidy4b <- table4b %>%
 
 1.  Recreate the plot showing change in cases over time using table2
     instead of table1. What do you need to do first? <br>
-
-Before creating the plot with change in cases over time, we need to
-filter table to only include rows representing cases of TB.
-
-```{r}
-table2 %>%
-  filter(type == "cases") %>%
-  ggplot(aes(year, count)) +
-  geom_line(aes(group = country), colour = "grey50") +
-  geom_point(aes(colour = country)) +
-  scale_x_continuous(breaks = unique(table2$year)) +
-  ylab("cases")
-```
 
 <br> <br>
 
@@ -126,12 +119,12 @@ preg <- tribble(
 
 5.  What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets. 
 
-```{r}
+```{r warning = FALSE}
 tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>%
   separate(x, c("one", "two", "three"))
 ```
 
-```{r}
+```{r warning = FALSE}
 tibble(x = c("a,b,c", "d,e", "f,g,i")) %>%
   separate(x, c("one", "two", "three"))
 ```
