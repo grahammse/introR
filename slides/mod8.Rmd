@@ -184,12 +184,12 @@ head(read_csv(file = here("data", "test_data.csv"), skip = 2), n = 4) %>%
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
 read_csv(file = here("data", "test_data.csv"), 
-         skip = 2, 
+         skip = 3, 
          col_names = c("ID", "Group", "sex", "outcome"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome")), n = 4) %>% 
+head(read_csv(file = here("data", "test_data.csv"), skip = 3 , col_names = c("ID", "Group", "sex", "outcome")), n = 4) %>% 
   knitr::kable("html")
 ```
 
@@ -203,13 +203,13 @@ head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
 read_csv(file = here("data", "test_data.csv"), 
-         skip = 2, 
+         skip = 3, 
          col_names = c("ID", "Group", "sex", "outcome"), 
          na = c("Missing", "?"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?")), n = 4) %>% 
+head(read_csv(file = here("data", "test_data.csv"), skip = 3 , col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?")), n = 4) %>% 
   knitr::kable("html")
 ```
 
@@ -431,7 +431,7 @@ head(rename_data, n = 2)
 
 .pull-left[
 
-- `dplyr_rename` uses two main arguments
+- `dplyr::rename` uses two main arguments
    1. data
    2. new name = old name
       - note that if the new or old names are non-syntactic, you need to use quotation marks

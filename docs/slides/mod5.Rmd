@@ -479,7 +479,7 @@ Now run the following code and see what happens:
 ggplot(diamonds, aes(x = carat, y = price)) + 
   geom_hex()
 
-ggsave(filename = "diamonds.pdf", path = "output/mod5")
+ggsave(filename = "diamonds.pdf", path = "output/mod05")
 
 write_csv(diamonds, filename = "data/diamonds.csv")
 ```
