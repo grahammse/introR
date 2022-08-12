@@ -108,7 +108,7 @@ class: inverse, center, middle
    - `read_fwf()`: reads fixed-width files
    - `read_table()`: reads fixed-width files where the columns are separated by a white space
    - `read_log()`: reads Apache style log files
-   -  `read_rds()`: reads R data files
+   - `read_rds()`: reads R data files
 - Other packages available to read other common file formats
    - readxl: reads Excel files (.xls and .xlsx)
    - haven:  reads SPSS, Stata, and SAS files
@@ -159,6 +159,7 @@ dat &lt;- read_csv(file = "/Users/graham.eglit/Documents/R_Course/Intro_to_R/dat
 - Relative paths are relative to the location of .Rproj file
   - Transferable across users/systems
 - We will use the here package to specify the relative path
+  - Sets the working directory to the top-level of a project
 ]
 
 .pull-right[
@@ -197,16 +198,42 @@ read_csv(file = here("data", "test_data.csv"))
 read_csv(file = here("data", "test_data.csv"), skip = 2)
 ```
 
-
-```
-## # A tibble: 4 × 4
-##    ...1  ...2 ...3    ...4 
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;
-## 1     1     0 male    73   
-## 2     2     0 female  46   
-## 3     3     0 male    26   
-## 4     4     0 Missing 86
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; ...1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ...2 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ...3 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ...4 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 46 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Missing &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 86 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ]
 ]&lt;!----&gt;
 
@@ -217,19 +244,47 @@ read_csv(file = here("data", "test_data.csv"), skip = 2)
 
 
 ```r
-read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"))
+read_csv(file = here("data", "test_data.csv"), 
+         skip = 2, 
+         col_names = c("ID", "Group", "sex", "outcome"))
 ```
 
-
-```
-## # A tibble: 4 × 4
-##      ID Group sex    outcome
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  
-## 1    NA    NA &lt;NA&gt;   &lt;NA&gt;   
-## 2     1     0 male   73     
-## 3     2     0 female 46     
-## 4     3     0 male   26
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; ID &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Group &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; outcome &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 46 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ]&lt;!----&gt;
 
@@ -241,19 +296,48 @@ read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Gr
 
 
 ```r
-read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?"))
+read_csv(file = here("data", "test_data.csv"), 
+         skip = 2, 
+         col_names = c("ID", "Group", "sex", "outcome"), 
+         na = c("Missing", "?"))
 ```
 
-
-```
-## # A tibble: 4 × 4
-##      ID Group sex      outcome
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;
-## 1    NA    NA ""            NA
-## 2     1     0 "male"        73
-## 3     2     0 "female"      46
-## 4     3     0 "male"        26
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; ID &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Group &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; outcome &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ]&lt;!----&gt;
 
@@ -383,19 +467,47 @@ read_xlsx(path = here("data", "test_data.xlsx"), sheet = 2)
 
 
 ```r
-read_xlsx(path = here("data", "test_data.xlsx"), sheet = 1, range = "A1:D11")
+read_xlsx(path = here("data", "test_data.xlsx"), 
+          sheet = 1, 
+          range = "A1:D11")
 ```
 
-
-```
-## # A tibble: 4 × 4
-##      ID Group sex    outcome
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
-## 1     1     0 male        73
-## 2     2     0 female      64
-## 3     3     0 male        26
-## 4     4     0 male      -999
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; ID &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Group &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; outcome &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -999 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 ]
@@ -459,7 +571,7 @@ read_sav(file = here("data", "spss_data.sav"))
 # Now You Try!
 ]
 
-1. Open a new .R script and save it as "mod8.R" &lt;br&gt; &lt;br&gt; 
+1. Open a new .R script and save it as "mod08.R" &lt;br&gt; &lt;br&gt; 
 1. Load the tidyverse, readxl, and haven packages &lt;br&gt; &lt;br&gt; 
 1. Create a section header and name it "Read in data" &lt;br&gt; &lt;br&gt; 
 1. Read in the "problem.csv" file using an absolute path &lt;br&gt; &lt;br&gt;
@@ -562,19 +674,36 @@ rename_data %&gt;%
 
 .pull-right[
 
+
 ```r
 rename_data %&gt;% 
-   janitor::clean_names() %&gt;% 
-   head(n = 2)
+   janitor::clean_names()
 ```
 
-```
-## # A tibble: 2 × 4
-##   subject_id treatment_group sex    self_report_anxiety
-##        &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
-## 1          1               0 male                    73
-## 2          2               0 female                  46
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; subject_id &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; treatment_group &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; self_report_anxiety &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ]
 ]&lt;!----&gt;

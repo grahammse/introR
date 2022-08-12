@@ -96,7 +96,7 @@ class: inverse, center, middle
    - `read_fwf()`: reads fixed-width files
    - `read_table()`: reads fixed-width files where the columns are separated by a white space
    - `read_log()`: reads Apache style log files
-   -  `read_rds()`: reads R data files
+   - `read_rds()`: reads R data files
 - Other packages available to read other common file formats
    - readxl: reads Excel files (.xls and .xlsx)
    - haven:  reads SPSS, Stata, and SAS files
@@ -139,6 +139,7 @@ head(read_csv(file = "/Users/graham.eglit/Documents/R_Course/Intro_to_R/data/tes
 - Relative paths are relative to the location of .Rproj file
   - Transferable across users/systems
 - We will use the here package to specify the relative path
+  - Sets the working directory to the top-level of a project
 ]
 
 .pull-right[
@@ -170,7 +171,8 @@ read_csv(file = here("data", "test_data.csv"), skip = 2)
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_csv(file = here("data", "test_data.csv"), skip = 2), n = 4)
+head(read_csv(file = here("data", "test_data.csv"), skip = 2), n = 4) %>% 
+   knitr::kable("html")
 ```
 ]
 ]<!---->
@@ -181,11 +183,14 @@ head(read_csv(file = here("data", "test_data.csv"), skip = 2), n = 4)
 - To supply column names, use the col_names argument in `read_csv`
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
-read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"))
+read_csv(file = here("data", "test_data.csv"), 
+         skip = 2, 
+         col_names = c("ID", "Group", "sex", "outcome"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome")), n = 4)
+head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome")), n = 4) %>% 
+  knitr::kable("html")
 ```
 
 ]<!---->
@@ -197,11 +202,15 @@ head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID
 - To specify what values should be read in as missing (NA), use the na argument in `read_csv()`
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
-read_csv(file = here("data", "test_data.csv"), skip = 2, col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?"))
+read_csv(file = here("data", "test_data.csv"), 
+         skip = 2, 
+         col_names = c("ID", "Group", "sex", "outcome"), 
+         na = c("Missing", "?"))
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?")), n = 4)
+head(read_csv(file = here("data", "test_data.csv"), skip = 2 , col_names = c("ID", "Group", "sex", "outcome"), na = c("Missing", "?")), n = 4) %>% 
+  knitr::kable("html")
 ```
 
 ]<!---->
@@ -309,11 +318,14 @@ head(read_xlsx(path = here("data", "test_data.xlsx"), sheet = 2), n = 4)
 .pull-right[
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
-read_xlsx(path = here("data", "test_data.xlsx"), sheet = 1, range = "A1:D11")
+read_xlsx(path = here("data", "test_data.xlsx"), 
+          sheet = 1, 
+          range = "A1:D11")
 ```
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
-head(read_xlsx(path = here("data", "test_data.xlsx"), range = "A1:D11"), n = 4)
+head(read_xlsx(path = here("data", "test_data.xlsx"), range = "A1:D11"), n = 4) %>% 
+  knitr::kable("html")
 ```
 
 
@@ -366,7 +378,7 @@ head(read_sav(file = here("data", "spss_data.sav")), n = 9)
 # Now You Try!
 ]
 
-1. Open a new .R script and save it as "mod8.R" <br> <br> 
+1. Open a new .R script and save it as "mod08.R" <br> <br> 
 1. Load the tidyverse, readxl, and haven packages <br> <br> 
 1. Create a section header and name it "Read in data" <br> <br> 
 1. Read in the "problem.csv" file using an absolute path <br> <br>
@@ -450,10 +462,16 @@ rename_data %>%
 ]
 
 .pull-right[
-```{r }
+
+```{r eval = FALSE}
+rename_data %>% 
+   janitor::clean_names()
+```
+
+```{r echo = FALSE}
 rename_data %>% 
    janitor::clean_names() %>% 
-   head(n = 2)
+   head(n = 2) %>% knitr::kable("html")
 ```
 
 ]

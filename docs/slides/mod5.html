@@ -412,6 +412,26 @@ Via [Giphy](https://media.giphy.com/media/xUPGcJU55vuGH8Hfeo/giphy.gif)
 - Always use relative paths
 ]
 
+
+
+
+---
+
+.center[
+# Paths:  Mac/Linux vs. Windows
+]
+
+&lt;br&gt;
+Mac/Linux paths differ from Windows in three ways:
+   1. Components of paths are separated by forward slashes ("/") in Mac/Linux and by backslashes ("\") in Windows
+      - R plays nicely with forward slashes, but misinterprets back slashes
+         - Need to either use two back slashes on Windows (e.g., "\\\") or **use Linux/Mac style** &lt;br&gt; &lt;br&gt;
+   1.  Absolute paths start from a forward slash in Mac/Linux (e.g., "/users/graham.eglit") vs. a drive letter (e.g., "C:") or two back slashes ("\\\") in Windows &lt;br&gt; &lt;br&gt;
+   1.  `~` points to your home directory on Mac/Linux.  Windows doesn't have a notion of a home directory, so `~` points to your documents directory.
+
+
+
+
 ---
 
 .center[
@@ -456,13 +476,13 @@ Note how R saves files to your working directory when using projects!
 ### Sub-Directory Template
 - data
 - output
-  - mod1
-  - mod2
-  - mod3, etc.
+  - mod01
+  - mod02
+  - mod03, etc.
 - scripts
-  - mod1
-  - mod2
-  - mod3, etc.
+  - mod01
+  - mod02
+  - mod03, etc.
   
 
 ---

@@ -5,21 +5,21 @@
       "title": "Introduction to R Programming",
       "author": [],
       "contents": "\nWelcome to the website for Introduction to R Programming!\nThis website contains course materials and outside resources for an\nintroductory R programming course.\nWebsite Content\nThe Schedule\nsection provides a schedule of topics and links to supplemental\nresources.\nThe Resources\nheading lists several helpful resources for R learners. R for Data\nScience will serve as the primary text for this course. It’s available\nfor free online,\nbut well-worth the cost for the paper copy.\nThe Modules\nheading contains most of the course lecture content. You’ll find all\npresentations/lecture notes here.\nThe Project\nProblems heading contains all of the practice projects\nproblems.\nThe Project\nSolutions heading contains all of the solutions to the\npractice projects problems. I’ll add these solutions to the website\nabout 24 hours before the next week’s lecture so that you have an\nopportunity to try out the problems yourself before viewing the\nsolutions.\nLectures\nLectures will take place via Microsoft Teams every Friday at 10:00 AM\nPST starting June 10, 2022.\n\n\n\n",
-      "last_modified": "2022-07-29T08:20:35-07:00"
+      "last_modified": "2022-08-12T09:34:52-07:00"
     },
     {
       "path": "resources.html",
       "title": "Resources",
       "author": [],
       "contents": "\nBooks\nBelow are listed what are in my opinion the best books on R\nprogramming. All of these are freely available online and can be\naccessed by clicking on the book images below. In addition to these\nbooks, the Big Book of R is a large repository of just about\nevery book focused on R. At the time of this writing, there are over 250\nbooks listed in this repository, which span a wide range of topics (r\nprogramming, shiny app development, statistics, machine learning, sports\nanalytics, etc.).\nR Programming\n  This book is widely considered\nessential for learning R and will serve as our primary text.\n  Good\nsupplemental resource for base R\nData Visualization\n  Great overview of the ggplot2 package\n  Good\nresource for data visualization with a focus on concrete\napplications\nR Markdown\n  The most comprehensive guide to R Markdown\n\n  Great guide to R Markdown with\nspecific strategies and use cases\nWebsites\nR Studio Education\nR\nBloggers\nCommunity\nR4DS\nOnline Learning Community\nR User Groups\nR Ladies Groups\nR Conferences\nTidy Tuesday\n\n\n\n",
-      "last_modified": "2022-07-29T08:20:35-07:00"
+      "last_modified": "2022-08-12T09:34:53-07:00"
     },
     {
       "path": "schedule.html",
       "title": "Schedule",
       "author": [],
       "contents": "\n\nd-article table td {\n  border-bottom: 1px solid rgba(4, 4, 4, 0.36);\n}\n\nd-article table tbody :first-child td {\n  padding-top: 2px;\n  border-top: 3px solid rgba(4, 4, 4, 0.7);\n}\n\nd-article table tbody :last-child td {\n  padding-top: 2px;\n  border-bottom: 2px solid rgba(4, 4, 4, 0.7);\n}\nModule\nTopic\nAdditional Reading\nAdditional Videos\n1\nOverview\nInstalling R and R Studio\nModern Dive - Chapter 1\nPlain Text Social Science\n\n2\nBase R\nBase R Cheat Sheet\nHOPwR Chapters 1 - 3\n\n3\nData Visualization - 1\nggplot2 Cheat Sheet\nRfDS Chapter 3\nData to Viz\nWebsite\nThomas Lin Pedersen Webinar\n4\nWorkflows/Style Guide/Directory Structures\nStyle\nGuide\nProject-Oriented Workflows\n\n5\nData Transformation\ndplyr Cheat Sheet\nRfDS\nChapter 5\ndplyr Tutorial\n6\nExploratory Data Analysis\nRfDS Chapter 7\n\n7\nTibbles/Data Frames\nRfDS\nChapter 10\n\n8\nData Import\nData Import Cheat Sheet\nRfDS Chapter 11\n\n9\nTidy Data\ntidyr Cheat Sheet\nRfDS\nChapter 12\n\n10\nRelational Data\ndplyr Cheat Sheet\nRfDS Chapter 13\nRelational Data Tutorial\n11\nStrings\nstringr Cheat Sheet\nRfDS\nChapter 14\n\n12\nFactors\nforcats Cheat Sheet\nRfDS\nChapter 15\n\n13\nData Visualization - 2\nRfDS Chapter 28\n\n14\nR Markdown\nR Markdown Cheat Sheet\nRfDS\nChapter 27\n\nRfDS = R for Data Science\nHOPwR = Hand-On Programming with R\n\n\n\n",
-      "last_modified": "2022-07-29T08:20:36-07:00"
+      "last_modified": "2022-08-12T09:34:53-07:00"
     }
   ],
   "collections": []

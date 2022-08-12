@@ -123,7 +123,7 @@ you're visualizing is discrete or continuous.
 
 ### Discrete Variables
 
-For discrete variables, a bar chart if most relevant, so `geom_bar` is
+For discrete variables, a bar chart is most relevant, so `geom_bar` is
 the most commonly used
 
 ```{r}
