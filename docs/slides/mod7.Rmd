@@ -98,7 +98,8 @@ class: inverse center middle
 - List type object
 - Composed of vectors of a single type as columns
 - Different columns can be of different type
-   - e.g., species is factor, flipper_length_mm is double
+   - Sepal.Length is numeric
+   - Species is factor
 - All rows must be of same length
 - data.frame is a base R object class
 ]
@@ -106,7 +107,10 @@ class: inverse center middle
 
 .pull-right[
 ```{r echo = FALSE}
-head(mtcars)
+require(tidyverse)
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Species) %>% 
+  head(10)
 ```
 
 ]
@@ -123,11 +127,20 @@ head(mtcars)
 ]
 
 .pull-right[
-```{r}
+
+```{r eval = FALSE}
 data.frame(
-  var1 = c(1, 2, 3, 4),
-  var2 = c(5, 6, 7, 8)
+  var1 = c(1, 2, 3),
+  var2 = c(4, 5, 6)
 )
+```
+
+```{r echo = FALSE}
+data.frame(
+  var1 = c(1, 2, 3),
+  var2 = c(4, 5, 6)
+) %>% 
+  knitr::kable("html")
 ```
 
 ]
@@ -206,7 +219,11 @@ tibble(
 
 
 .pull-left[
+
+.center[
 ### data.frame
+]
+
 - May convert variable types
    - Used to default to converting string variables to factors before R 4.0.0
 - Will change variable names if non-syntactic characters are used (e.g., spaces will be replaced by ".")
@@ -214,7 +231,11 @@ tibble(
 ]
 
 .pull-right[
+
+.center[
 ### tibble
+]
+
 - Never converts variable type
 - Can use non-syntactic variable names (use backticks)
 - Default print: First 10 rows and all columns that fit on screen
@@ -268,7 +289,9 @@ class: inverse center middle
 - There are three ways to pull out a single variable from a data.frame or tibble
    1. `df$var`
    1. `df[["var"]]`
-   1. `df %>% pluck("var")` (from the purrr pack in the tidyverse)
+   1. `df %>% pull("var")`
+- 1 and 2 are base R conventions, 3 is from `dplyr`
+- Note that we can use the column name or the column position to subset with `[[ ]]` and `pull()`
 ]
 
 .pull-right[
@@ -286,13 +309,13 @@ penguins[[1]]
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
 penguins %>% 
-  pluck("species")
+  pull("species")
 ```
 
 
 ```{r eval = FALSE, message = FALSE, warning = FALSE}
 penguins %>% 
-  pluck(1)
+  pull(1)
 ```
 
 ]
@@ -308,7 +331,7 @@ penguins %>%
 .pull-left[
 - To subset within a pipe, use the "." placeholder <br> <br>
 - "." means "everything up until this point" <br> <br>
-- Does not apply to `pluck`
+- Does not apply to `pull`
 ]
 
 .pull-right[
@@ -324,7 +347,132 @@ penguins %>%
 
 ```{r eval = FALSE}
 penguins %>% 
-  pluck(1)
+  pull(1)
 ```
+
+]
+
+
+---
+
+.center[
+# Indexing in Base R
+]
+
+.panelset[
+
+.panel[.panel-name[Overview]
+
+.pull-left[
+- To select a value from a data frame, write the data frame's name followed by a pair of hard brackets
+
+```{r eval = FALSE}
+penguins[ , ]
+```
+
+- between the brackets will go two indexes separated by a comma
+- R will use the first index to subset the rows of the data frame and the second index to subset the columns
+]
+
+.pull-right[
+- Six ways to write an index in R
+   1. Positive Integers
+   1. Negative Integers
+   1. Zero
+   1. Blank Spaces
+   1. Logical Values
+   1. Names
+]
+]
+
+.panel[.panel-name[Positive Integers]
+
+.pull-left[
+- R treats positive integers like *ij* notation in linear algebra
+- `penguins[i,j]` will return the value of `penguins` in the *ith* row and the *jth* column
+
+```{r}
+penguins[1, 1]
+```
+]
+
+.pull-right[
+- To obtain more than one value, use a vector of positive integers
+
+<br>
+
+```{r}
+penguins[1, c(1, 2, 3)]
+```
+]
+]
+
+
+.panel[.panel-name[Negative Integers]
+
+- Negative integers do the exact opposite of positive integers when indexing.
+- R will return every element except the elements in a negative index
+- The below code will remove the first row from the dataset and retain the first three columns
+```{r eval = FALSE}
+penguins[-1, c(1, 2, 3)]
+```
+
+
+]
+
+
+.panel[.panel-name[Zero]
+
+- R will return nothing from a dimension when you use zero as an index.
+- This will create an empty object
+- Zero is not very useful
+
+```{r}
+penguins[0, c(1, 2, 3)]
+```
+
+
+]
+
+
+.panel[.panel-name[Blank Spaces]
+
+- You can use a blank space to tell R to extract *every* value in a dimensions
+- This lets you subset an object on one dimension but not the others
+- Useful for extracting entire rows or columns from a data frame
+
+```{r}
+penguins[1, ]
+```
+
+]
+
+
+.panel[.panel-name[Logical Values]
+
+- If you supply a vector of TRUEs and FALSEs as your index, R will match each TRUE and FALSE to a row/column in your data frame
+- R will return all rows/columns associated with TRUE
+- Not commonly used
+
+```{r}
+penguins[1, c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)]
+```
+
+
+]
+
+
+.panel[.panel-name[Names]
+
+- Instead of using positions via numbers, you can ask for elements you want by name
+- Useful for extracting columns from a data frame
+
+```{r}
+penguins[1, c("species", "island", "bill_length_mm")]
+```
+
+]
+
+
 
 ]
