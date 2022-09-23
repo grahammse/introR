@@ -248,7 +248,7 @@ class: inverse, center, middle
 - `tidyr` provides several helpful functions for getting data into a usable format for analysis <br> <br>
 - the most common data tidying task is pivoting <br> <br>
 - `tidyr` includes two function for pivoting
-   - `pivot_longer`: makes a dataset **longer** by increasing columns and reducing rows
+   - `pivot_longer`: makes a dataset **longer** by reducing columns and increasing rows
    - `pivot_wider`: makes a dataset **wider** by increasing columns and reducing rows
 
 
@@ -615,8 +615,9 @@ table3 %>%
 
 - key arguments
    1. `data` - dataset to perform separation on
-   2. `into` - names of resulting columns
-   3. `sep` - value that defines the separator between columns
+   2. `col` - column to separate
+   3. `into` - names of resulting columns
+   4. `sep` - value that defines the separator between columns
       - will default to first non-alphanumeric value if not specified
 
 ]
