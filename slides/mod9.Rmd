@@ -615,7 +615,7 @@ table3 %>%
 
 - key arguments
    1. `data` - dataset to perform separation on
-   2. `col` - column to separate
+   2. `col` - column to separate 
    3. `into` - names of resulting columns
    4. `sep` - value that defines the separator between columns
       - will default to first non-alphanumeric value if not specified
