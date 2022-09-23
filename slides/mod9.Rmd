@@ -258,15 +258,26 @@ class: inverse, center, middle
 # table4a dataset
 ]
 
+.pull-left[
+
+.center[**Table 4a**]
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-DT::datatable(table2, options = list(
-  scrollY = 300,
-  scrollX = 300,
-  pageLength = 5,
-  dom = "ltp",
-  ordering = FALSE))
+table4a %>% 
+  knitr::kable()
+```
+]
+
+
+.pull-right[
+
+.center[**Table 1**]
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+table1  %>% 
+  select(-population) %>% 
+  knitr::kable()
 ```
 
+]
 
 ---
 
@@ -395,7 +406,7 @@ From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
 ]
 
 - used when one observation is spread across multiple rows
-   - less common than `pivot_wider()` <br> <br>
+   - less common than `pivot_longer()` <br> <br>
 - opposite interface to `pivot_longer()` <br> <br>
 - need to provide the existing columns that define the values
    - `values_from`
@@ -408,14 +419,27 @@ From [R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
 # The table2 Dataset
 ]
 
+.pull-left[
+
+.center[**Table 2**]
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
-DT::datatable(table2, options = list(
-  scrollY = 300,
-  scrollX = 300,
-  pageLength = 5,
-  dom = "ltp",
-  ordering = FALSE))
+table2 %>% 
+  head() %>% 
+  knitr::kable()
 ```
+]
+
+
+.pull-right[
+
+.center[**Table 1**]
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+table1  %>% 
+  head(3) %>% 
+  knitr::kable()
+```
+
+]
 
 
 
@@ -425,7 +449,6 @@ DT::datatable(table2, options = list(
 # pivot_wider()
 ]
 
-.pull-left[
 
 ```{r eval = FALSE}
 table2 %>% 
@@ -433,21 +456,15 @@ table2 %>%
               names_from = "type")
 ```
 
-]
 
-.pull-right[
 
 ```{r echo = FALSE}
 table2 %>% 
   pivot_wider(values_from = "count", names_from = "type") %>% 
-DT::datatable(options = list(
-  scrollY = 300,
-  scrollX = 300,
-  pageLength = 6,
-  dom = "t",
-  ordering = FALSE))
+  head(3) %>% 
+  knitr::kable()
 ```
-]
+
 
 
 
@@ -541,13 +558,8 @@ billboard %>%
     values_to = "rank",
     values_drop_na = TRUE
   ) %>% 
-  slice(1:100) %>% 
-  DT::datatable(options = list(
-  scrollY = 300,
-  scrollX = 300,
-  pageLength = 5,
-  dom = "tp",
-  ordering = FALSE))
+  head(5) %>% 
+  knitr::kable()
 ```
 
 ]
@@ -675,14 +687,20 @@ table3 %>%
 
 .panel[.panel-name[Overview]
 
+
+.pull-left[
 - `unite` is the inverse of `separate`
    - combines multiple columns into a single column
 -  used less frequently than `separate`
 
-```{r echo = FALSE}
-table5 
-```
+]
 
+.pull-right[
+
+```{r echo = FALSE}
+table5 %>% knitr::kable()
+```
+]
 
 ]<!---->
 
@@ -762,9 +780,9 @@ class: inverse, center, middle
 .pull-left[   
 ```{r eval = FALSE}
 stocks <- tibble(
-  year   = c(2015, 2015, 2015, 2015, 2016, 2016, 2016),
-  qtr    = c(   1,    2,    3,    4,    2,    3,    4),
-  return = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
+  year   = c(2015, 2015, 2015,  2016, 2016),
+  qtr    = c(   1,    2,    3,    2,    3),
+  return = c(1.88, 0.59, NA,    0.92, 0.17)
 )
 ```
 ]
@@ -773,9 +791,9 @@ stocks <- tibble(
 
 ```{r echo = FALSE}
 stocks <- tibble(
-  year   = c(2015, 2015, 2015, 2015, 2016, 2016, 2016),
-  qtr    = c(   1,    2,    3,    4,    2,    3,    4),
-  return = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
+  year   = c(2015, 2015, 2015,  2016, 2016),
+  qtr    = c(   1,    2,    3,    2,    3),
+  return = c(1.88, 0.59, NA,    0.92, 0.17)
 )
 stocks
 ```
