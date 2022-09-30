@@ -731,7 +731,7 @@ left_join(x, y, by = "key")
    - By default, `by = NULL` uses all variables that appear in both tables (a natural join)
 
 ```{r}
-flights2 %>% left_join(weather) %>% head(3) %>% select(1:13)
+flights2 %>% left_join(weather) %>% head(3) %>% select(1:13) %>% head(3) %>% knitr::kable("html")
 ```
 
 ]<!---->
@@ -742,7 +742,7 @@ flights2 %>% left_join(weather) %>% head(3) %>% select(1:13)
 - Note that the year variables are disambiguated in the output with a suffix
 
 ```{r}
-flights2 %>% left_join(planes, by = "tailnum") %>% head(3) %>% select(1:10)
+flights2 %>% left_join(planes, by = "tailnum") %>% head(3) %>% select(1:10) %>% head(3) %>% knitr::kable("html")
 ```
 
 
@@ -754,7 +754,7 @@ flights2 %>% left_join(planes, by = "tailnum") %>% head(3) %>% select(1:10)
    - Will match variable `a` in table `x` to variable `b` in table `y`
 
 ```{r}
-flights2 %>% left_join(airports, c("dest" = "faa")) %>% head(n = 3) %>% select(1:10)
+flights2 %>% left_join(airports, c("dest" = "faa")) %>% head(n = 3) %>% select(1:10) %>% head(3) %>% knitr::kable("html")
 ```
 
 ]<!---->
