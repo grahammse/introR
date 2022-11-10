@@ -1,0 +1,1540 @@
+---
+title: "Module 12:  Data Visualization"
+subtitle:  "Makin' Pretty Plots"
+author: "Graham Eglit"
+institute: "Canopy Growth Corporation"
+date: "November 11, 2022"
+output:
+  xaringan::moon_reader:
+    css: 
+      - xaringan-themer.css
+      - extra.css
+    lib_dir: libs
+    seal: false
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+require(xaringanthemer)
+require(xaringanExtra)
+require(icons)
+require(palmerpenguins)
+require(tidyverse)
+style_duo(primary_color = "#e3e3e2", 
+          secondary_color = "#a6873b",
+          code_inline_color = "#746850",
+          text_font_size = "1.1rem",
+          header_font_google = google_font("Lato"),
+          text_font_google   = google_font("Lora"),
+          code_font_google   = google_font("Space Mono")
+          )
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_scribble()
+xaringanExtra::use_search(show_icon = FALSE)
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
+
+class: title-slide, right, top
+background-image: url(img/hex_forcats.png), url(img/canopy_logo.png)
+background-position: 93% 63%, 50% 50%
+background-size: 10%, 50%
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "img/canopy_logo.png",
+  position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
+  height = "140px",
+  width = "160px",
+  exclude_class = c("title-slide", "inverse", "hide_logo")
+)
+```
+
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+`r rmarkdown::metadata$institute`<br>
+`r rmarkdown::metadata$date`
+]
+
+
+---
+class: inverse, center, middle
+
+
+# ggplot2 Review
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+---
+
+.center[
+# Fundamental Components of a Graph
+]
+
+.pull-left[
+1. **Data**  to visualize and **aesthetic mappings** of how aesthetics are applied to data
+1. **Layers** of geometric elements and statistical transformations
+  - **geoms** are what you see on the plot (e.g., lines, points, etc.)
+  - **stats** summarize data (e.g., group mean)
+1. **Scales** map values in data space to values in an aesthetic space
+1. **Coord**inates describe how data coordinates are mapped to the plane of the graphic
+1. **Facet**ing describes how to break up data into subsets (e.g., small multiples)
+1. **Theme** controls finer points of display (e.g., font size, background color, etc.)
+]
+
+.pull-right[
+<br>
+.center[<img src = "img/mod3/gglayers.png"  />]
+]
+
+---
+
+.center[
+# Packages and Datasets
+]
+
+
+.panelset[
+
+.panel[.panel-name[packages]
+- Over 100 extension packages have been built on top of `ggplot2`
+- We'll be exploring a few of these packages
+- You may need to install a few of these packages (e.g., `viridis`, `ggrepel`, `RColorBrewer`, `ggsci`)
+- if you've already installed them, copy the following code
+
+```{r warning = FALSE, message = FALSE}
+require(tidyverse)
+require(palmerpenguins)
+require(viridis)
+require(ggrepel)
+require(RColorBrewer)
+require(ggsci)
+```
+
+]
+
+.panel[.panel-name[mpg]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+knitr::kable(head(mpg), "html")
+```
+
+]
+
+.panel[.panel-name[palmerpenguins]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+require(palmerpenguins)
+knitr::kable(head(penguins), "html")
+```
+
+]
+
+]
+
+
+---
+class: inverse, center, middle
+
+
+# Labels
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+---
+
+.center[
+# Labels
+]
+
+.panelset[
+
+.panel[.panel-name[Initial Plot]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE)
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE)
+```
+
+
+]
+
+]
+
+
+.panel[.panel-name[Labels]
+
+- labels can be added using the `labs()` function in `ggplot2`
+   - `title`: title of the figure, presented at the top of the figure
+   - `subtitle`: adds additional detail to title, smaller font just below the title
+   - `caption`: often a source, added to the bottom right of the plot
+   - `x`: x-axis label
+   - `y`: y-axis label
+- Note that you could also add labels use specific `scales_*()` function as well
+   - `labs()` is a helper function!
+]
+
+
+.panel[.panel-name[Labeled Plot]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+```
+
+
+]
+
+]
+
+]
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+.panelset[
+
+.panel[.panel-name[Prompt]
+
+- Add a `subtitle` and `caption` to the figure we just worked with
+   - Note: you can find source information in the mpg help documentation
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+```
+
+
+]
+
+]
+
+.panel[.panel-name[Solution]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type",
+       subtitle = "Two seaters (sports cars) are an exception because of their light weight",
+       caption = "Data obtained from fueleconomy.gov")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type",
+       subtitle = "Two seaters (sports cars) are an exception because of their light weight",
+       caption = "Data obtained from fueleconomy.gov")
+```
+
+
+]
+
+]
+
+]
+
+---
+
+.center[
+# Annotations!
+]
+
+
+.panelset[
+
+.panel[.panel-name[Background]
+
+- it's often useful to label individual observations or groups of observations in plot
+   - highlight important observations
+   - label groups to replace legend
+- There are several options for labelling data:
+   - `geom_text()`
+   - `geom_label()`
+   - `ggrepel::geom_label_repel()`
+- For the following examples, we'll use two ancillary summary data frames
+
+.pull-left[
+```{r}
+best_in_class <- mpg %>% 
+  group_by(class) %>% 
+  slice_max(order_by = hwy, with_ties = FALSE)
+```
+
+]
+
+.pull-right[
+```{r}
+class_avg <- mpg %>% 
+  group_by(class) %>% 
+  summarize(displ = median(displ),
+            hwy =  median(hwy))
+```
+
+]
+
+]
+
+
+.panel[.panel-name[geom_text]
+
+- `geom_text()` adds basic text labels
+
+.pull-left[
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_text(data = best_in_class, 
+            aes(label = model))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_text(data = best_in_class, 
+            aes(label = model))
+```
+
+]
+
+]
+
+
+.panel[.panel-name[geom_label]
+
+- `geom_label()` adds basic text boxes
+
+.pull-left[
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_label(data = best_in_class, 
+             aes(label = model), 
+             nudge_y = 2)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_label(data = best_in_class, 
+             aes(label = model), 
+             nudge_y = 2)
+```
+
+]
+
+]
+
+
+.panel[.panel-name[geom_label_repel]
+
+- `geom_label_repel()` adds repeled text labels
+   - repeling adjusts label placement to avoid overlapping
+
+.pull-left[
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_label_repel(data = best_in_class, 
+                   aes(label = model))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(colour = class)) +
+  geom_label_repel(data = best_in_class, 
+                   aes(label = model))
+```
+
+]
+
+]
+
+
+.panel[.panel-name[geom_text_repel]
+
+- `geom_text_repel()` allows for repeled text labels
+   - Note the use of `nudge_y`
+
+.pull-left[
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class), alpha = .6) + 
+  geom_point(data = best_in_class, size = 3, shape = 1) + 
+  geom_text_repel(data = best_in_class, 
+                  aes(label = model, color = class),
+                  show.legend = FALSE,
+                  fontface = "bold",
+                  nudge_y = .25)
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class), alpha = .6) + 
+  geom_point(data = best_in_class, size = 3, shape = 1) + 
+  geom_text_repel(data = best_in_class, 
+                  aes(label = model, color = class),
+                  show.legend = FALSE,
+                  fontface = "bold",
+                  nudge_y = .25)
+```
+
+]
+
+]
+
+
+]
+
+
+
+---
+.center[
+# Annotations Continued!
+]
+
+.pull-left[
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(data = mpg, aes(x = displ, 
+                       y = hwy, 
+                       colour = class)) + 
+  geom_point() + 
+  geom_text_repel(data = class_avg,
+                  aes(label = class, 
+                      x = displ, 
+                      y = hwy),
+                  size = 5,
+                  fontface = "bold") +
+  theme(legend.position = "none")
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 5.5, fig.width = 8.75}
+ggplot(data = mpg, aes(x = displ, y = hwy, colour = class)) + 
+  geom_point() + 
+  geom_text_repel(data = class_avg,
+                  aes(label = class, x = displ, y = hwy),
+                  size = 5,
+                  fontface = "bold") +
+  theme(legend.position = "none")
+```
+
+]
+
+<br>
+
+.center[
+Even better options for text labels can be found [here](https://www.cararthompson.com/talks/user2022/)
+]
+
+
+---
+class: inverse, center, middle
+
+
+# Scales
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+
+
+
+---
+.center[
+# Scales
+]
+
+
+.panelset[
+
+.panel[.panel-name[Background]
+
+- scales control the mapping from data values to things that you can perceive
+- these are normally added automatically gy `ggplot2`
+- however, you are able to customize scales to improve your visualization
+- the below code produces identical plots
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class))
+```
+
+]
+
+.pull-right[
+```{r eval = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_colour_discrete()
+```
+
+]
+]
+
+
+.panel[.panel-name[Name]
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(mpg, aes(x = ydispl, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(name = "Displacement (Litres)") +
+  scale_y_continuous(name = "Highway Miles Per Gallon") +
+  scale_colour_discrete()
+```
+]
+
+.pull-right[
+```{r echo = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(name = "Displacement (Litres)") +
+  scale_y_continuous(name = "Highway Miles Per Gallon") +
+  scale_colour_discrete()
+```
+]
+
+
+]
+
+
+.panel[.panel-name[Limits]
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(limits = c(0, 8)) +
+  scale_y_continuous(limits = c(0, 60))
+```
+
+Note that the following code produces the same plot as above:
+
+```{r eval = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  xlim(c(0, 8)) + 
+  ylim(c(0, 60))
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(limits = c(0, 8)) +
+  scale_y_continuous(limits = c(0, 60)) +
+  scale_colour_discrete()
+```
+]
+
+]
+
+
+
+.panel[.panel-name[Breaks]
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(breaks = c(2, 4, 6)) +
+  scale_y_continuous(breaks = c(20, 30, 40)) +
+  scale_colour_discrete()
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, fig.height = 5, fig.width = 8}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = class)) +
+  scale_x_continuous(breaks = c(2, 4, 6)) +
+  scale_y_continuous(breaks = c(20, 30, 40)) +
+  scale_colour_discrete()
+```
+
+]
+]
+
+]
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Color
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+.center[
+# Colors
+]
+
+.panelset[
+
+.panel[.panel-name[Background]
+
+- color is a deceptively complex topic
+- some background on the challenges of mapping color to a continuous metric can be found [here](https://ggplot2-book.org/scale-colour.html)
+- Here are a few helpful resources to use when choosing colors:
+   - [A somewhat out-of-date rundown of available color packages in r](https://github.com/EmilHvitfeldt/r-color-palettes)
+   - [Color palette generator](https://coolors.co/)
+   - [One of my favorite new color palette packages](https://github.com/BlakeRMills/MetBrewer)
+   - [R Color Cheatsheet](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)
+   - [Color Picker](https://htmlcolorcodes.com/)
+   - [List of all 657 R Color Names](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+]
+
+.panel[.panel-name[Default]
+
+- R will select colors by default
+- These colors are designed to be equally spaced from one another to maximize distinctiveness
+- However, they may not be appropriate for each use case or aesthetically optimal
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  theme_minimal()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+
+.panel[.panel-name[Brewer]
+
+- One of the most popular color palette packages is  `RColorBrewer`
+- Use `scale_brewer_*` functions to replace default color scales
+- See [here](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html) for available Brewer Palettes or type `RColorBrewer::display.brewer.all()`
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_brewer(palette = "Set1") + 
+  theme_minimal()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_brewer(palette = "Set1") + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+.panel[.panel-name[ggsci]
+
+- `ggsci` provides a selection of color palettes ideal for academic publication
+- More info on `ggsci` can be found [here](https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_lancet() + 
+  theme_minimal()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_lancet() + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+
+
+.panel[.panel-name[Manual - Names]
+
+- You can manually provide colors to R using `scale_*_manual()`
+- see `colors()` for a list of all possible R color names or see [here](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_manual(values = c("darkred", "midnightblue", "forestgreen", "darkorange", "darkgoldenrod", "steelblue", "blueviolet")) + 
+  theme_minimal()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_manual(values = c("darkred", "midnightblue", "forestgreen", "darkorange", "darkgoldenrod", "steelblue", "blueviolet")) + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+
+
+.panel[.panel-name[Manual - Hex Codes]
+
+- The most versatile way to specify manual colors is using Hexidecimal color codes ("Hex codes")
+- You can use the [Color palette generator](https://coolors.co/) to create custom color palettes
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_manual(values = c("#6b6ca3","#87bcbd","#6f9954","#969bc7","#89ab7c","#434475","#2c2d54")) + 
+  theme_minimal()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  scale_color_manual(values = c("#bd3106","#5b7314","#454b87","#d9700e","#89a6bb","#eebe04","#c3d6ce")) + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+
+
+]
+
+
+---
+
+.center[
+# Fill Colors
+]
+
+- To change color associated with fill, simply use `scale_fill_*()` functions
+
+.panelset[
+
+.panel[.panel-name[Default]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal()
+```
+
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal()
+```
+
+
+]
+
+]
+
+.panel[.panel-name[Brewer]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette = "Set1")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette = "Set1")
+```
+
+]
+
+]
+
+
+.panel[.panel-name[Manual - Hex Codes]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal() + 
+  scale_fill_manual(values = c("#6b6ca3","#87bcbd","#6f9954","#969bc7","#89ab7c","#434475","#2c2d54"))
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = hwy, fill = class, y = fct_reorder(class, hwy, .fun = mean))) + 
+  geom_bar(stat = "summary", fun = "mean") + 
+  guides(fill = "none") + 
+  labs(x = "Average Highway Miles Per Gallan", y = NULL) + 
+  theme_minimal() + 
+  scale_fill_manual(values = c("#6b6ca3","#87bcbd","#6f9954","#969bc7","#89ab7c","#434475","#2c2d54"))
+```
+
+]
+
+]
+
+
+]
+
+
+
+---
+
+.center[
+# Continuous Colors
+]
+
+
+- the `viridis` package is well-suited for continuous color palettes
+- more information on the `viridis` package can be found [here](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)
+
+.panelset[
+
+.panel[.panel-name[Default]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none")
+```
+
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none")
+```
+
+
+]
+
+]
+
+.panel[.panel-name[viridis]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis()
+```
+
+]
+
+]
+
+
+.panel[.panel-name[magma]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis(option = "magma")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis(option = "magma")
+```
+
+]
+
+]
+
+
+.panel[.panel-name[plasma]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis(option = "plasma")
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
+  theme(legend.position = "none") + 
+  scale_fill_viridis(option = "plasma")
+```
+
+]
+
+]
+
+]
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Themes
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+.center[
+# Themes
+]
+
+- Themes control the general aesthetics of visualizations
+
+
+.panelset[
+
+.panel[.panel-name[Default]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type")
+
+```
+
+]
+
+]
+
+
+.panel[.panel-name[theme_minimal]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_minimal()
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_minimal()
+
+```
+
+]
+
+]
+
+
+.panel[.panel-name[theme_bw]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_bw()
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_bw()
+
+```
+
+]
+
+]
+
+
+
+.panel[.panel-name[theme_light]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_light()
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_light()
+
+```
+
+]
+
+]
+
+
+
+.panel[.panel-name[theme_dark]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_dark()
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_dark()
+
+```
+
+]
+
+]
+
+
+.panel[.panel-name[theme_classic]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_classic()
+
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_classic()
+
+```
+
+]
+
+]
+
+.panel[.panel-name[theme_void]
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_void()
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = "Car Type") + 
+  theme_void()
+```
+
+]
+
+]
+
+]
+
+
+---
+
+.center[
+# Custom Themes
+]
+
+- You can also manually specify theme elements using the `theme()` function
+   - `ggThemeAssist` add-in provides a GUI to help with the myriad theme options
+
+.pull-left[
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = NULL) + 
+  theme_minimal() + 
+  theme(legend.position = "top", legend.justification = "left",
+        plot.title = element_text(face = "bold", size = 17),
+        axis.title = element_text(face = "bold"),
+        legend.text = element_text(size = 11))
+```
+
+]
+
+.pull-right[
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class)) + 
+  geom_smooth(se = FALSE) + 
+  labs(title = "Fuel efficiency generally decreases with engine size",
+       x = "Displacement (Litres)",
+       y = "Highway Miles per Gallon",
+       color = NULL) + 
+  theme_minimal() + 
+  theme(legend.position = "top", legend.justification = "left",
+        plot.title = element_text(face = "bold", size = 17),
+        axis.title = element_text(face = "bold"),
+        legend.text = element_text(size = 11))
+```
+]
+
+
+
+
+
+
+---
+
+.center[
+# Now You Try!
+]
+
+- try to recreate the below visualization using the `penguins` dataset
+   - place bill length on the x-axis and flipper length on the y-axis
+   - user the Dark2 Brewer color palette to create separate colors for species
+   - place the species label at the mean of bill length and flipper length for each species
+   - create appropriate x-axis and y-axis labels and title
+   - bold the title, change the title size to 18
+
+
+.center[
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+species_avg <- penguins %>% 
+  group_by(species) %>% 
+  summarize(flipper = mean(flipper_length_mm, na.rm = TRUE),
+            bill =  mean(bill_length_mm, na.rm = TRUE))
+
+ggplot(data = penguins, aes(x = flipper_length_mm, y = bill_length_mm, color = species)) + 
+  geom_point(alpha = .6) + 
+  geom_label(data = species_avg, 
+                  aes(x = flipper, y = bill, color = species, label = species),
+                  fontface = "bold", 
+                  size = 5) + 
+  labs(x = "Flipper Length (mm)", y = "Bill Length (mm)", title = "Palmer Penguins Have Proportional Body Types") + 
+  scale_color_brewer(palette = "Dark2") + 
+  guides(color = "none") + 
+  theme_minimal() + 
+  theme(plot.title = element_text(face = "bold", size = 18))
+```
+]
+   
+---
+
+.center[
+# Solution
+]
+
+
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+species_avg <- penguins %>% 
+  group_by(species) %>% 
+  summarize(flipper = mean(flipper_length_mm, na.rm = TRUE),
+            bill =  mean(bill_length_mm, na.rm = TRUE))
+
+ggplot(data = penguins, aes(x = flipper_length_mm, y = bill_length_mm, color = species)) + 
+  geom_point(alpha = .6) + 
+  geom_label(data = species_avg, 
+                  aes(x = flipper, y = bill, color = species, label = species),
+                  fontface = "bold", 
+                  size = 5) + 
+  labs(x = "Flipper Length (mm)", y = "Bill Length (mm)", title = "Palmer Penguins Have Proportional Body Types") + 
+  guides(color = "none") + 
+  scale_color_brewer(palette = "Dark2") + 
+  theme_minimal() + 
+  theme(plot.title = element_text(face = "bold", size = 18))
+```
+
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Additional Resources
+----
+`r icons::icon_style(icons::fontawesome("r-project"), scale = 3, fill = "white")`
+
+---
+.center[
+# Additional Resources
+]
+
+
+
+<br> <br>
+
+- [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday)
+
+<br>
+
+- [The Glamour of Graphics](https://www.youtube.com/watch?v=h5cTacaWE6I)
+
+<br> 
+
+- [ggplot Wizardry](https://www.youtube.com/watch?v=7UjA_5gNvdw)

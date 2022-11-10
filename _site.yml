@@ -36,6 +36,8 @@ navbar:
           href: slides/mod10.html
         - text: "Module 12: Factors with Forcats"
           href: slides/mod12.html
+        - text: "Module 13: Data Visualization II"
+          href: slides/mod13.html
     - text: "Project Problems"
       menu:
         - text: "Module 2: Base R"
