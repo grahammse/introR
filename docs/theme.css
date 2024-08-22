@@ -6,7 +6,7 @@
   --text-color: rgba(255, 255, 255, 0.8);
   --text-size: 15px;
   --hover-color: white;
-  --bkgd-color: #a6873b;
+  --bkgd-color: #8a2377;
 }
 
 .distill-site-header {
@@ -15,7 +15,7 @@
 
 /* Change Body Background Color*/
 body {
-  background-color: #e3e3e2;
+  background-color: #ffffff;
   color: #6c6c6b;
   font-weight: 600;
 }
@@ -33,7 +33,7 @@ d-article a {
 }
 
 a:hover {
-  color: #a6873b;
+  color: #8a2377;
   font-weight: bold;
   text-decoration: none;
 }
@@ -50,7 +50,7 @@ d-article h3 {
 /* Change Footer Aesthetics */
 
 .distill-site-footer {
-  --text-color: #e3e3e2;
+  --text-color: #ffffff;
   --bkgd-color: #8e8e8e;
   margin-top: 0px;
   margin-bottom: 0px;

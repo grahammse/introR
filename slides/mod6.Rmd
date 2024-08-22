@@ -14,8 +14,8 @@ editor_options:
 ```{=html}
 <style>
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
-    background-color: #a6873b;
-    color: black;
+    background-color: #8a2377;
+    color: white;
     font-weight: bold;
 }
 </style>
@@ -23,7 +23,7 @@ editor_options:
 ```{=html}
 <style>
   .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
-     background-color: #a6873b;
+     background-color: #8a2377;
      font-weight: bold;
           color: black;
      }
@@ -39,7 +39,7 @@ editor_options:
 ```{=html}
 <style>
   a {
-     color: #a6873b;
+     color: #8198b9;
      text-decoration: none;
      }
 </style>
@@ -47,7 +47,7 @@ editor_options:
 ```{=html}
 <style>
   a:hover {
-     color: #a6873b;
+     color: #8198b9;
      font-weight: bold;
      }
 </style>

@@ -2,8 +2,8 @@
 title: "Module 1:  R, What Is It Good For?"
 subtitle:  "Introduction and Overview"
 author: "Graham Eglit"
-institute: "Canopy Growth Corporation"
-date: "May 20, 2022"
+institute: "Axsome Therapeutics"
+date: "Fall 2024"
 output:
   xaringan::moon_reader:
     css: 
@@ -23,8 +23,8 @@ require(xaringanthemer)
 require(xaringanExtra)
 require(icons)
 style_duo(primary_color = "#e3e3e2", 
-          secondary_color = "#a6873b",
-          code_inline_color = "#746850",
+          secondary_color = "#8a2377",
+          code_inline_color = "#7f6a8f",
           text_font_size = "1.1rem",
           header_font_google = google_font("Lato"),
           text_font_google   = google_font("Lora"),
@@ -45,15 +45,15 @@ xaringanExtra::use_extra_styles(
 ```
 
 class: title-slide, right, top
-background-image: url(img/canopy_logo.png)
-background-size: 50%, cover
+background-image: url(img/axsome_logo.png)
+background-size: 40%, cover
 
 ```{r xaringan-logo, echo=FALSE}
 xaringanExtra::use_logo(
-  image_url = "img/canopy_logo.png",
+  image_url = "img/axsome_logo.png",
   position = xaringanExtra::css_position(top = ".5em", right = ".5em"),
-  height = "140px",
-  width = "160px",
+  height = "130px",
+  width = "150px",
   exclude_class = c("title-slide", "inverse", "hide_logo")
 )
 ```
